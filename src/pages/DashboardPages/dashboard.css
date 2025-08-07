@@ -1,0 +1,293 @@
+
+
+.user_dashboard .menu_items{height: 100%;}
+
+
+.dash_sidebar{
+    background: #042825;
+    padding: 30px 20px;
+    border-radius: 6px;
+    position: sticky;
+    top: 110px;
+}
+
+.dash_sidebar ul a{
+    padding: 14px 15px;
+    background: #f7f7f7;
+    color: #000;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+}
+.dash_sidebar ul a.active{
+    background: #ff9202;
+    color: #fff;
+}
+
+
+.modal-footer .btn-secondary{padding: 8px 12px;}
+.modal .btn-close {
+  background: #042825;
+  opacity: 1;
+  color: #fff;
+  border-radius: 50%;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: 50%;
+  background-size: 12px 12px;
+  height: 20px;
+  width: 20px;
+  padding: 5px;
+  border: none;
+  cursor: pointer;
+}
+.modal-backdrop { --bs-backdrop-opacity: 0.6 !important;}
+.modal .btn-close:focus{box-shadow: none !important; border-color: var(--secondary) !important;}
+
+
+/* .user_dashboard h1{font-size: 24px; font-weight: 600;} */
+
+.statistics_funfact {
+    background-color: #fff;
+    border-radius: 16px;
+    margin-bottom: 30px;
+    padding: 30px 25px;
+    position: relative;
+    box-shadow: 0 1px 4px rgba(24, 26, 32, 0.158);
+    transition: all .3s;
+}
+.statistics_funfact:hover{
+    background-color: #f3f5f6;
+}
+.statistics_funfact:hover .icon{background-color: #fff;}
+.statistics_funfact:hover i{color: var(--primary); transition: all .3s;}
+.statistics_funfact:hover .title{color: var(--primary); transition: all .3s;}
+.statistics_funfact:hover .text{color: var(--secondary);  transition: all .3s;}
+.statistics_funfact .text {
+    color: var(--headings-color);
+    font-weight: 400;
+    transition: all .3s; 
+    font-weight: 600;
+}
+.statistics_funfact .title {
+    color: var(--headings-color);
+    font-weight: 600;
+    font-size: 36px;
+    line-height: 54px;
+    transition: all .3s;
+    
+}
+.statistics_funfact .icon {
+    background-color: #f3f5f6;
+    border-radius: 50%;
+    color: var(--headings-color);
+    font-size: 30px;
+    height: 70px;
+    line-height: 70px;
+    position: relative;
+    width: 70px;
+}
+
+.modal input{height: 47px; border-radius: 8px; font-size: 15px;}
+.modal textarea{ border-radius: 8px; font-size: 15px;}
+.modal select{height: 45px; border-radius: 8px; font-size: 15px;}
+.modal input:focus{box-shadow: none; border-color: var(--secondary);}
+.modal select:focus{box-shadow: none; border-color: var(--secondary);}
+.modal textarea:focus{box-shadow: none; border-color: var(--secondary);}
+
+.btn-outline-green {
+    background: transparent;
+    border: 1px solid var(--secondary);
+    color: var(--secondary);
+}
+.btn-outline-green:hover{
+  background: var(--secondary);
+    color: #fff;
+
+}
+
+.watchlist_cards .border{transition: all .3s;}
+.watchlist_cards .border:hover{border-color: var(--secondary) !important;transition: all .3s;}
+
+/*------- Profile  Page ------*/
+
+.profile_page .card{
+    box-shadow: 0 1px 26px rgba(24, 26, 32, .07);
+    padding: 30px;
+    /* background-color: #fff; */
+    /* background-color: #f2f3f3; */
+    border: 1px solid rgba(37, 39, 40, 0.1) !important;
+}
+
+.profile_image{
+    height: 120px;
+    width: 120px;
+    border-radius: 10px;
+}
+.profile_image img{
+    border-radius: 10px;
+    object-fit: cover;
+}
+.profile_image .remove_profile{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: #e5e5e5;
+    border-radius: 4px;
+    height: 25px;
+    width: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.profile_image .remove_profile i{font-size: 12px;}
+.profile_image .remove_profile:hover i{color: rgb(253, 54, 54);}
+.profile_image_wrapper .search_home_btn{
+    font-size: 14px;
+    
+}
+.profile_image_wrapper .search_home_btn i{
+  transform: rotate(0deg) !important;
+}
+
+.profile_page input{font-size: 14px; height: 45px;}
+.profile_page input::placeholder{font-size: 14px; }
+.profile_page input:focus{box-shadow: unset !important; border-color: var(--secondary);}
+
+.profile_page textarea{font-size: 14px; padding: 12px 10px;}
+.profile_page textarea:focus{box-shadow: unset !important; border-color: var(--secondary);}
+.profile_page textarea::placeholder{font-size: 14px;}
+
+.profile_page .react-tel-input .form-control {height: 45px !important;}
+
+.profile_page input{font-size: 14px; height: 45px;}
+.profile_page .card h5{font-size: 18px}
+.profile_page .card .search_home_btn.black_btn{font-size: 14px !important}
+
+.profile_page .card_height{height: 50%;}
+.profile_page .card label{font-weight: 600; }
+.profile_page .password_card input{padding-right: 35px;}
+.profile_page .password_card i{
+    right: 20px;
+    top: 60%;
+    color: rgb(68, 68, 68);
+    font-size: 14px;
+}
+
+
+/* ---- Contact Agent ------*/
+
+.contact_agents_page .btn-theme{padding: 5px 8px}
+.contact_agents_page .btn-dark{padding: 5px 8px}
+.contact_agents_page .card .btn-green{padding: 5px 8px}
+
+.contact_agents_page .card{
+    box-shadow: 0 1px 26px rgba(24, 26, 32, .07);
+    border: 1px solid rgba(37, 39, 40, 0.1) !important;
+    border-radius: 6px;
+    border: 0;
+    overflow: hidden;
+    transition: all .3s ease-in-out;
+}
+.contact_agents_page .card:hover img{
+    transform: scale(1.05);
+    transition: all .3s ease-in-out;
+}
+
+.contact_agents_page .card img{height: 100%; width: 100%; object-fit: cover; border-top-left-radius: 6px; border-bottom-left-radius: 6px;}
+
+
+
+/*------- Saved Searches --------*/
+.saved_searches .card, .alert_card{
+  padding: 30px;
+  box-shadow: 0 1px 4px rgba(24, 26, 32, .07);
+  border: 1px solid rgba(37, 39, 40, 0.1) !important;
+  border-radius: 12px;
+}
+.saved_searches table th, .alert_card th{padding: 20px 10px; font-size: 16px; vertical-align: baseline;}
+.saved_searches table td{padding: 20px 10px}
+.saved_searches table .listing_name{font-size: 15px; font-weight: 500;}
+.saved_searches table i{font-size: 13px;}
+
+.saved_searches .form-switch .form-check-input{
+    width: 3em !important;
+    height: 1.5em !important;
+    /* background-color: #ddd; */
+}
+.saved_searches .form-switch .form-check-input:focus{
+    box-shadow: none !important;
+    border: 1px solid #dee2e6  !important;
+}
+
+
+
+.alert_card .listing_name{font-weight: 600; min-width: 150px;}
+
+
+.buyer-inspections .card h5{font-size: 18px;}
+
+.buyer-inspections .modal-footer .btn-secondary {
+    padding: 5px 10px !important;
+}
+
+/*-------- Media Queries --------*/
+
+@media screen and (max-width:992px) {
+
+ .dash_sidebar {
+    background: #042825;
+    padding: 15px 10px;
+    border-radius: 6px;
+    position: sticky;
+    top: 110px;
+ } 
+
+ .dash_sidebar ul{
+    overflow-x: scroll; padding-bottom: 7px !important;
+      scrollbar-width: thin; /* Firefox */
+     scrollbar-color: var(--primary) transparent; /* Firefox */
+ }
+
+ /* For WebKit-based browsers (Chrome, Edge, Safari) */
+    .dash_sidebar ul::-webkit-scrollbar {
+        height: 6px; /* For horizontal scrollbars */
+    }
+
+    .dash_sidebar ul::-webkit-scrollbar-track {
+        background: #e7e7e7;
+    }
+
+    .dash_sidebar ul::-webkit-scrollbar-thumb {
+        background-color: var(--primary);
+        border-radius: 4px;
+    }
+
+
+ .dash_sidebar ul a{min-width: fit-content !important; font-size: 13px; padding: 12px 14px;}
+ .contact_agents_page .card img{ 
+    height: 290px; border-top-left-radius: 6px; border-top-right-radius: 6px; border-bottom-left-radius: 0px;}
+
+}
+
+@media screen and (max-width:991px) {
+   .profile_page .card_height{height: 100%;} 
+}
+
+@media screen and (max-width:768px) {
+    .saved_searches .card{ padding: 20px;}
+    .saved_searches table th{padding: 15px 10px; font-size: 14px;}
+    .contact_agents_page button{font-size: 12px;}
+    .contact_agents_page .card img{ height: 250px;}
+}
+
+@media screen and (max-width:576px) {
+    .profile_image_wrapper{flex-direction: column; align-items: start !important;}
+    .profile_image_wrapper .profile_image {margin-bottom: 15px;}
+    .saved_searches table .listing_name {font-size: 14px;}
+    .contact_agents_page .card img{ height: 280px;}
+}
+
+@media screen and (max-width:375px) {
+    .contact_agents_page .card img{ height: 260px;}
+}

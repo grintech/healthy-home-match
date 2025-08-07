@@ -1,0 +1,672 @@
+import { useRef, useState, useEffect } from "react";
+import Lightbox from "yet-another-react-lightbox";
+import Zoom from "yet-another-react-lightbox/plugins/zoom";
+import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
+import "yet-another-react-lightbox/styles.css";
+import "yet-another-react-lightbox/plugins/thumbnails.css";
+import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
+import { Link } from "react-router-dom";
+import "./single.css";
+
+const PropertySingle = () => {
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [slideIndex, setSlideIndex] = useState(0);
+
+  const images = [
+    "/images/card1.jpg",
+    "/images/card2.jpg",
+    "/images/card3.jpg",
+    "/images/card4.jpg",
+    "/images/blog1.jpg",
+    "/images/blog2.jpg",
+    "/images/blog3.jpg",
+  ];
+
+  const openLightbox = (index) => {
+    setSlideIndex(index);
+    setLightboxOpen(true);
+  };
+
+  const [showFullText, setShowFullText] = useState(false);
+const [isTruncatable, setIsTruncatable] = useState(false);
+const descRef = useRef(null);
+
+const toggleText = () => setShowFullText((prev) => !prev);
+
+useEffect(() => {
+  if (descRef.current) {
+    const lineHeight = parseFloat(getComputedStyle(descRef.current).lineHeight);
+    const lines = descRef.current.scrollHeight / lineHeight;
+    setIsTruncatable(lines > 5);
+  }
+}, []);
+
+  return (
+    <>
+      <Navbar />
+      <div className="property_single">
+        <div className="container my-5">
+            {/* Title & Meta */}
+            <div className="mb-4 row justify-content-between">
+            <div className="col-md-8 mb-4 mb-md-0">
+                <h1 className="sec-title">Luxury Villa in Rego Park</h1>
+                <div className="d-flex small_desc flex-wrap">
+                    <p className="border-end pe-2 mb-1">New York City, CA, USA</p>
+                    <p className="border-end px-2 mb-1">
+                        <i className="fa-solid fa-circle text-theme"></i> For Sale
+                    </p>
+                    <p className="border-end px-2 mb-1">
+                        <i className="fa-regular fa-clock"></i> 7 years ago
+                    </p>
+                </div>
+                <div className="d-flex">
+                    <div className="list-tag fz12 me-2"><i className="fa-solid fa-bolt me-1"></i>NatHERS</div>
+                    <div className="list-tag fz12 me-2"><i className="fa-solid fa-bolt me-1"></i>All-Electric</div>
+                </div>
+            </div>
+            <div className="col-md-4">
+                <div className="property-action text-md-end">
+                <div className="d-flex mb20 mb10-md align-items-center justify-content-md-end mb-3">
+                    <Link title="Like" className="icon me-3" to="#">
+                    <i className="fa-regular fa-heart"></i>
+                    </Link>
+                    <Link title="Share" className="icon me-3" to="#">
+                    <i className="fa-solid fa-share"></i>
+                    </Link>
+                    <Link title="Download brochure" className="icon " to="#">
+                    <i  className="fa-solid fa-download"></i>
+                    </Link>
+                </div>
+                <h4 className="price">$14,000</h4>
+                </div>
+            </div>
+            </div>
+
+            {/* Gallery with Lightbox */}
+            <div className="gallery_images row g-3 mb-5">
+            <div className="col-sm-6 overflow-hidden">
+                <div className="img_wrapper h-100">
+                <img
+                    className="w-100 h-100"
+                    src="/images/card1.jpg"
+                    alt="property image"
+                    onClick={() => openLightbox(0)}
+                    style={{ cursor: "pointer" }}
+                />
+                </div>
+            </div>
+            <div className="col-sm-6">
+                <div className="row g-3">
+                <div className="col-6 overflow-hidden">
+                    <div className="img_wrapper">
+                    <img
+                        className="w-100"
+                        src="/images/card2.jpg"
+                        alt="property image"
+                        onClick={() => openLightbox(1)}
+                        style={{ cursor: "pointer" }}
+                    />
+                    </div>
+                </div>
+                <div className="col-6 overflow-hidden">
+                    <div className="img_wrapper">
+                    <img
+                        className="w-100"
+                        src="/images/card3.jpg"
+                        alt="property image"
+                        onClick={() => openLightbox(2)}
+                        style={{ cursor: "pointer" }}
+                    />
+                    </div>
+                </div>
+                <div className="col-6 overflow-hidden">
+                    <div className="img_wrapper">
+                    <img
+                        className="w-100"
+                        src="/images/card4.jpg"
+                        alt="property image"
+                        onClick={() => openLightbox(3)}
+                        style={{ cursor: "pointer" }}
+                    />
+                    </div>
+                </div>
+                <div className="col-6 overflow-hidden">
+                    <div className="img_wrapper">
+                    <img
+                        className="w-100"
+                        src="/images/blog1.jpg"
+                        alt="property image"
+                        onClick={() => openLightbox(4)}
+                        style={{ cursor: "pointer" }}
+                    />
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+
+            <Lightbox
+            open={lightboxOpen}
+            close={() => setLightboxOpen(false)}
+            index={slideIndex}
+            slides={images.map((src) => ({ src }))}
+            plugins={[Zoom, Thumbnails]}
+            />
+
+            <div className="row">
+            {/* Left Column */}
+            <div className="col-lg-8">
+                <div className="card overview_card border-0">
+                <h4 className="mb-4 single_head">Overview</h4>
+                <div className="row prop_desc">
+                    <div className="col-6 col-lg-4 mb-4">
+                    <div className="overview-element position-relative d-flex align-items-center">
+                        <i className="fa-solid fa-bed"></i>
+                        <div className="ms-3">
+                        <h6 className="mb-0">Bedroom</h6>
+                        <p className="text mb-0 ">1</p>
+                        </div>
+                    </div>
+                    </div>
+                    <div className="col-6 col-lg-4 mb-4">
+                    <div className="overview-element position-relative d-flex align-items-center">
+                        <i className="fa-solid fa-bath"></i>
+                        <div className="ms-3">
+                        <h6 className="mb-0">Bathrooms</h6>
+                        <p className="text mb-0 ">2</p>
+                        </div>
+                    </div>
+                    </div>
+                    <div className="col-6 col-lg-4 mb-4">
+                    <div className="overview-element position-relative d-flex align-items-center">
+                        <i className="fa-solid fa-calendar-days"></i>
+                        <div className="ms-3">
+                        <h6 className="mb-0">Year Built</h6>
+                        <p className="text mb-0 ">2018</p>
+                        </div>
+                    </div>
+                    </div>
+                    <div className="col-6 col-lg-4 mb-4">
+                    <div className="overview-element position-relative d-flex align-items-center">
+                        <i className="fa-solid fa-warehouse"></i>
+
+                        <div className="ms-3">
+                        <h6 className="mb-0">Garage</h6>
+                        <p className="text mb-0 ">2</p>
+                        </div>
+                    </div>
+                    </div>
+                    <div className="col-6 col-lg-4 mb-4">
+                    <div className="overview-element position-relative d-flex align-items-center">
+                        <i className="fa-solid fa-chart-area"></i>
+
+                        <div className="ms-3">
+                        <h6 className="mb-0">Sqft</h6>
+                        <p className="text mb-0 ">1200</p>
+                        </div>
+                    </div>
+                    </div>
+                    <div className="col-6 col-lg-4 mb-4">
+                    <div className="overview-element position-relative d-flex align-items-center">
+                        <i className="fa-solid fa-home"></i>
+                        <div className="ms-3">
+                        <h6 className="mb-0">Property Type</h6>
+                        <p className="text mb-0 ">Houses</p>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+
+                <div className="card overview_card border-0">
+               <div className="mb-5">
+                <h4 className="mb-4 single_head">Property Description</h4>
+                <p
+                    className={`text mb-2 description-text ${showFullText ? "expanded" : ""}`}
+                    ref={descRef}
+                    style={{
+                    maxHeight: !showFullText ? "7.5em" : "none", // 7.5em = 5 lines if line-height = 1.5em
+                    overflow: "hidden",
+                    lineHeight: "1.5em",
+                    transition: "max-height 0.3s ease",
+                    }}
+                >
+                    This 3-bed with a loft, 2-bath home in the gated community of The Hideout has it all. From the open floor plan to the abundance of light from the windows, this home is perfect for entertaining. The living room and dining room have vaulted ceilings and a beautiful fireplace. You will love spending time on the deck taking in the beautiful views. In the kitchen, you'll find stainless steel appliances and a tile backsplash, as well as a breakfast bar. This 3-bed with a loft, 2-bath home in the gated community of The Hideout has it all. 
+                     This 3-bed with a loft, 2-bath home in the gated community of The Hideout has it all. From the open floor plan to the abundance of light from the windows, this home is perfect for entertaining. The living room and dining room have vaulted ceilings and a beautiful fireplace. You will love spending time on the deck taking in the beautiful views. In the kitchen, you'll find stainless steel appliances and a tile backsplash, as well as a breakfast bar. This 3-bed with a loft, 2-bath home in the gated community of The Hideout has it all. 
+                </p>
+
+                {isTruncatable && (
+                    <p className="fw-bold text-theme"style={{ cursor: "pointer" }} onClick={toggleText} >
+                    {showFullText ? "Show less" : "Show more"}
+                    </p>
+                )}
+                </div>
+
+
+                <div>
+                    <h4 className="mb-4 single_head">Property Details</h4>
+                    <div className="row">
+                    <div className="col-md-6 col-xl-4">
+                        <div className="d-flex justify-content-between">
+                        <div className="pd-list">
+                            <p className="fw600 mb10 ff-heading dark-color">
+                            Property ID
+                            </p>
+                        </div>
+                        <div className="pd-list">
+                            <p className="text mb10">RT48</p>
+                        </div>
+                        </div>
+                        <div className="d-flex justify-content-between">
+                        <div className="pd-list">
+                            <p className="fw600 mb10 ff-heading dark-color">Price</p>
+                        </div>
+                        <div className="pd-list">
+                            <p className="text mb10">$252,000</p>
+                        </div>
+                        </div>
+                        <div className="d-flex justify-content-between">
+                        <div className="pd-list">
+                            <p className="fw600 mb10 ff-heading dark-color">
+                            Property Size
+                            </p>
+                        </div>
+                        <div className="pd-list">
+                            <p className="text mb10">1500 Sq Ft</p>
+                        </div>
+                        </div>
+                        <div className="d-flex justify-content-between">
+                        <div className="pd-list">
+                            <p className="fw600 mb10 ff-heading dark-color">
+                            Bathrooms
+                            </p>
+                        </div>
+                        <div className="pd-list">
+                            <p className="text mb10">3</p>
+                        </div>
+                        </div>
+                        <div className="d-flex justify-content-between">
+                        <div className="pd-list">
+                            <p className="fw600 mb10 ff-heading dark-color">Bedrooms</p>
+                        </div>
+                        <div className="pd-list">
+                            <p className="text mb10">2</p>
+                        </div>
+                        </div>
+                    </div>
+                    <div className="col-md-6 col-xl-4 offset-xl-2">
+                        <div className="d-flex justify-content-between">
+                        <div className="pd-list">
+                            <p className="fw600 mb10 ff-heading dark-color">Garage</p>
+                        </div>
+                        <div className="pd-list">
+                            <p className="text mb10">2</p>
+                        </div>
+                        </div>
+                        <div className="d-flex justify-content-between">
+                        <div className="pd-list">
+                            <p className="fw600 mb10 ff-heading dark-color">
+                            Garage Size
+                            </p>
+                        </div>
+                        <div className="pd-list">
+                            <p className="text mb10">200 SqFt</p>
+                        </div>
+                        </div>
+                        <div className="d-flex justify-content-between">
+                        <div className="pd-list">
+                            <p className="fw600 mb10 ff-heading dark-color">
+                            Year Built
+                            </p>
+                        </div>
+                        <div className="pd-list">
+                            <p className="text mb10">2022</p>
+                        </div>
+                        </div>
+                        <div className="d-flex justify-content-between">
+                        <div className="pd-list">
+                            <p className="fw600 mb10 ff-heading dark-color">
+                            Property Type
+                            </p>
+                        </div>
+                        <div className="pd-list">
+                            <p className="text mb10">Apartment</p>
+                        </div>
+                        </div>
+                        <div className="d-flex justify-content-between">
+                        <div className="pd-list">
+                            <p className="fw600 mb10 ff-heading dark-color">
+                            Property Status
+                            </p>
+                        </div>
+                        <div className="pd-list">
+                            <p className="text mb10">For Sale</p>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+
+                <div className="card overview_card border-0">
+                <h4 className="mb-4 single_head">Location</h4>
+                <div className="row">
+                    <div className="col-md-6  mb-3 mb-md-0">
+                    <div className="d-flex justify-content-between">
+                        <div className="pd-list">
+                        <p className="fw600 mb10 ff-heading dark-color">Address</p>
+                        <p className="fw600 mb10 ff-heading dark-color">City</p>
+                        <p className="fw600 mb-0 ff-heading dark-color">
+                            State/county
+                        </p>
+                        </div>
+                        <div className="pd-list">
+                        <p className="text mb10">10425 Tabor St</p>
+                        <p className="text mb10">Los Angeles</p>
+                        <p className="text mb-0">California</p>
+                        </div>
+                    </div>
+                    </div>
+                    <div className="col-md-6 ">
+                    <div className="d-flex justify-content-between">
+                        <div className="pd-list">
+                        <p className="fw600 mb10 ff-heading dark-color">Address</p>
+                        <p className="fw600 mb10 ff-heading dark-color">City</p>
+                        <p className="fw600 mb-0 ff-heading dark-color">
+                            State/county
+                        </p>
+                        </div>
+                        <div className="pd-list">
+                        <p className="text mb10">10 Downing Street</p>
+                        <p className="text mb10">London</p>
+                        <p className="text mb-0">Greater London</p>
+                        </div>
+                    </div>
+                    </div>
+                    <div className="col-md-12 mt-4">
+                    <iframe
+                        className="position-relative w-100"
+                        style={{ height: "250px" }}
+                        loading="lazy"
+                        src="https://maps.google.com/maps?q=10425 Tabor St&amp;t=m&amp;z=14&amp;output=embed&amp;iwloc=near"
+                        title="10425 Tabor St"
+                        aria-label="10425 Tabor St"
+                    ></iframe>
+                    </div>
+                </div>
+                </div>
+
+                {/* <div className="card overview_card border-0">
+                    <h4 className="mb-4 single_head">Features & Amenities</h4>
+                    <div className="row"><div className="col-sm-6 col-md-4"><div className="pd-list"><p className="text mb10"><i className="fas fa-circle fz6 align-middle pe-2"></i>Air Conditioning</p><p className="text mb10"><i className="fas fa-circle fz6 align-middle pe-2"></i>Barbeque</p><p className="text mb10"><i className="fas fa-circle fz6 align-middle pe-2"></i>Dryer</p><p className="text mb10"><i className="fas fa-circle fz6 align-middle pe-2"></i>Gym</p></div></div><div className="col-sm-6 col-md-4"><div className="pd-list"><p className="text mb10"><i className="fas fa-circle fz6 align-middle pe-2"></i>Lawn</p><p className="text mb10"><i className="fas fa-circle fz6 align-middle pe-2"></i>Microwave</p><p className="text mb10"><i className="fas fa-circle fz6 align-middle pe-2"></i>Outdoor Shower</p><p className="text mb10"><i className="fas fa-circle fz6 align-middle pe-2"></i>Refrigerator</p></div></div><div className="col-sm-6 col-md-4"><div className="pd-list"><p className="text mb10"><i className="fas fa-circle fz6 align-middle pe-2"></i>Swimming Pool</p><p className="text mb10"><i className="fas fa-circle fz6 align-middle pe-2"></i>TV Cable</p><p className="text mb10"><i className="fas fa-circle fz6 align-middle pe-2"></i>Washer</p><p className="text mb10"><i className="fas fa-circle fz6 align-middle pe-2"></i>WiFi6</p></div></div></div>
+                </div> */}
+
+                <div className="card overview_card border-0">
+                <h4 className="mb-4 single_head">Energy Class</h4>
+                <div className="col-sm-12">
+                    <div className="pd-list d-flex justify-content-between">
+                    <p className="text mb10">Global Energy Performance Index</p>
+                    <p>A+</p>
+                    </div>
+                    <div className="pd-list d-flex justify-content-between">
+                    <p className="text mb10">Renewable energy performance index</p>
+                    <p>92.42 kWh / m²a</p>
+                    </div>
+                    <div className="pd-list d-flex justify-content-between">
+                    <p className="text mb10">Energy performance of the building</p>
+                    <p>00.00 kWh / m²a</p>
+                    </div>
+                    <div className="pd-list d-flex justify-content-between">
+                    <p className="text mb10">EPC Current Rating</p>
+                    <p>92</p>
+                    </div>
+                    <div className="pd-list d-flex justify-content-between">
+                    <p className="text mb10">EPC Potential Rating</p>
+                    <p>80+</p>
+                    </div>
+                </div>
+
+                <div className="col-12">
+                    <img src="/images/energy-class.png" className="w-100" alt="performance scale" />
+                </div>
+                </div>
+
+                <div className="card overview_card border-0">
+                <h4 className="mb-4 single_head">Floor Plan</h4>
+
+                <div className="row">
+                    <div className="col-md-12">
+                    <div className="accordion-style1 style2">
+                        <div className="accordion" id="accordionExample">
+                        <div className="accordion-item ">
+                            <h2 className="accordion-header" id="heading0">
+                            <button
+                                className="accordion-button collapsed"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapse0"
+                                aria-expanded="false"
+                                aria-controls="collapse0"
+                            >
+                                <span className="w-100 d-md-flex align-items-center">
+                                <span className="me-3 ">First Floor</span>
+                                <span className="ms-auto d-md-flex align-items-center justify-content-end">
+                                    <span className="me-2 me-md-4">
+                                    <span className="fw600">Size: </span>
+                                    <span className="text">1267 Sqft</span>
+                                    </span>
+                                    <span className="me-2 me-md-4">
+                                    <span className="fw600">Bedrooms: </span>
+                                    <span className="text">2</span>
+                                    </span>
+                                    <span className="me-2 me-md-4">
+                                    <span className="fw600">Bathrooms: </span>
+                                    <span className="text">2</span>
+                                    </span>
+                                    <span>
+                                    <span className="fw600">Price: </span>
+                                    <span className="text">$920,99</span>
+                                    </span>
+                                </span>
+                                </span>
+                            </button>
+                            </h2>
+                            <div
+                            id="collapse0"
+                            className="accordion-collapse collapse "
+                            aria-labelledby="heading0"
+                            data-parent="#accordionExample"
+                            >
+                            <div className="accordion-body text-center">
+                                <img src="/images/floor.png" className="w-100" alt="floor image" />
+                            </div>
+                            </div>
+                        </div>
+                        <div className="accordion-item ">
+                            <h2 className="accordion-header" id="heading1">
+                            <button
+                                className="accordion-button collapsed"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapse1"
+                                aria-expanded="false"
+                                aria-controls="collapse1"
+                            >
+                                <span className="w-100 d-md-flex align-items-center">
+                                <span className="me-3">Second Floor</span>
+                                <span className="ms-auto d-md-flex align-items-center justify-content-end">
+                                    <span className="me-2 me-md-4">
+                                    <span className="fw600">Size: </span>
+                                    <span className="text">1267 Sqft</span>
+                                    </span>
+                                    <span className="me-2 me-md-4">
+                                    <span className="fw600">Bedrooms: </span>
+                                    <span className="text">2</span>
+                                    </span>
+                                    <span className="me-2 me-md-4">
+                                    <span className="fw600">Bathrooms: </span>
+                                    <span className="text">2</span>
+                                    </span>
+                                    <span>
+                                    <span className="fw600">Price: </span>
+                                    <span className="text">$920,99</span>
+                                    </span>
+                                </span>
+                                </span>
+                            </button>
+                            </h2>
+                            <div
+                            id="collapse1"
+                            className="accordion-collapse collapse "
+                            aria-labelledby="heading1"
+                            data-parent="#accordionExample"
+                            >
+                            <div className="accordion-body text-center">
+                                <img src="/images/floor.png" className="w-100" alt="floor image" />
+                            </div>
+                            </div>
+                        </div>
+                        <div className="accordion-item ">
+                            <h2 className="accordion-header" id="heading2">
+                            <button
+                                className="accordion-button collapsed"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapse2"
+                                aria-expanded="false"
+                                aria-controls="collapse2"
+                            >
+                                <span className="w-100 d-md-flex align-items-center">
+                                <span className="me-3">Third Floor</span>
+                                <span className="ms-auto d-md-flex align-items-center justify-content-end">
+                                    <span className="me-2 me-md-4">
+                                    <span className="fw600">Size: </span>
+                                    <span className="text">1267 Sqft</span>
+                                    </span>
+                                    <span className="me-2 me-md-4">
+                                    <span className="fw600">Bedrooms: </span>
+                                    <span className="text">2</span>
+                                    </span>
+                                    <span className="me-2 me-md-4">
+                                    <span className="fw600">Bathrooms: </span>
+                                    <span className="text">2</span>
+                                    </span>
+                                    <span>
+                                    <span className="fw600">Price: </span>
+                                    <span className="text">$920,99</span>
+                                    </span>
+                                </span>
+                                </span>
+                            </button>
+                            </h2>
+                            <div
+                            id="collapse2"
+                            className="accordion-collapse collapse "
+                            aria-labelledby="heading2"
+                            data-parent="#accordionExample"
+                            >
+                            <div className="accordion-body text-center">
+                                <img src="/images/floor.png" className="w-100" alt="floor image" />
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+            {/* Right Column - Sidebar */}
+            <div className="col-lg-4">
+                    <div className="mb-4 subscribe_button">
+                        <button class="btn ud-btn btn-white contact_btn_light2  w-100" data-bs-toggle="modal" data-bs-target="#subscribeModal" data-discover="true">Subscribe for alerts <i class="fas fa-bell"></i></button>
+                    </div>
+                <div className="enquiry_section h-100">
+                    <div className="card mb-0 overview_card border-0 ">
+                    <h5 className="single_head mb-4">Get More Information</h5>
+                    <div className="d-flex align-items-center mb-3">
+                        <img
+                        src="/images/agent1.jpg"
+                        alt="Agent"
+                        className="rounded-circle agent_img me-3"
+                    
+                        />
+                        <div>
+                         <Link to='/agent-single'>
+                             <h6 className="mb-0 fw-bold">Mark Klasen</h6>
+                         </Link>   
+                        <small className="">Real Estate Agent</small>
+                        </div>
+                    </div>
+                    <form>
+                        <input
+                        type="text"
+                        className="form-control mb-3"
+                        placeholder="Your Name"
+                        />
+                        <input
+                        type="email"
+                        className="form-control mb-3"
+                        placeholder="Email"
+                        />
+                        <textarea
+                        className="form-control mb-3"
+                        placeholder="Message"
+                        rows={3}
+                        ></textarea>
+                        <Link to="#" className="btn ud-btn btn-white search_home_btn w-100"> Send Inquiry </Link>
+                    </form>
+                    </div>
+                    
+                </div>
+            </div>
+
+
+            <div class="modal fade" id="subscribeModal" tabindex="-1" aria-labelledby="subscribeModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold" id="subscribeModalLabel">Subscribe for Property Alerts</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <form id="subscribeForm">
+                    <div class="mb-3">
+                        <label for="emailInput" class="form-label">Email address</label>
+                        <input type="email" class="form-control" id="emailInput" name="email" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="alertTypeSelect" class="form-label">Alert Type</label>
+                        <select class="form-select" id="alertTypeSelect" name="alertType" required>
+                        <option value="">Select Alert Type</option>
+                        <option value="Inspection">Inspection</option>
+                        <option value="Price Drop">Price Drop</option>
+                        <option value="Status Change">Status Change</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-theme w-100 mt-4">Subscribe</button>
+                    </form>
+
+                    
+                </div>
+
+    </div>
+  </div>
+</div>
+
+
+            </div>
+        </div>
+      </div>
+      <Footer />
+    </>
+  );
+};
+
+export default PropertySingle;

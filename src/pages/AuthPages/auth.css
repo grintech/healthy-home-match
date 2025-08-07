@@ -1,0 +1,108 @@
+.login-container {
+  background-color: #f8f9fa;
+}
+
+.login-left {padding: 0;
+  color: white;
+  flex: 0 0 50%;
+  position: relative;
+}
+.login-left img{object-fit: cover; height: 100vh; }
+.login-left::before{
+position: absolute;
+content: '';
+inset: 0;
+background: rgba(0,0,0,0.3);
+width: 100%;
+height: 100%;
+}
+
+.login-right {
+  background-color: #fff;
+  background-color: var(--secondary);
+  height: 100vh;overflow: auto;
+}
+
+.login-right h1{font-weight: 600;}
+
+.login-right::-webkit-scrollbar {
+  width: 5px;
+}
+
+.login-right::-webkit-scrollbar-track {
+  background: #c0bfbf;
+  /* border-radius: 10px; */
+}
+
+.login-right::-webkit-scrollbar-thumb {
+  background: var(--primary); 
+}
+
+.login-right p{line-height: 1.25; font-size: 14px; color: #fff;}
+.login-right form .remember_label{padding-bottom: 0 !important;}
+.login-right form label{
+    font-size: 14px;
+    font-weight: 500;
+    /* color: #262A2A; */
+    /* color: #fff; */
+    padding: 0 0 5px !important;
+}
+.login-right .form-label{margin-bottom: 0px; color: #fff;}
+.login-right img{width: 190px; position: relative;}
+
+.login-right h1{font-size: 22px;}
+
+
+.login-right input{font-size: 14px; height: 40px; padding-right: 35px;}
+.login-right input:focus{box-shadow: none !important;border-color: var(--secondary);}
+.login-right input::placeholder{font-size: 14px; color: #949191;}
+
+.login-right input[type="checkbox"]{
+    width: 16px !important; height: 16px !important;
+    padding-right: 0 !important;
+}
+.login-right input[type="radio"]{
+    width: 16px !important; height: 16px !important;
+    padding-right: 0 !important;
+}
+.login-right .forget_pass{font-size: 15px;}
+.login-right .submit_btn{
+    background-color: var(--primary);
+    color: #fff;
+    height: 45px;
+    border: 1px solid var(--primary);
+    border-radius: 6px;
+}
+
+.login-right .form_fields i{
+  position: absolute; right: 10px;
+  top: 40px;
+  color: #949191; font-size: 15px;
+}
+
+.role_checks .form-check{
+  background-color: var(--bg-soft);
+  padding: 10px 25px;
+  border-radius: 4px;
+}
+
+
+.react-tel-input .form-control {width: 100% !important;height: 40px !important;}
+
+.resend_link{text-decoration: underline !important;
+}
+
+
+.copyright{font-weight: 600 !important;}
+
+@media (max-width: 768px) {
+  .login-left {
+    display: none;
+  }
+}
+@media (max-width: 576px) {
+  .login-left {
+    display: none;
+  }
+  .login-right img{width: 150px; position: relative;}
+}

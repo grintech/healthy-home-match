@@ -1,0 +1,9 @@
+.blogs_page .our_blogs{background: unset !important; background-color: unset !important;}
+
+.blogs_page .blog-content h6.title a {font-weight: 600; font-size: 14px;}
+
+.blog_single h2{font-size: 18px;font-weight: 600;}
+
+.enquiry_section select, .enquiry_section input{font-size: 13px;}
+.enquiry_section textarea{font-size: 14px;}
+.enquiry_section select:focus{box-shadow: none !important; border-color: var(--secondary);}

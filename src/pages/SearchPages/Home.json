@@ -1,0 +1,54 @@
+[
+  {
+    "id": 1,
+    "image": "/images/card1.jpg",
+    "energyRating": "Passivhaus",
+    "price": "$14,000",
+    "title": "Equestrian Family Home",
+    "location": "San Diego City, CA, USA",
+    "bed": 5,
+    "bath": 4,
+    "area": "900 sq.",
+     "listingType": "Sale",
+    "propertyType": "House"
+  },
+  {
+    "id": 2,
+    "image": "/images/card2.jpg",
+    "energyRating": "7-Star+",
+    "price": "$10,500",
+    "title": "Modern Glass Complex",
+    "location": "Austin, TX, USA",
+    "bed": 4,
+    "bath": 3,
+    "area": "1200 sq.",
+    "listingType": "Rent",
+    "propertyType": "Apartment"
+  },
+  {
+    "id": 3,
+    "image": "/images/card3.jpg",
+    "energyRating": "NatHERS",
+    "price": "$20,500",
+    "title": "Luxury villa in Rego Park",
+    "location": "New Jersey City, CA, USA",
+    "bed": 3,
+    "bath": 2,
+    "area": "1500 sq.",
+    "listingType": "Build",
+    "propertyType": "Townhouse"
+  },
+   {
+    "id": 4,
+    "image": "/images/card4.jpg",
+    "energyRating": "Green star",
+    "price": "$45,500",
+    "title": "House on the Northridge",
+    "location": "Main street, Amesterdam, USA",
+    "bed": 5,
+    "bath": 5,
+    "area": "2200 sq.",
+    "listingType": "Rent",
+    "propertyType": "Land"
+  }
+]

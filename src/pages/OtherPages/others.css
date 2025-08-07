@@ -1,0 +1,58 @@
+
+/*---- Page Not Found ------*/
+
+.page_not_found .container{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.page_not_found h1{
+    font-size: 10rem;
+    color: var(--headings-color);
+    font-weight: 800;
+    color: var(--secondary);
+
+}
+.page_not_found h1 span{color: var(--primary);}
+.page_not_found .search_home_btn{text-transform: capitalize;}
+.page_not_found .search_home_btn i{margin-left: 5px;}
+
+
+
+/*------- Privacy Policy ---------*/
+
+.privacy_policy li, .terms_conditions li{list-style: circle !important;}
+.privacy_policy li::marker{color: var(--primary);}
+.terms_conditions li::marker{color: var(--primary);}
+
+.privacy_policy h2, .terms_conditions h2{font-size: 18px; font-weight: 600; color: var(--secondary);}
+
+
+
+
+/*--------  Media Queries ------------*/
+
+@media screen and (max-width:992px) {
+    .page_not_found h1{font-size: 8rem;}
+    .page_not_found h4{font-size: 22px !important;}
+    .page_not_found .search_home_btn{font-size: 16px !important;}
+}
+@media screen and (max-width:768px) {
+    .page_not_found h1{font-size: 6rem;}
+    .page_not_found h4{font-size: 20px !important;}
+    .page_not_found .search_home_btn{font-size: 15px !important;}
+    .page_not_found .search_home_btn i{font-size: 15px !important;}
+  
+}
+@media screen and (max-width:575px) {
+    
+}
+@media screen and (max-width:475px) {
+    .page_not_found h1{font-size: 5rem;}
+    .page_not_found h4{font-size: 18px !important;}
+    .page_not_found .search_home_btn{font-size: 14px !important;}
+    .page_not_found .search_home_btn i{font-size: 14px !important;}
+}
