@@ -57,7 +57,7 @@ const Blogs = () => {
                     {blog.tag}
                   </Link>
                   <h6 className="title mt-1">
-                    <Link>{blog.title}</Link>
+                    <Link to={`/blog/${blog.title}`}>{blog.title}</Link>
                   </h6>
                 </div>
               </div>

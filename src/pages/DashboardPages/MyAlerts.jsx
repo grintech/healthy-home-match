@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Navbar from '../../components/Navbar';
 import { Link } from 'react-router-dom';
 import Footer from '../../components/Footer';
+import { toast } from 'react-toastify';
 
 const initialAlerts = [
   {
@@ -50,6 +51,7 @@ const MyAlerts = () => {
     if (selectedAlertId) {
       setAlerts((prev) => prev.filter((alert) => alert.id !== selectedAlertId));
       setSelectedAlertId(null);
+      toast.success("Alerts for this property has been stopped.")
     }
     const modal = window.bootstrap.Modal.getInstance(document.getElementById('cancelModal'));
     modal.hide();
@@ -105,8 +107,9 @@ const MyAlerts = () => {
                         <button
                           className="btn btn-sm btn-danger"
                           onClick={() => openCancelModal(alert.id)}
+                          data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Turn Off"
                         >
-                          Cancel
+                          Off Alert
                         </button>
                       </td>
                     </tr>
@@ -129,11 +132,11 @@ const MyAlerts = () => {
               <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div className="modal-body">
-              Are you sure you want to cancel this alert? This action cannot be undone.
+              Are you sure you want to turn off this alert? This action cannot be undone.
             </div>
             <div className="modal-footer">
               <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">No, Keep</button>
-              <button type="button" className="btn btn-danger" onClick={confirmCancel}>Yes, Cancel</button>
+              <button type="button" className="btn btn-danger" onClick={confirmCancel}>Yes, off</button>
             </div>
           </div>
         </div>

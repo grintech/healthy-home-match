@@ -13,6 +13,11 @@ const PropertySingle = () => {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [slideIndex, setSlideIndex] = useState(0);
 
+  const [liked, setLiked] = useState(false);
+    const toggleHeart = () => {
+    setLiked(!liked);
+  };
+
    const [inputType, setInputType] = useState("text");
 
 
@@ -71,15 +76,39 @@ useEffect(() => {
             <div className="col-md-4">
                 <div className="property-action text-md-end">
                 <div className="d-flex mb20 mb10-md align-items-center justify-content-md-end mb-3">
-                    <Link title="Like" className="icon me-3" to="#">
-                    <i className="fa-regular fa-heart"></i>
+                      <Link
+                        to="#"
+                        onClick={toggleHeart}
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
+                        data-bs-title={liked ? "Remove from Favorites" : "Add to Favorites"}
+                        className="icon me-3"
+                    >
+                        <i className={`fa-heart ${liked ? "fa-solid text-danger" : "fa-regular"}`}></i>
                     </Link>
-                    <Link title="Share" className="icon me-3" to="#">
-                    <i className="fa-solid fa-share"></i>
+
+                    <Link
+                        className="icon me-3"
+                        to="#"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
+                        data-bs-title="Share"
+                    >
+                        <i className="fa-solid fa-share"></i>
                     </Link>
-                    <Link title="Download brochure" className="icon " to="#">
-                    <i  className="fa-solid fa-download"></i>
+
+                    <Link
+                        className="icon"
+                        to="#"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
+                       data-bs-title="Download brochure"
+                    >
+                        <i className="fa-solid fa-download"></i>
                     </Link>
+                    <button type="button" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-html="true" data-bs-title="<em>Tooltip</em> <u>with</u> <b>HTML</b>">
+  Tooltip with HTML
+</button>
                 </div>
                 <h4 className="price">$14,000</h4>
                 </div>
@@ -454,7 +483,7 @@ useEffect(() => {
                             >
                                 <span className="w-100 d-md-flex align-items-center">
                                 <span className="me-3 ">First Floor</span>
-                                <span className="ms-auto d-md-flex align-items-center justify-content-end">
+                                <span className="ms-auto d-md-flex align-items-center justify-content-end floor_accordion">
                                     <span className="me-2 me-md-4">
                                     <span className="fw600">Size: </span>
                                     <span className="text">1267 Sqft</span>
@@ -498,7 +527,7 @@ useEffect(() => {
                             >
                                 <span className="w-100 d-md-flex align-items-center">
                                 <span className="me-3">Second Floor</span>
-                                <span className="ms-auto d-md-flex align-items-center justify-content-end">
+                                <span className="ms-auto d-md-flex align-items-center justify-content-end floor_accordion">
                                     <span className="me-2 me-md-4">
                                     <span className="fw600">Size: </span>
                                     <span className="text">1267 Sqft</span>
@@ -542,7 +571,7 @@ useEffect(() => {
                             >
                                 <span className="w-100 d-md-flex align-items-center">
                                 <span className="me-3">Third Floor</span>
-                                <span className="ms-auto d-md-flex align-items-center justify-content-end">
+                                <span className="ms-auto d-md-flex align-items-center justify-content-end floor_accordion">
                                     <span className="me-2 me-md-4">
                                     <span className="fw600">Size: </span>
                                     <span className="text">1267 Sqft</span>
@@ -593,11 +622,10 @@ useEffect(() => {
                     <div className="modal fade " id="VideoModal" tabIndex="-1" aria-labelledby="VideoModalLabel" aria-hidden="true">
                     <div className="modal-dialog modal-dialog-centered modal-lg">
                         <div className="modal-content bg-dark">
-                        <div className="modal-header border-0">
                             <button type="button" className="btn-close btn-theme" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
+                       
                         <div className="modal-body">
-                          <iframe className="rounded-2" width="100%" height="300"
+                          <iframe className="rounded-2 video_iframe" width="100%"
                            src="//www.youtube.com/embed/oqNZOOWF8qM?autoplay=1&amp;cc_load_policy=1&amp;controls=1&amp;disablekb=0&amp;enablejsapi=0&amp;fs=1&amp;iv_load_policy=1&amp;loop=0&amp;rel=0&amp;showinfo=1&amp;start=0&amp;wmode=transparent&amp;theme=dark&amp;mute=0" frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope;" allowFullScreen="" tabIndex="-1"></iframe>
                         </div>
                        
@@ -711,6 +739,144 @@ useEffect(() => {
 </div>
 
 
+            </div>
+
+            <div className="row mt-4 search_right">
+                <h2 className="sec-title mb-4">Discover Our Featured Listings</h2>    
+
+                <div className="col-lg-4 col-md-6 mb-0 mb-md-4">
+                  <div className="listing-style1">
+                      <div className="list-thumb" >
+                        <img
+                          alt="property_image"
+                          src="/images/card1.jpg"
+                          className="w-100"
+                          loading="lazy"
+                        />
+                        <div className="sale-sticker-wrap">
+                          <div className="list-tag fz12">
+                            <i className="fa-solid fa-bolt me-1"></i>
+                            Featured
+                          </div>
+                          <div className="list-tag fz12 bg-dark">
+                           <i className="fa-solid fa-flag me-1"></i>
+                            Sale
+                          </div>
+                        </div>
+                        <div className="list-price">$14000</div>
+                      </div>
+                      <div className="list-content"> 
+                        <h6 className="list-title">
+                          <Link to="/property-single">Equestrian Family Home</Link>
+                        </h6>
+                        <p className="list-text">San Diego City, CA, USA</p>
+                        <div className="list-meta d-flex align-items-center">
+                          <Link to="#"> <i className="fas fa-bed"></i> 4 </Link>
+                          <Link to="#"> <i className="fas fa-bath"></i> 5 </Link>
+                          <Link to="#"> <i className="fa-solid fa-chart-area"></i> 1500 </Link>
+                          <Link to="#"> <i className="fa-solid fa-home"></i> Villa </Link>
+                        </div>
+                        <hr />
+                        <div className="list-meta2 d-flex justify-content-between align-items-center mt-3">
+                          <Link to='/property-single' className="view_details">View details</Link>
+                          <div className="icons d-flex align-items-center">
+                              <Link to="#"> <i className="fa-heart fa-regular"></i></Link>
+                              <Link to="#"> <i className="fa-solid fa-share"></i> </Link>
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+                </div>        
+                <div className="col-lg-4 col-md-6 mb-0 mb-md-4">
+                  <div className="listing-style1">
+                      <div className="list-thumb">
+                        <img
+                          alt="property_image"
+                          src="/images/card2.jpg"
+                          className="w-100"
+                          loading="lazy"
+                        />
+                        <div className="sale-sticker-wrap">
+                          <div className="list-tag fz12">
+                            <i className="fa-solid fa-bolt me-1"></i>
+                            Featured
+                          </div>
+                          <div className="list-tag fz12 bg-dark">
+                           <i className="fa-solid fa-flag me-1"></i>
+                            Rent
+                          </div>
+                        </div>
+                        <div className="list-price">$16000</div>
+                      </div>
+                      <div className="list-content">
+                     
+                        <h6 className="list-title">
+                          <Link to="/property-single">Modern Glass Complex</Link>
+                        </h6>
+                        <p className="list-text">Austin, TX, USA</p>
+                        <div className="list-meta d-flex align-items-center">
+                          <Link to="#"> <i className="fas fa-bed"></i> 4 </Link>
+                          <Link to="#"> <i className="fas fa-bath"></i> 3 </Link>
+                          <Link to="#"> <i className="fa-solid fa-chart-area"></i> 1200 </Link>
+                          <Link to="#"> <i className="fa-solid fa-home"></i> Apartment </Link>
+                        </div>
+                        <hr />
+                        <div className="list-meta2 d-flex justify-content-between align-items-center mt-3">
+                          <Link to='/property-single' className="view_details">View details</Link>
+                          <div className="icons d-flex align-items-center">
+                              <Link to="#"> <i className="fa-heart fa-regular" ></i> </Link>
+                              <Link to="#"> <i className="fa-solid fa-share"></i> </Link>
+                              
+                          </div>
+                          
+                        </div>
+                      </div>
+                  </div>
+                </div>        
+                <div className="col-lg-4 col-md-6 mb-0 mb-md-4">
+                  <div className="listing-style1">
+                    <div className="list-thumb" >
+                    <img
+                        alt="property_image"
+                        src="/images/card3.jpg"
+                        className="w-100"
+                        loading="lazy"
+                    />
+                    <div className="sale-sticker-wrap">
+                      <div className="list-tag fz12">
+                        <i className="fa-solid fa-bolt me-1"></i>
+                        Featured
+                      </div>
+                        <div className="list-tag fz12 bg-dark">
+                        <i className="fa-solid fa-flag me-1"></i>
+                        Sale
+                      </div>
+                    </div>
+                    <div className="list-price">$18000</div>
+                    </div>
+                    <div className="list-content">
+                    
+                    <h6 className="list-title">
+                        <Link to="/property-single">Luxury villa in Rego Park</Link>
+                    </h6>
+                    <p className="list-text">New Jersey City, CA, USA</p>
+                    <div className="list-meta d-flex align-items-center">
+                        <Link to="#"> <i className="fas fa-bed"></i> 3 </Link>
+                        <Link to="#"> <i className="fas fa-bath"></i> 2 </Link>
+                        <Link to="#"> <i className="fa-solid fa-chart-area"></i> 1200 </Link>
+                        <Link to="#"> <i className="fa-solid fa-home"></i> Townhouse</Link>
+                    </div>
+                    <hr />
+                    <div className="list-meta2 d-flex justify-content-between align-items-center mt-3">
+                        <Link to='/property-single' className="view_details">View details</Link>
+                        <div className="icons d-flex align-items-center">
+                            <Link to="#"> <i className="fa-heart fa-regular" ></i> </Link>
+                            <Link to="#"> <i className="fa-solid fa-share"></i> </Link>
+                        </div>
+                    </div>
+                    </div>
+                  </div>
+                </div>        
             </div>
         </div>
       </div>

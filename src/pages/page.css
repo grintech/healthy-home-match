@@ -54,17 +54,17 @@
     font-size: 30px;
     font-weight: 600;
 }
+.contact_page .cta .card{ box-shadow: 0 1px 26px rgba(24, 26, 32, .07); border: 0;}
 .contact_page .cta .card:hover a{color: #fff !important;}
 .contact_page .cta .card a{word-break: break-all;}
 .contact_page .cta .card a:hover{color: var(--primary) !important}
 
 .contact_infos .card{
-     box-shadow: 0 15px 60px rgba(24, 26, 32, 6%);
-     border-radius: 12px;
+    box-shadow: 0 15px 60px rgba(24, 26, 32, 6%);
+    border-radius: 12px;
 }
-.contact_infos .card:hover{
-    box-shadow: 0 15px 60px rgba(24, 26, 32, 12%);
-}
+
+.contact_infos .card:hover{ box-shadow: 0 15px 60px rgba(24, 26, 32, 12%);}
 .contact_infos .card:hover .icon_wrap {background-color: var(--secondary);}
 .contact_infos .card:hover .icon_wrap i{color: #fff;}
 

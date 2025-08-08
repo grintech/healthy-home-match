@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom"
+
 const HeroBanner = () => {
  
   return (
@@ -57,9 +59,11 @@ const HeroBanner = () => {
                         </div>
                         
                         <div className="col-md-1 ps-lg-0">
+                          <Link to='/search-homes'>
                           <button className="nav_search">
                             <i className="fa-solid fa-magnifying-glass"></i>
                           </button>
+                          </Link>
                         </div>
                       </div>
                     </div>

@@ -167,7 +167,7 @@ const Navbar = () => {
                                                 <>
 
                                                     <li>
-                                                        <Link className="dropdown-item" to="/dashboard">
+                                                        <Link className="dropdown-item" to="/my-account">
                                                             <i className="fa fa-gauge me-2"></i> My Account
                                                         </Link>
                                                     </li>

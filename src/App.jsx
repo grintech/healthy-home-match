@@ -43,6 +43,10 @@ import PrivacyPolicy from './pages/OtherPages/PrivacyPolicy.jsx';
 import TermsAndConditions from './pages/OtherPages/TermsAndConditions.jsx';
 import BlogSingle from './pages/Blogs/BlogSingle.jsx';
 
+// import { Tooltip, Dropdown } from 'bootstrap';
+
+
+
 const App = () => {
 
   useEffect(() => {
@@ -58,6 +62,21 @@ const App = () => {
     (tooltipTriggerEl) => new window.bootstrap.Tooltip(tooltipTriggerEl)
   );
 }, []);
+
+
+
+// useEffect(() => {
+//   const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+//   tooltipTriggerList.forEach(el => new Tooltip(el));
+
+//   // This will enable dropdowns
+//   const dropdownElementList = document.querySelectorAll('[data-bs-toggle="dropdown"]');
+//   dropdownElementList.forEach(el => new Dropdown(el));
+// }, []);
+
+
+
+
 
 
   return (
@@ -94,7 +113,7 @@ const App = () => {
 
           {/* Dashboard Routes */}
 
-          <Route path="/dashboard" element={<ProtectedRoute> <Dashboard /></ProtectedRoute>} />
+          <Route path="/my-account" element={<ProtectedRoute> <Dashboard /></ProtectedRoute>} />
           <Route path="/saved-listings" element={<ProtectedRoute> <SavedListings /></ProtectedRoute>} />
           <Route path="/watchlist" element={<ProtectedRoute> <CreateWatchlist /></ProtectedRoute>} />
           <Route path="/watchlist/:slug" element={<ProtectedRoute> <WatchlistPage /></ProtectedRoute>} />

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
+import { toast } from 'react-toastify';
 
 const SavedSearches = () => {
   const navigate = useNavigate();
@@ -51,6 +52,7 @@ const SavedSearches = () => {
 
   const deleteSearch = (id) => {
     setSavedSearches(savedSearches.filter((item) => item.id !== id));
+    toast.success("Saved Search has been deleted.")
   };
 
   const redirectToSearch = (params) => {
@@ -122,7 +124,7 @@ const SavedSearches = () => {
                 ) : (
                   <tr>
                     <td colSpan="5" className="text-center py-4">
-                      <i className="fa-regular fa-face-frown fa-lg me-2"></i>
+                      <i className="fa-regular fa-face-frown fa-lg me-2 "></i>
                       No saved searches found.
                     </td>
                   </tr>

@@ -44,7 +44,7 @@ const Footer = () => {
                                 <div className="col-xl-2 col-sm-6 mb-4 mb-xl-0">
                                     <h4>Support</h4>
                                     <ul className="menu p-0 m-0">
-                                        <li><Link to="#"> Contact Us</Link></li>
+                                        <li><Link to="/contact"> Contact Us</Link></li>
                                         <li><Link to="/faq"> FAQs</Link></li>
                                         <li><Link to="#"> Help Center</Link></li>
                                         <li><Link to="#"> Live Chat</Link></li>

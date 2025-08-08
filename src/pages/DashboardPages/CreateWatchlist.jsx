@@ -92,7 +92,7 @@ const CreateWatchlist = () => {
   return (
     <div className='user_dashboard'>
       <Navbar />
-      <div className='saved_listings py-5'>
+      <div className='saved_listings min_height py-5'>
         <div className='container'>
           <div className='row'>
             <div className='col-lg-12'>

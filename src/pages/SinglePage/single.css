@@ -298,14 +298,36 @@ iframe {
 
 /* .modal.show{padding-right: 0px !important;} */
 
+.property_single .accordion-style1 .accordion-item {padding: 0; border-radius: 4px;}
+
+#VideoModal .btn-close{position: absolute; right: -10px; top: -20px;}
+#VideoModal iframe{height: 370px;}
+
+
+
+
+
+
+
+
 
 @media screen and (max-width:992px) {
-    .enquiry_section .overview_card{position: relative !important; top: unset !important;}
+  .enquiry_section .overview_card{position: relative !important; top: unset !important;}
+}
+
+@media screen and (max-width:768px) {
+  #VideoModal iframe{height: 320px;}
 }
 
 @media screen and (max-width:475px) {
-    .overview_card {
-        padding: 30px 20px !important;
-    }
-    .overview_card .prop_desc .col-6{width: 100% !important;}
+  .overview_card { padding: 30px 20px !important;}
+  .overview_card .prop_desc .col-6{width: 100% !important;}
+  .property_video .video_popup_btn {height: 50px; width: 50px;}
+  .property_video .video_popup_btn i {font-size: 22px;}
+  #VideoModal iframe{height: 300px;}
+}
+
+@media screen and (max-width:375px) {
+  .floor_accordion {display: none; }
+
 }

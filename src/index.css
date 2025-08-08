@@ -81,6 +81,7 @@ body {
     font-size: 14px;
     font-weight: 400;
 }
+.min_height{min-height: 85vh !important;}
 
 body.modal-open {
   padding-right: 0 !important;

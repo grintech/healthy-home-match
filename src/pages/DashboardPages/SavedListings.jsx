@@ -51,6 +51,11 @@ const SavedListings = () => {
   const [selectedListing, setSelectedListing] = useState(null);
   const [selectedWatchlistId, setSelectedWatchlistId] = useState('');
 
+   const [liked, setLiked] = useState(true);
+    const toggleHeart = () => {
+    setLiked(!liked);
+  };
+
   useEffect(() => {
     const stored = localStorage.getItem('watchlists');
     if (stored) {
@@ -81,7 +86,7 @@ const SavedListings = () => {
   return (
     <div className="user_dashboard">
       <Navbar />
-      <div className="saved_listings py-5">
+      <div className="saved_listings  py-5">
         <div className="container">
           <div className="col-lg-12">
             <h1 className="mb-3 sec-title">Saved Listings ({listingsData.length})</h1>
@@ -118,7 +123,13 @@ const SavedListings = () => {
                       <div className="list-meta2 d-flex justify-content-between align-items-center mt-3">
                         <Link to='/property-single' className="view_details">View details</Link>
                         <div className="icons d-flex align-items-center">
-                          <Link to="#"><i className="fa-solid fa-heart text-danger"></i></Link>
+                          <Link
+                        to="#"
+                        onClick={toggleHeart}
+                        className="icon me-3"
+                    >
+                        <i className={`fa-heart ${liked ? "fa-solid text-danger" : "fa-regular"}`}></i>
+                    </Link>
                           <Link
                             data-bs-toggle="modal"
                             data-bs-target="#addWatchlistModal"

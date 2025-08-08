@@ -75,6 +75,10 @@ useEffect(() => {
   });
 
   setFilteredHomes(filtered);
+
+   // ✅ Scroll to top when filter changes
+  window.scrollTo({ top: 0, behavior: "smooth" });
+
 }, [priceRange, bedroom, bathroom, location, propertyType, energyRating, listingType]);
 
 
@@ -381,7 +385,7 @@ useEffect(() => {
                                   }`}
                                 ></i>
                               </Link>
-                                <Link to="#">
+                              <Link to="#" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Share">
                                 <i className="fa-solid fa-share"></i>
                               </Link>
                           </div>

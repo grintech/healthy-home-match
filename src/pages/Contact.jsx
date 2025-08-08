@@ -111,7 +111,7 @@ const Contact = () => {
                 <h3 className="text-center mb-4 fw-bold">Contact Details</h3>
             
                         <div className="col-md-4 col-sm-6">
-                            <div className="card text-center shadow-sm h-100 border-0 p-4">
+                            <div className="card text-center h-100 p-4">
                             <div className="mb-3">
                                 <i className="fas fa-home fa-2x"></i>
                             </div>
@@ -126,7 +126,7 @@ const Contact = () => {
                         </div>
             
                         <div className="col-md-4 col-sm-6">
-                            <div className="card text-center shadow-sm h-100 border-0 p-4">
+                            <div className="card text-center h-100 p-4">
                             <div className="mb-3 ">
                                 <i className="fas fa-user-check fa-2x"></i>
                             </div>
@@ -141,7 +141,7 @@ const Contact = () => {
                         </div>
             
                         <div className="col-md-4 col-sm-6">
-                            <div className="card text-center shadow-sm h-100 border-0 p-4">
+                            <div className="card text-center h-100 p-4">
                             <div className="mb-3 ">
                                 <i className="fas fa-envelope-open-text fa-2x"></i>
                             </div>

@@ -79,13 +79,13 @@ const ContactAgents = () => {
         <div className="row">
           {agents.map((agent) => (
             <div className="col-sm-6 mb-4" key={agent.id}>
-              <div className="card h-100  ">
+              <div className="card h-100  overflow-hidden">
                 <div className="row g-0">
-                  <div className="col-lg-4">
+                  <div className="col-lg-4 overflow-hidden">
                     <img
                       src={agent.image}
                       alt={agent.name}
-                      className="w-100"
+                      className="w-100 overflow-hidden"
                     />
                   </div>
                   <div className="col-lg-8 ps-lg-3">
