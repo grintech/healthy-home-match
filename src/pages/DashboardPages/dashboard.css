@@ -231,6 +231,8 @@
     padding: 5px 10px !important;
 }
 
+.buyer-inspections .calendar_btn{font-size: 14px;}
+
 /*-------- Media Queries --------*/
 
 @media screen and (max-width:992px) {

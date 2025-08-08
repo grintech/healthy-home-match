@@ -143,7 +143,7 @@ const UserInspections = () => {
 
                       {activeTab === 'upcoming' && (
                         <button
-                          className="btn btn-outline-dark  mb-4"
+                          className="btn btn-outline-dark calendar_btn  mb-4"
                           onClick={() => toast.info('Add to calendar feature coming soon!')}
                         >
                           <i className="fa-solid fa-calendar"></i> Add to Calendar

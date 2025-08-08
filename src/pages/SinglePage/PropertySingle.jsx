@@ -13,6 +13,9 @@ const PropertySingle = () => {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [slideIndex, setSlideIndex] = useState(0);
 
+   const [inputType, setInputType] = useState("text");
+
+
   const images = [
     "/images/card1.jpg",
     "/images/card2.jpg",
@@ -576,31 +579,57 @@ useEffect(() => {
                     </div>
                 </div>
                 </div>
+
+                <div className="card overview_card border-0">
+                    <h4 className="mb-4 single_head">Video Tour</h4>
+
+                    <div className="property_video bdrs12 w-100">
+                        <button className="video_popup_btn mx-auto popup-img" data-bs-toggle="modal" data-bs-target="#VideoModal" >
+                            <i className="fa-solid fa-play"></i>
+                        </button>
+                    </div>
+
+
+                    <div className="modal fade " id="VideoModal" tabIndex="-1" aria-labelledby="VideoModalLabel" aria-hidden="true">
+                    <div className="modal-dialog modal-dialog-centered modal-lg">
+                        <div className="modal-content bg-dark">
+                        <div className="modal-header border-0">
+                            <button type="button" className="btn-close btn-theme" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div className="modal-body">
+                          <iframe className="rounded-2" width="100%" height="300"
+                           src="//www.youtube.com/embed/oqNZOOWF8qM?autoplay=1&amp;cc_load_policy=1&amp;controls=1&amp;disablekb=0&amp;enablejsapi=0&amp;fs=1&amp;iv_load_policy=1&amp;loop=0&amp;rel=0&amp;showinfo=1&amp;start=0&amp;wmode=transparent&amp;theme=dark&amp;mute=0" frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope;" allowFullScreen="" tabIndex="-1"></iframe>
+                        </div>
+                       
+                        </div>
+                    </div>
+                    </div>
+
+                </div>
+
             </div>
 
             {/* Right Column - Sidebar */}
             <div className="col-lg-4">
                     <div className="mb-4 subscribe_button">
-                        <button class="btn ud-btn btn-white contact_btn_light2  w-100" data-bs-toggle="modal" data-bs-target="#subscribeModal" data-discover="true">Subscribe for alerts <i class="fas fa-bell"></i></button>
+                        <button className="btn ud-btn btn-white contact_btn_light2  w-100" data-bs-toggle="modal" data-bs-target="#subscribeModal" data-discover="true">Subscribe for alerts <i className="fas fa-bell"></i></button>
                     </div>
-                <div className="enquiry_section h-100">
-                    <div className="card mb-0 overview_card border-0 ">
-                    <h5 className="single_head mb-4">Get More Information</h5>
-                    <div className="d-flex align-items-center mb-3">
-                        <img
-                        src="/images/agent1.jpg"
-                        alt="Agent"
-                        className="rounded-circle agent_img me-3"
-                    
-                        />
-                        <div>
-                         <Link to='/agent-single'>
-                             <h6 className="mb-0 fw-bold">Mark Klasen</h6>
-                         </Link>   
-                        <small className="">Real Estate Agent</small>
-                        </div>
-                    </div>
+                <div className="enquiry_section  mb-4">
+                    <div className="card mb-4 overview_card border-0 ">
+                    <h5 className="single_head mb-2">Schedule a tour</h5>
+                    <p className="text-muted small">Choose your preferred day</p>
+                   
                     <form>
+                     <input
+                        type={inputType}
+                        className="form-control mb-3"
+                        placeholder="Time"
+                        onFocus={() => setInputType("datetime-local")}
+                        onBlur={(e) => {
+                            if (!e.target.value) setInputType("text");
+                        }}
+                        />
+
                         <input
                         type="text"
                         className="form-control mb-3"
@@ -616,33 +645,54 @@ useEffect(() => {
                         placeholder="Message"
                         rows={3}
                         ></textarea>
-                        <Link to="#" className="btn ud-btn btn-white search_home_btn w-100"> Send Inquiry </Link>
+                        <Link to="#" className="btn ud-btn btn-white search_home_btn w-100"> Send Inquiry <i className="fa-solid fa-arrow-right"></i></Link>
                     </form>
+                    </div>
+
+                    <div className="card mb-0 overview_card border-0 ">
+                    <h5 className="single_head mb-4">Get More Information</h5>
+                    <div className="d-flex align-items-center mb-3">
+                        <img
+                        src="/images/agent1.jpg"
+                        alt="Agent"
+                        className="rounded-circle agent_img me-3"
+                    
+                        />
+                        <div>
+                         <Link to='/agent-single'>
+                             <h6 className="mb-0 fw-bold">Mark Klasen</h6>
+                         </Link>  
+                         <div className="d-flex align-items-center text-muted py-2"><i className="fa-solid fa-phone me-1"></i> (+1) 234 456 445</div> 
+                        <small className="">Real Estate Agent</small>
+                        </div>
+                    </div>
+                  
+                        <Link to="/agent-single"  className="btn ud-btn black_btn search_home_btn w-100"> Contact Agent <i className="fa-solid fa-arrow-right"></i> </Link>
                     </div>
                     
                 </div>
             </div>
 
 
-            <div class="modal fade" id="subscribeModal" tabindex="-1" aria-labelledby="subscribeModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
+            <div className="modal fade" id="subscribeModal" tabIndex="-1" aria-labelledby="subscribeModalLabel" aria-hidden="true">
+            <div className="modal-dialog">
+                <div className="modal-content">
 
-                <div class="modal-header">
-                    <h5 class="modal-title fw-bold" id="subscribeModalLabel">Subscribe for Property Alerts</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div className="modal-header">
+                    <h5 className="modal-title fw-bold" id="subscribeModalLabel">Subscribe for Property Alerts</h5>
+                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
-                <div class="modal-body">
+                <div className="modal-body">
                     <form id="subscribeForm">
-                    <div class="mb-3">
-                        <label for="emailInput" class="form-label">Email address</label>
-                        <input type="email" class="form-control" id="emailInput" name="email" required />
+                    <div className="mb-3">
+                        <label htmlFor="emailInput" className="form-label">Email address</label>
+                        <input type="email" className="form-control" id="emailInput" name="email" required />
                     </div>
 
-                    <div class="mb-3">
-                        <label for="alertTypeSelect" class="form-label">Alert Type</label>
-                        <select class="form-select" id="alertTypeSelect" name="alertType" required>
+                    <div className="mb-3">
+                        <label htmlFor="alertTypeSelect" className="form-label">Alert Type</label>
+                        <select className="form-select" id="alertTypeSelect" name="alertType" required>
                         <option value="">Select Alert Type</option>
                         <option value="Inspection">Inspection</option>
                         <option value="Price Drop">Price Drop</option>
@@ -650,7 +700,7 @@ useEffect(() => {
                         </select>
                     </div>
 
-                    <button type="submit" class="btn btn-theme w-100 mt-4">Subscribe</button>
+                    <button type="submit" className="btn btn-theme w-100 mt-4">Subscribe</button>
                     </form>
 
                     
