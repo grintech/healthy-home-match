@@ -3,6 +3,7 @@ import Navbar from '../../components/Navbar';
 import { Link } from 'react-router-dom';
 import Footer from '../../components/Footer';
 import { toast } from 'react-toastify';
+import Tooltip from '../../components/Tooltip';
 
 const initialAlerts = [
   {
@@ -104,13 +105,14 @@ const MyAlerts = () => {
                         <span className="badge bg-theme text-uppercase">{alert.status}</span>
                       </td>
                       <td>
-                        <button
-                          className="btn btn-sm btn-danger"
-                          onClick={() => openCancelModal(alert.id)}
-                          data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Turn Off"
-                        >
-                          Off Alert
-                        </button>
+                         <Tooltip text={"Turn Off"}>
+                          <button
+                            className="btn btn-sm btn-danger"
+                            onClick={() => openCancelModal(alert.id)} 
+                          >
+                            Off Alert
+                          </button>
+                         </Tooltip>
                       </td>
                     </tr>
                   ))}
@@ -137,6 +139,7 @@ const MyAlerts = () => {
             <div className="modal-footer">
               <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">No, Keep</button>
               <button type="button" className="btn btn-danger" onClick={confirmCancel}>Yes, off</button>
+             
             </div>
           </div>
         </div>

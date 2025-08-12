@@ -9,7 +9,7 @@
     "bed": 5,
     "bath": 4,
     "area": "900 sq.",
-     "listingType": "Sale",
+    "listingType": "Sale",
     "propertyType": "House"
   },
   {
@@ -36,9 +36,9 @@
     "bath": 2,
     "area": "1500 sq.",
     "listingType": "Build",
-    "propertyType": "Townhouse"
+    "propertyType": "Plot"
   },
-   {
+  {
     "id": 4,
     "image": "/images/card4.jpg",
     "energyRating": "Green star",
@@ -49,6 +49,32 @@
     "bath": 5,
     "area": "2200 sq.",
     "listingType": "Rent",
-    "propertyType": "Land"
+    "propertyType": "Commercial"
+  },
+  {
+    "id": 5,
+    "image": "/images/blog1.jpg",
+    "energyRating": "LEED Gold",
+    "price": "$8,200",
+    "title": "Downtown Retail Shop",
+    "location": "Market Street, San Francisco, USA",
+    "bed": 2,
+    "bath": 1,
+    "area": "650 sq.",
+    "listingType": "Rent",
+    "propertyType": "Shop"
+  },
+  {
+    "id": 6,
+    "image": "/images/blog2.jpg",
+    "energyRating": "BREEAM Excellent",
+    "price": "$35,000",
+    "title": "Premium Office Space",
+    "location": "Wall Street, New York, USA",
+    "bed": 4,
+    "bath": 2,
+    "area": "1800 sq.",
+    "listingType": "Sale",
+    "propertyType": "Office"
   }
 ]

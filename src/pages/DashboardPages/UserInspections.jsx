@@ -3,6 +3,7 @@ import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
+import Tooltip from '../../components/Tooltip';
 
 const inspectionsData = {
   upcoming: [
@@ -89,11 +90,11 @@ const UserInspections = () => {
          </ul>
 
         {/* Inspection Cards */}
-        <div className="row contact_agents_page">
+        <div className="row contact_agents_page my_inspections">
 
           {inspections[activeTab].map((inspection) => (
             <div className="col-md-6 mb-4" key={inspection.id}>
-              <div className="card h-100">
+              <div className="card h-100 ">
                 <div className="row g-0">
                   <div className="col-lg-5 overflow-hidden">
                     <img
@@ -105,16 +106,19 @@ const UserInspections = () => {
                   <div className="col-lg-7">
                     <div className="card-body position-relative">
                       {/* Cancel Icon */}
-                      { activeTab === 'upcoming' && (
-                        <button
-                          className="btn btn-sm btn-outline-danger position-absolute top-0 end-0 m-2"
-                          onClick={() => openCancelModal(inspection.id)}
-                          data-bs-toggle="tooltip"
-                          data-bs-title="Cancel Inspection"
-                        >
-                          <i className="fas fa-trash"></i>
-                        </button>
-                      )}
+
+                     {activeTab === 'upcoming' && (
+                  <div className="tooltip-wrapper position-absolute top-0 end-0 m-2">
+                    <div className="custom-tooltip1">Cancel Inspection</div>
+                    <button
+                      className="btn btn-sm btn-outline-danger trash_btn"
+                      onClick={() => openCancelModal(inspection.id)}
+                    >
+                      <i className="fas fa-trash"></i>
+                    </button>
+                  </div>
+                )}
+
 
                       <h5 className="card-title mt-4 fw-bold text-truncate">
                         <Link to="/property-single" className="text_blue">

@@ -8,9 +8,7 @@ const HeroBanner = () => {
         <div className="container">
           <div className="col-xl-9 hero_tabs ">
             <h1 className='hero_title' >Easy Way to Find a <br /> Perfect <span> Property</span></h1>
-            <p className="hero-text fz15 animate-up-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. deserunt nisi pariatur?
-
-            </p>
+            <p className="hero-text fz15 animate-up-2">Discover homes that match your style, budget, and lifestyle in just a few clicks.</p>
             <img className="hero_floating" src="/images/hero_svg.png" alt="svg-image" />
 
             <div >

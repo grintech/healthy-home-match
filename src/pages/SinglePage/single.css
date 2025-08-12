@@ -214,6 +214,14 @@ iframe {
     transition: all .4s ease;
     font-size: 11px;
 }
+/* .small_desc p {
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+} */
+.small_desc {
+  gap: 0.5rem; /* Spacing between items */
+}
 
 .small_desc .fa-circle {
     font-size: 10px;
@@ -307,16 +315,71 @@ iframe {
 
 
 
+.social_icons_container {
+    width: fit-content;
+    background: #fff;
+    position: absolute;
+    /* right: 50px; */
+    /* bottom: -90px; */
+    top: 40px;
+    left: 170px;
+    z-index: 1;
+    border-radius: 4px;
+    box-shadow: #0000003d 0 3px 8px;
+}
+
+.social_icons_container .btn-theme{
+    padding: 5px;
+}
+.social_icons_container .btn-theme i{
+  font-size: 15px;
+}
 
 
 
+ .loader-icon {
+        animation: bounce 1.2s infinite;
+      }
+
+      @keyframes bounce {
+        0%, 100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-8px);
+        }
+      }
+
+      .loader-text {
+        animation: fade 1.5s infinite;
+      }
+
+      @keyframes fade {
+        0%, 100% {
+          opacity: 0.3;
+        }
+        50% {
+          opacity: 1;
+        }
+      }
+
+
+@media screen and (min-width:1400px) {
+.social_icons_container{left: 250px }
+}
+
+@media screen and (max-width:1200px) {
+   .social_icons_container {left: 100px;}
+}
 
 @media screen and (max-width:992px) {
   .enquiry_section .overview_card{position: relative !important; top: unset !important;}
+  .social_icons_container {left: 10px;}
 }
 
 @media screen and (max-width:768px) {
   #VideoModal iframe{height: 320px;}
+  .social_icons_container {left: 50px;}
 }
 
 @media screen and (max-width:475px) {

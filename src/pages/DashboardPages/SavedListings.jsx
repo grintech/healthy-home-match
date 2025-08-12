@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import { Link } from 'react-router-dom';
+import Tooltip from '../../components/Tooltip';
 
 const listingsData = [
   {
@@ -122,22 +123,27 @@ const SavedListings = () => {
                       <hr />
                       <div className="list-meta2 d-flex justify-content-between align-items-center mt-3">
                         <Link to='/property-single' className="view_details">View details</Link>
-                        <div className="icons d-flex align-items-center">
-                          <Link
-                        to="#"
-                        onClick={toggleHeart}
-                        className="icon me-3"
-                    >
-                        <i className={`fa-heart ${liked ? "fa-solid text-danger" : "fa-regular"}`}></i>
-                    </Link>
+                     <div className="icons d-flex align-items-center gap-3 position-relative">
+                      <Tooltip text={"Add to watchlist"}>
                           <Link
                             data-bs-toggle="modal"
                             data-bs-target="#addWatchlistModal"
-                            title='Add to watchlist'
                             onClick={() => setSelectedListing(listing)}
                           >
                             <i className="fa-solid fa-plus"></i>
                           </Link>
+
+                      </Tooltip>
+                      <Tooltip  text={liked ? "Unsave" : ""}>
+                        <Link
+                              to="#"
+                              onClick={toggleHeart}
+                              className="icon"
+                          >
+                          <i className={`fa-heart ${liked ? "fa-solid text-danger" : "fa-regular"}`}></i>
+                        </Link>
+
+                      </Tooltip>
                         </div>
                       </div>
                     </div>

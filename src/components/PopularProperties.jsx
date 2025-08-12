@@ -1,120 +1,254 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
-// Dummy JSON Data
-const propertyData = [
-  {
-    id: 1,
-    title: "Luxury Villa in Rego Park",
-    location: "New Jersey City, CA, USA",
-    price: "$82,000",
-    type: "Villa",
-    featured: true,
-    image: "/images/card1.jpg",
-  },
-  {
-    id: 2,
-    title: "Equestrian Family Home",
-    location: "New Jersey City, CA, USA",
-    price: "$67,000",
-    type: "House",
-    featured: false,
-    image: "/images/card2.jpg",
-  },
-  {
-    id: 3,
-    title: "Beachfront Apartment",
-    location: "Miami, FL, USA",
-    price: "$45,000",
-    type: "Apartment",
-    featured: true,
-    image: "/images/card3.jpg",
-  },
-  {
-    id: 4,
-    title: "Farmhouse Retreat",
-    location: "Austin, TX, USA",
-    price: "$55,000",
-    type: "Farm",
-    featured: false,
-    image: "/images/card4.jpg",
-  },
-];
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const PopularProperties = () => {
-  const [activeTab, setActiveTab] = useState("View All");
-  const tabs = ["View All", "Apartment", "House", "Villa", "Farm"];
+  const ApiUrl = import.meta.env.VITE_API_URL;
+  const ApiKey = import.meta.env.VITE_API_KEY;
+  const [properties, setProperties] = useState([]);
 
-  // Filter properties based on tab
-  const filteredProperties =
-    activeTab === "View All"
-      ? propertyData
-      : propertyData.filter((property) => property.type === activeTab);
+   const [shareModalOpen, setShareModalOpen] = useState(false);
+  const [shareUrl, setShareUrl] = useState("");
+
+  // Store liked property IDs in a Set
+  const [likedIds, setLikedIds] = useState(new Set());
+
+  // Fetch API data
+  useEffect(() => {
+    axios
+      .get(`${ApiUrl}/property-list`, {
+        headers: {
+          "X-API-DOMAIN": "$2y$10$Vs8ujkh6QGdPgRU4Qsub7uP6l8fu5deHcfhF/ePrPWOkVWi3lDT0u",
+          // "X-API-DOMAIN": ApiKey,
+        },
+      })
+      .then((res) => {
+        if (res.data.status === true) {
+          setProperties(res.data.data);
+          console.log(res.data.message || "Properties fetched successfully");
+        } else {
+          console.log(res.data.message || "Failed to fetch properties");
+        }
+      })
+      .catch((err) => {
+        console.log("Something went wrong while fetching properties");
+        console.error(err);
+      });
+  }, [ApiUrl]);
+
+  // Copy URL to clipboard function
+  const handleCopy = (textToCopy, e) => {
+    e.preventDefault();
+    if (navigator.clipboard) {
+      navigator.clipboard
+        .writeText(textToCopy)
+        .then(() => toast.success("Link copied to clipboard!"))
+        .catch(() => toast.error("Failed to copy!"));
+    } else {
+      toast.error("Clipboard API not supported.");
+    }
+  };
+
+  // Toggle like/unlike by property ID
+  const toggleHeart = (propertyId, e) => {
+    e.preventDefault();
+    setLikedIds((prev) => {
+      const newLiked = new Set(prev);
+      if (newLiked.has(propertyId)) {
+        newLiked.delete(propertyId); // unlike
+      } else {
+        newLiked.add(propertyId); // like
+      }
+      return newLiked;
+    });
+  };
+
+
+  // Open modal and set URL to share
+  const openShareModal = (url, e) => {
+    e.preventDefault();
+    setShareUrl(url);
+    setShareModalOpen(true);
+  };
+
+  // Close modal
+  const closeShareModal = () => setShareModalOpen(false);
+
+  // Social share URLs
+  const socialLinks = {
+    facebook: (url) =>
+      `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
+    twitter: (url) =>
+      `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}`,
+    linkedin: (url) =>
+      `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
+    instagram: () => `https://www.instagram.com/`, // Instagram doesn't support direct share URLs
+  };
 
   return (
     <section className="popular_properties space">
       <div className="container">
-        <div className="row w-100">
+        <div className="row ">
           <div className="col-lg-6">
             <h2 className="sec-title m-0">Discover Popular Properties</h2>
-            <p className="paragraph">Aliquam lacinia diam quis lacus euismod</p>
+            <p className="paragraph">
+              Handpicked properties that are trending right now.
+            </p>
           </div>
-          <div className="col-lg-6 pe-0">
-            <div className="filter-menu d-flex justify-content-lg-end align align-items-center">
-              {tabs.map((tab) => (
-                <button
-                  key={tab}
-                  className={`th-btn tab-btn ${activeTab === tab ? "active" : ""}`}
-                  type="button"
-                  onClick={() => setActiveTab(tab)}
-                >
-                  {tab}
+
+          {properties.length > 0 && (
+            <div className="col-lg-6">
+              <div className="filter-menu d-flex justify-content-lg-end align align-items-center">
+                <button className="th-btn tab-btn active rounded-2" type="button">
+                  View All <i className="fa-solid fa-arrow-right"></i>
                 </button>
-              ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
         {/* Cards */}
         <div className="row">
-          {filteredProperties.map((property) => (
-            <div className="col-md-6 col-xl-3" key={property.id}>
-              <Link to={`/property-single`}>
-                <div className="listing-style6">
-                  <div className="list-thumb">
-                    <img
-                      alt={property.title}
-                      loading="lazy"
-                      className="w-100"
-                      src={property.image}
-                    />
-                    {property.featured && (
-                      <div className="sale-sticker-wrap">
-                        <div className="list-tag fz12">
-                          <i className="fas fa-bolt me-1"></i>FEATURED
+          {properties.length > 0 ? (
+            properties.slice(0, 8).map((property) => {
+              const url = `${window.location.origin}/property-single/${property.slug}`;
+
+              return (
+                <div className="col-md-6 col-xl-3" key={property.id}>
+                  <div className="listing-style6">
+                    <div className="list-thumb">
+                      <img
+                        alt={property.title}
+                        loading="lazy"
+                        className="w-100"
+                        src={
+                          property.featured_image
+                            ? `https://${property.featured_image}`
+                            : "/images/card1.jpg"
+                        }
+                      />
+                      {property.is_featured && (
+                        <div className="sale-sticker-wrap">
+                          <div className="list-tag fz12">
+                            <i className="fas fa-bolt me-1"></i>FEATURED
+                          </div>
+                        </div>
+                      )}
+                      <div className="list-meta">
+                        <div className="icons">
+                          <Link to="#" onClick={(e) => toggleHeart(property.id, e)}>
+                            <i
+                              className={
+                                likedIds.has(property.id)
+                                  ? "fa-solid fa-heart"
+                                  : "fa-regular fa-heart"
+                              }
+                            ></i>
+                          </Link>
+
+                          <Link to="#" onClick={(e) => handleCopy(url, e)}>
+                            <i className="fa-regular fa-copy"></i>
+                          </Link>
+
+                          <Link to="#" onClick={(e) => openShareModal(url, e)}>
+                            <i className="fa-regular fa-share-from-square"></i>
+                          </Link>
                         </div>
                       </div>
-                    )}
-                    <div className="list-meta">
-                      <div className="icons">
-                        <Link to="#"><i className="fa-regular fa-heart"></i></Link>
-                        <Link to="#"><i className="fa-regular fa-copy"></i></Link>
-                        <Link to="#"><i className="fa-regular fa-share-from-square"></i></Link>
-                      </div>
                     </div>
-                  </div>
-                  <div className="list-content">
-                    <h6 className="list-title">
-                      <Link to={`/property/${property.id}`}>{property.title}</Link>
-                    </h6>
-                    <p className="list-text">{property.location}</p>
-                    <div className="list-price mb-2">{property.price}</div>
+                    <Link to={`/property-single/${property.slug}`}>
+                      <div className="list-content">
+                        <h6 className="list-title text-capitalize text-truncate">
+                          {property.title}
+                        </h6>
+                        <p className="list-text text-capitalize text-truncate">
+                          {property.address}
+                        </p>
+                        <div className="list-price mb-2">${property.price}</div>
+                      </div>
+                    </Link>
                   </div>
                 </div>
-              </Link>
-            </div>
-          ))}
+              );
+            })
+          ) : (
+            <h6 className="text-theme fw-semibold">No properties found.</h6>
+          )}
+
         </div>
+
+
+          {shareModalOpen && (
+            <div
+              className="modal fade show shareModal"
+              style={{ display: "block", backgroundColor: "rgba(0,0,0,0.5)" }}
+              tabIndex="-1"
+              role="dialog"
+              onClick={closeShareModal}
+            >
+              <div
+                className="modal-dialog modal-dialog-centered"
+                role="document"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="modal-content p-2">
+                  <div className="modal-header py-3">
+                    <h5 className="modal-title fw-bold">Share this property</h5>
+                    <button
+                      type="button"
+                      className="btn-close"
+                      onClick={closeShareModal}
+                    ></button>
+                  </div>
+                  <div className="modal-body d-flex justify-content-around">
+                    <Link
+                      to={socialLinks.facebook(shareUrl)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Share on Facebook"
+                    >
+                      <i className="fa-brands fa-facebook "></i>
+                    </Link>
+                    <Link
+                      to={socialLinks.twitter(shareUrl)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Share on Twitter"
+                    >
+                      <i className="fa-brands fa-twitter "></i>
+                    </Link>
+                    <Link
+                      to={socialLinks.linkedin(shareUrl)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Share on LinkedIn"
+                    >
+                      <i className="fa-brands fa-linkedin "></i>
+                    </Link>
+                    <Link
+                      to="https://www.whatsapp.com/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Share on Whatsapp"
+                    >
+                      <i className="fa-brands fa-whatsapp "></i>
+                    </Link>
+
+                    <Link 
+                     onClick={() => {
+                      navigator.clipboard.writeText(shareUrl);
+                      toast.success("Link copied to clipboard!");
+                    }}
+                     >
+                      <i className="fa-solid fa-link "></i>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
       </div>
     </section>
   );

@@ -164,10 +164,21 @@ useEffect(() => {
         onChange={(e) => setPropertyType(e.target.value)}
       >
         <option value="">Select</option>
-        <option value="House" >House</option>
+        {/* <option value="House" >House</option>
         <option value="Apartment" >Apartment</option>
         <option value="Townhouse" >Townhouse</option>
-        <option value="Land" >Land & Build Package</option>
+        <option value="Land" >Land & Build Package</option> */}
+
+        <option value="Apartment" >Apartment</option>
+        <option value="House" >House</option>
+        <option value="Villa" >Villa</option>
+        <option value="Plot" >Plot</option>
+        <option value="Commercial" >Commercial</option>
+        <option value="Office" >Office</option>
+        <option value="Shop" >Shop</option>
+        <option value="Warehouse" >Warehouse</option>
+        <option value="Other" >Other</option>
+        
       </select>
     </div>
 

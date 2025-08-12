@@ -672,6 +672,9 @@ li {
   border-color: var(--primary);
 }
 
+.popular_properties .listing-style6 .fa-solid.fa-heart{color: var(--primary);}
+.popular_properties .shareModal .modal-content{border: 4px solid var(--primary) !important;}
+
 
 .popular_properties .card {
   border-radius: 16px;
@@ -722,6 +725,17 @@ li {
   background-color: var(--primary) !important;
 }
 
+.popular_properties .shareModal i{
+  font-size: 20px;
+    background-color: var(--primary);
+    color: white;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+}
 
 .actions {
   position: absolute;
@@ -1689,10 +1703,99 @@ p {
 .Toastify__toast-container{z-index: 999999 !important;}
 
 
+.custom-tooltip-wrapper {
+  position: relative;
+  display: inline-block;
+  /* display: inline;  */
+  cursor: pointer;
+}
+
+
+.custom-tooltip {
+  position: absolute;
+  bottom: 125%; /* Position above the element */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #222; /* Black background */
+  color: #fff; /* White text */
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease-in-out;
+  z-index: 999;
+
+  /* Add drop shadow for depth */
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Tooltip arrow */
+.custom-tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%; /* Arrow at the bottom of tooltip */
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: #222 transparent transparent transparent;
+}
+
+.custom-tooltip-wrapper:hover .custom-tooltip {
+  opacity: 1;
+}
 
 
 
-/*------- Media Query -------*/
+
+.tooltip-wrapper {
+  position: relative; /* so tooltip can position itself relative to this */
+  display: inline-block;
+}
+
+.custom-tooltip1 {
+  position: absolute;
+  top: -35px; /* adjust to place above the button */
+  right: 50%;
+  transform: translateX(50%);
+  background-color: #222;
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease-in-out;
+  z-index: 999;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.tooltip-wrapper:hover .custom-tooltip1 {
+  opacity: 1;
+}
+
+/* Tooltip arrow */
+.custom-tooltip1::after {
+  content: "";
+  position: absolute;
+  top: 93%; /* Arrow at the bottom of tooltip */
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: #222 transparent transparent transparent;
+}
+
+
+
+
+
+
+/*---------- Media Query -----------*/
+
 
 
 

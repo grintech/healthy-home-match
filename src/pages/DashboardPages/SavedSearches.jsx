@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import { toast } from 'react-toastify';
+import Tooltip from '../../components/Tooltip';
 
 const SavedSearches = () => {
   const navigate = useNavigate();
@@ -98,24 +99,24 @@ const SavedSearches = () => {
                       </td>
                       <td>
                         <div className="d-flex">
+                          <Tooltip text={"Run Search"}>
                             <button
                             className="btn btn-sm btn-green me-2"
-                             data-bs-toggle="tooltip"
-                             data-bs-placement="top"
-                             data-bs-title="Run Search"
                              onClick={() => redirectToSearch(search.params)}
                             >
                             <i className="fa-solid fa-arrow-up-right-from-square"></i>
                             </button>
+                            </Tooltip>
+
+                            <Tooltip text={"Delete"}>
                             <button
                             className="btn btn-sm btn-green"
-                             data-bs-toggle="tooltip"
-                             data-bs-placement="top"
-                             data-bs-title="Delete"
                              onClick={() => deleteSearch(search.id)}
                             >
                             <i className="fa-solid fa-trash"></i>
                             </button>
+
+                            </Tooltip>
 
                         </div>
                       </td>
