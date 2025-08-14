@@ -241,7 +241,7 @@ iframe {
 }
 
 .property_video {
-    background-image: url("/images/card4.jpg");
+    /* background-image: url("/images/card4.jpg"); */
     background-position: 50%;
     background-repeat: no-repeat;
     background-size: cover;
@@ -308,7 +308,7 @@ iframe {
 
 .property_single .accordion-style1 .accordion-item {padding: 0; border-radius: 4px;}
 
-#VideoModal .btn-close{position: absolute; right: -10px; top: -20px;}
+#VideoModal .btn-close{position: absolute; right: -10px; top: -20px;z-index: 999;}
 #VideoModal iframe{height: 370px;}
 
 
@@ -335,6 +335,7 @@ iframe {
   font-size: 15px;
 }
 
+.amenities_card .fa-circle{font-size: 11px; color: var(--primary); margin-right: 1px;}
 
 
  .loader-icon {

@@ -32,17 +32,6 @@ const PropertySingle = () => {
   const [inputType, setInputType] = useState("text");
 
 
-  //   const images = [
-  //     "/images/card1.jpg",
-  //     "/images/card2.jpg",
-  //     "/images/card3.jpg",
-  //     "/images/card4.jpg",
-  //     "/images/blog1.jpg",
-  //     "/images/blog2.jpg",
-  //     "/images/blog3.jpg",
-  //   ];
-
-
   useEffect(() => {
     if (slug) {
       axios
@@ -59,9 +48,9 @@ const PropertySingle = () => {
 
             // Prepare gallery images
             let gallery = [];
-            if (data.featured_image) {
-              gallery.push(`https://${data.featured_image}`);
-            }
+            // if (data.featured_image) {
+            //   gallery.push(`https://${data.featured_image}`);
+            // }
             if (data.gallery_images) {
               try {
                 const galleryArr = JSON.parse(data.gallery_images);
@@ -116,6 +105,30 @@ const handleCopy = () => {
 };
 
 
+const getYouTubeEmbedUrl = (url, loop = false) => {
+  try {
+    let videoId = "";
+
+    if (url.includes("shorts/")) {
+      videoId = url.split("shorts/")[1].split("?")[0];
+    } else if (url.includes("watch?v=")) {
+      videoId = url.split("watch?v=")[1].split("&")[0];
+    } else if (url.includes("youtu.be/")) {
+      videoId = url.split("youtu.be/")[1].split("?")[0];
+    }
+
+    if (!videoId) return url;
+
+    let embedUrl = `https://www.youtube.com/embed/${videoId}`;
+    if (loop) {
+      embedUrl += `?loop=1&playlist=${videoId}`;
+    }
+    return embedUrl;
+  } catch {
+    return url;
+  }
+};
+
 
 
 
@@ -146,19 +159,6 @@ const handleCopy = () => {
     }
   }, []);
 
-
-  // if (!property) {
-  //   return (
-  //     <div
-  //       className="d-flex justify-content-center align-items-center"
-  //       style={{ height: "80vh" }}
-  //     >
-  //       <div className="spinner-grow text-warning" role="status">
-  //         <span className="visually-hidden">Loading...</span>
-  //       </div>
-  //     </div>
-  //   );
-  // }
 
 
 
@@ -309,21 +309,26 @@ const handleCopy = () => {
             </div>
           ) : property.featured_image ? (
             // Case 2: Show featured image if gallery not present
-            <div className="row mb-5">
+            <div className=" gallery_images mb-5 overflow-hidden">
+             <div className="col-12 overflow-hidden">
+               <div className="img_wrapper overflow-hidden">
               <img
                 src={`https://${property.featured_image}`}
                 className="w-100"
                 alt="Featured Property"
+                style={{height:"500px", borderRadius:"8px", objectFit:"cover"}}
               />
+              </div>
+             </div>
             </div>
           ) : (
             // Case 3: Default image if none available
-            <div className="row mb-5">
+            <div className="row  mb-5">
               <img
-                src="/images/default-property.jpeg"
+                src="/images/default-property.png"
                 className="w-100"
                 alt="Default Property"
-                style={{ height: "350px", objectFit: "contain" }}
+                style={{ height: "350px", objectFit: "contain",backgroundColor:"#f5f5f5" }}
               />
             </div>
           )}
@@ -340,6 +345,7 @@ const handleCopy = () => {
           <div className="row">
             {/* Left Column */}
             <div className="col-lg-8">
+
               <div className="card overview_card border-0">
                 <h4 className="mb-4 single_head">Overview</h4>
                 <div className="row prop_desc">
@@ -349,7 +355,7 @@ const handleCopy = () => {
                       <div className="ms-3">
                         <h6 className="mb-0">Bedroom</h6>
                         <p className="text mb-0 ">
-                          {property.bedrooms == null ? "0" : property.bedrooms}
+                          {property.bedrooms == null ? "NA" : property.bedrooms}
                         </p>
                       </div>
                     </div>
@@ -361,7 +367,7 @@ const handleCopy = () => {
                         <h6 className="mb-0">Bathrooms</h6>
                         <p className="text mb-0 ">
                           {property.bathrooms == null
-                            ? "0"
+                            ? "NA"
                             : property.bathrooms}
                         </p>
                       </div>
@@ -388,7 +394,7 @@ const handleCopy = () => {
                         <h6 className="mb-0">Balcony</h6>
                         <p className="text mb-0 text-capitalize">
                           {property.balconies == null
-                            ? "0"
+                            ? "NA"
                             : property.balconies}
                         </p>
                       </div>
@@ -494,7 +500,7 @@ const handleCopy = () => {
                         </div>
                         <div className="pd-list">
                          <p className="text mb10">
-                          {property.area_sqft || property.area_unit
+                          {property.area_sqft && property.area_unit
                             ? `${property.area_sqft ?? ""} ${property.area_unit ?? ""}`.trim()
                             : "NA"}
                         </p>
@@ -652,22 +658,26 @@ const handleCopy = () => {
                 </div>
               </div>
 
-              <div className="card overview_card border-0">
-                <h4 className="mb-4 single_head">Features & Amenities</h4>
-                <div className="row">
-                  {property.amenities &&
-                    property.amenities.split(",").map((amenity, index) => (
-                      <div className="col-sm-6 col-md-4" key={index}>
-                        <div className="pd-list">
-                          <p className="text mb10 text-capitalize">
-                            <i className="fas fa-circle fz6 align-middle pe-3"></i>
-                            {amenity.trim()}
-                          </p>
+               {property.amenities && property.amenities.trim() !== "" && (
+                <div className="card overview_card border-0 amenities_card">
+                  <h4 className="mb-4 single_head">Features & Amenities</h4>
+                  <div className="row">
+                    {property.amenities
+                      .split(",")
+                      .map((amenity, index) => (
+                        <div className="col-sm-6 col-md-4" key={index}>
+                          <div className="pd-list">
+                            <p className="text mb10 text-capitalize">
+                              <i className="fas fa-circle fz6 align-middle pe-3"></i>
+                              {amenity.trim()}
+                            </p>
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
+                  </div>
                 </div>
-              </div>
+              )}
+            
 
               <div className="card overview_card border-0">
                 <h4 className="mb-4 single_head">Energy Class</h4>
@@ -864,50 +874,69 @@ const handleCopy = () => {
                 </div>
               </div>
 
-              <div className="card overview_card border-0">
+              
+              {property.video_url && property.video_url.trim() !== "" &&(
+                <div className="card overview_card border-0">
                 <h4 className="mb-4 single_head">Video Tour</h4>
-
-                <div className="property_video bdrs12 w-100">
-                  <button
-                    className="video_popup_btn mx-auto popup-img"
-                    data-bs-toggle="modal"
-                    data-bs-target="#VideoModal"
+                  <div
+                    className="property_video bdrs12 w-100"
+                    style={{
+                      backgroundImage: `url(${
+                        property.featured_image && property.featured_image.trim() !== "" && property.featured_image !== "null"
+                          ? (`https://${property.featured_image}`)
+                          : "/images/card4.jpg"
+                      })`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center"
+                    }}
                   >
-                    <i className="fa-solid fa-play"></i>
-                  </button>
-                </div>
+                    <button
+                      className="video_popup_btn mx-auto popup-img"
+                      data-bs-toggle="modal"
+                      data-bs-target="#VideoModal"
+                    >
+                      <i className="fa-solid fa-play"></i>
+                    </button>
+                  </div>
 
-                <div
-                  className="modal fade "
-                  id="VideoModal"
-                  tabIndex="-1"
-                  aria-labelledby="VideoModalLabel"
-                  aria-hidden="true"
-                >
-                  <div className="modal-dialog modal-dialog-centered modal-lg">
-                    <div className="modal-content bg-dark">
-                      <button
-                        type="button"
-                        className="btn-close btn-theme"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                      ></button>
+                  <div
+                    className="modal fade"
+                    id="VideoModal"
+                    tabIndex="-1"
+                    aria-labelledby="VideoModalLabel"
+                    aria-hidden="true"
+                  >
+                    <div className="modal-dialog modal-dialog-centered modal-lg">
+                      <div className="modal-content bg-dark">
+                        <button
+                          type="button"
+                          className="btn-close btn-theme"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                          onClick={(e) => {
+                              const iframe = e.target.closest(".modal").querySelector("iframe");
+                              if (iframe) iframe.src = iframe.src;
+                            }}
+                        ></button>
 
-                      <div className="modal-body">
-                        <iframe
-                          className="rounded-2 video_iframe"
-                          width="100%"
-                          src="//www.youtube.com/embed/oqNZOOWF8qM?autoplay=1&amp;cc_load_policy=1&amp;controls=1&amp;disablekb=0&amp;enablejsapi=0&amp;fs=1&amp;iv_load_policy=1&amp;loop=0&amp;rel=0&amp;showinfo=1&amp;start=0&amp;wmode=transparent&amp;theme=dark&amp;mute=0"
-                          frameBorder="0"
-                          allow="accelerometer; autoplay; encrypted-media; gyroscope;"
-                          allowFullScreen=""
-                          tabIndex="-1"
-                        ></iframe>
+                        <div className="modal-body">
+                          <iframe
+                            className="rounded-2 video_iframe"
+                            width="100%"
+                            src={getYouTubeEmbedUrl(property.video_url,true)}
+                            allow="accelerometer; autoplay; encrypted-media; gyroscope;"
+                            allowFullScreen
+                            tabIndex="-1"
+                          ></iframe>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              )}
+
+
+               
             </div>
 
             {/* Right Column - Sidebar */}
@@ -927,7 +956,7 @@ const handleCopy = () => {
                   <h5 className="single_head mb-2">Schedule a tour</h5>
                   <p className="text-muted small">Choose your preferred day</p>
 
-                  <form>
+                  <form id="scheduleTourForm">
                     <input
                       type={inputType}
                       className="form-control mb-3"

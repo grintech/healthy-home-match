@@ -68,6 +68,8 @@
 .text_blue {
   color: var(--secondary) !important;
 }
+.text-warning{color: var(--primary) !important;}
+
 .text-underline{text-decoration: underline !important;}
 
 .form-check-input:checked {background-color: var(--primary); border-color: var(--primary);}
@@ -81,6 +83,7 @@ body {
     font-size: 14px;
     font-weight: 400;
 }
+
 .min_height{min-height: 85vh !important;}
 
 body.modal-open {
@@ -89,7 +92,6 @@ body.modal-open {
 .modal.show{
       z-index: 9999;
 }
-
 
 .scroll_top_button{
   position: fixed;
@@ -162,13 +164,9 @@ h6 {
 
 }
 
-a {
-  text-decoration: none !important;
-}
+a { text-decoration: none !important;}
 
-li {
-  list-style: none;
-}
+li { list-style: none;}
 
 .header-top .header-links {
   position: relative;
@@ -262,6 +260,7 @@ li {
   background-color: #042825;
     box-shadow: 0 1px 4px rgba(24, 26, 32, .07);
 }
+
 .navbar-nav .dropdown-menu {
     position: absolute !important;
     box-shadow: 0 10px 40px rgba(24, 26, 32, .05);
