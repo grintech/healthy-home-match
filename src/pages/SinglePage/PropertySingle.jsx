@@ -612,6 +612,44 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                 </div>
               </div>
 
+               <div className="card overview_card border-0">
+                <h4 className="mb-4 single_head">Energy Class</h4>
+                <div className="col-sm-12">
+                  <div className="pd-list d-flex justify-content-between">
+                    <p className="text mb10">Global Energy Performance Index</p>
+                    <p>A+</p>
+                  </div>
+                  <div className="pd-list d-flex justify-content-between">
+                    <p className="text mb10">
+                      Renewable energy performance index
+                    </p>
+                    <p>92.42 kWh / m²a</p>
+                  </div>
+                  <div className="pd-list d-flex justify-content-between">
+                    <p className="text mb10">
+                      Energy performance of the building
+                    </p>
+                    <p>00.00 kWh / m²a</p>
+                  </div>
+                  <div className="pd-list d-flex justify-content-between">
+                    <p className="text mb10">EPC Current Rating</p>
+                    <p>92</p>
+                  </div>
+                  <div className="pd-list d-flex justify-content-between">
+                    <p className="text mb10">EPC Potential Rating</p>
+                    <p>80+</p>
+                  </div>
+                </div>
+
+                <div className="col-12">
+                  <img
+                    src="/images/energy-class.png"
+                    className="w-100"
+                    alt="performance scale"
+                  />
+                </div>
+              </div>
+
               <div className="card overview_card border-0">
                 <h4 className="mb-4 single_head">Location</h4>
                 <div className="row">
@@ -658,6 +696,66 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                 </div>
               </div>
 
+                {property.video_url && property.video_url.trim() !== "" &&(
+                <div className="card overview_card border-0">
+                <h4 className="mb-4 single_head">Video Tour</h4>
+                  <div
+                    className="property_video bdrs12 w-100"
+                    style={{
+                      backgroundImage: `url(${
+                        property.featured_image && property.featured_image.trim() !== "" && property.featured_image !== "null"
+                          ? (`https://${property.featured_image}`)
+                          : "/images/card4.jpg"
+                      })`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center"
+                    }}
+                  >
+                    <button
+                      className="video_popup_btn mx-auto popup-img"
+                      data-bs-toggle="modal"
+                      data-bs-target="#VideoModal"
+                    >
+                      <i className="fa-solid fa-play"></i>
+                    </button>
+                  </div>
+
+                  <div
+                    className="modal fade"
+                    id="VideoModal"
+                    tabIndex="-1"
+                    aria-labelledby="VideoModalLabel"
+                    aria-hidden="true"
+                  >
+                    <div className="modal-dialog modal-dialog-centered modal-lg">
+                      <div className="modal-content bg-dark">
+                        <button
+                          type="button"
+                          className="btn-close btn-theme"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                          onClick={(e) => {
+                              const iframe = e.target.closest(".modal").querySelector("iframe");
+                              if (iframe) iframe.src = iframe.src;
+                            }}
+                        ></button>
+
+                        <div className="modal-body">
+                          <iframe
+                            className="rounded-2 video_iframe"
+                            width="100%"
+                            src={getYouTubeEmbedUrl(property.video_url,true)}
+                            allow="accelerometer; autoplay; encrypted-media; gyroscope;"
+                            allowFullScreen
+                            tabIndex="-1"
+                          ></iframe>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
                {property.amenities && property.amenities.trim() !== "" && (
                 <div className="card overview_card border-0 amenities_card">
                   <h4 className="mb-4 single_head">Features & Amenities</h4>
@@ -678,45 +776,7 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                 </div>
               )}
             
-
-              <div className="card overview_card border-0">
-                <h4 className="mb-4 single_head">Energy Class</h4>
-                <div className="col-sm-12">
-                  <div className="pd-list d-flex justify-content-between">
-                    <p className="text mb10">Global Energy Performance Index</p>
-                    <p>A+</p>
-                  </div>
-                  <div className="pd-list d-flex justify-content-between">
-                    <p className="text mb10">
-                      Renewable energy performance index
-                    </p>
-                    <p>92.42 kWh / m²a</p>
-                  </div>
-                  <div className="pd-list d-flex justify-content-between">
-                    <p className="text mb10">
-                      Energy performance of the building
-                    </p>
-                    <p>00.00 kWh / m²a</p>
-                  </div>
-                  <div className="pd-list d-flex justify-content-between">
-                    <p className="text mb10">EPC Current Rating</p>
-                    <p>92</p>
-                  </div>
-                  <div className="pd-list d-flex justify-content-between">
-                    <p className="text mb10">EPC Potential Rating</p>
-                    <p>80+</p>
-                  </div>
-                </div>
-
-                <div className="col-12">
-                  <img
-                    src="/images/energy-class.png"
-                    className="w-100"
-                    alt="performance scale"
-                  />
-                </div>
-              </div>
-
+         
               <div className="card overview_card border-0">
                 <h4 className="mb-4 single_head">Floor Plan</h4>
 
@@ -875,67 +935,6 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
               </div>
 
               
-              {property.video_url && property.video_url.trim() !== "" &&(
-                <div className="card overview_card border-0">
-                <h4 className="mb-4 single_head">Video Tour</h4>
-                  <div
-                    className="property_video bdrs12 w-100"
-                    style={{
-                      backgroundImage: `url(${
-                        property.featured_image && property.featured_image.trim() !== "" && property.featured_image !== "null"
-                          ? (`https://${property.featured_image}`)
-                          : "/images/card4.jpg"
-                      })`,
-                      backgroundSize: "cover",
-                      backgroundPosition: "center"
-                    }}
-                  >
-                    <button
-                      className="video_popup_btn mx-auto popup-img"
-                      data-bs-toggle="modal"
-                      data-bs-target="#VideoModal"
-                    >
-                      <i className="fa-solid fa-play"></i>
-                    </button>
-                  </div>
-
-                  <div
-                    className="modal fade"
-                    id="VideoModal"
-                    tabIndex="-1"
-                    aria-labelledby="VideoModalLabel"
-                    aria-hidden="true"
-                  >
-                    <div className="modal-dialog modal-dialog-centered modal-lg">
-                      <div className="modal-content bg-dark">
-                        <button
-                          type="button"
-                          className="btn-close btn-theme"
-                          data-bs-dismiss="modal"
-                          aria-label="Close"
-                          onClick={(e) => {
-                              const iframe = e.target.closest(".modal").querySelector("iframe");
-                              if (iframe) iframe.src = iframe.src;
-                            }}
-                        ></button>
-
-                        <div className="modal-body">
-                          <iframe
-                            className="rounded-2 video_iframe"
-                            width="100%"
-                            src={getYouTubeEmbedUrl(property.video_url,true)}
-                            allow="accelerometer; autoplay; encrypted-media; gyroscope;"
-                            allowFullScreen
-                            tabIndex="-1"
-                          ></iframe>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-
                
             </div>
 

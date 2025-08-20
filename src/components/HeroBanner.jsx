@@ -9,7 +9,7 @@ const HeroBanner = () => {
           <div className="col-xl-9 hero_tabs ">
             <h1 className='hero_title' >Easy Way to Find a <br /> Perfect <span> Property</span></h1>
             <p className="hero-text fz15 animate-up-2">Discover homes that match your style, budget, and lifestyle in just a few clicks.</p>
-            <img className="hero_floating" src="/images/hero_svg.png" alt="svg-image" />
+            {/* <img className="hero_floating" src="/images/hero_svg.png" alt="svg-image" /> */}
 
             <div >
                 <ul className="nav nav-tabs mt-5" id="myTab" role="tablist" >
@@ -27,15 +27,12 @@ const HeroBanner = () => {
                   <div className="tab-content" id="myTabContent">
                     <div className="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabIndex="0">
                       <div className="row align-items-center hero_search_fields">
-                        <div className="col position-relative">
-                          <input type="text" placeholder='Location' className=' form-control w-100' />
+                        <div className="col-12 col-lg-5 mb-3 mb-lg-0 position-relative">
+                          <input type="text" placeholder='Enter State, Province or Zipcode' className=' form-control w-100' />
                           <i className="fa-solid fa-location-dot"></i>
                         </div>
-                        <div className="col position-relative">
-                          <input type="text" placeholder='Budget' className=' form-control w-100' />
-                          <i className="fa-solid fa-dollar"></i>
-                        </div>
-                        <div className="col position-relative">
+                        
+                        <div className="col-sm-6 col-lg-3 mb-3 mb-lg-0 position-relative">
                           <select className="form-select" aria-label="Default select example">
                             <option selected>Bedrooms</option>
                             <option value="1">1 Bedroom</option>
@@ -45,7 +42,7 @@ const HeroBanner = () => {
                           </select>
                           <i className="fa-solid fa-home"></i>
                         </div>
-                        <div className="col position-relative">
+                        <div className="col-sm-6 col-lg-3 mb-3 mb-lg-0 position-relative">
                           <select className="form-select" aria-label="Default select example">
                             <option selected>Energy rating</option>
                             <option value="7 Star+">7 Star+</option>
@@ -56,7 +53,7 @@ const HeroBanner = () => {
                           <i className="fa-solid fa-lightbulb"></i>
                         </div>
                         
-                        <div className="col-md-1 ps-lg-0">
+                        <div className="col-lg-1 ps-lg-0 text-center">
                           <Link to='/search-homes'>
                           <button className="nav_search">
                             <i className="fa-solid fa-magnifying-glass"></i>
@@ -66,7 +63,7 @@ const HeroBanner = () => {
                       </div>
                     </div>
                     <div className="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabIndex="0">
-        <div className="row align-items-center hero_search_fields">
+                       {/* <div className="row align-items-center hero_search_fields">
                         <div className="col position-relative">
                           <input type="text" placeholder='Location' className=' form-control w-100' />
                           <i className="fa-solid fa-location-dot"></i>
@@ -100,21 +97,53 @@ const HeroBanner = () => {
                           <button className="nav_search">
                             <i className="fa-solid fa-magnifying-glass"></i>
                           </button>
+                        </div>
+                      </div> */}
+                       <div className="row align-items-center hero_search_fields">
+                        <div className="col-12 col-lg-5 mb-3 mb-lg-0 position-relative">
+                          <input type="text" placeholder='Enter State, Province or Zipcode' className=' form-control w-100' />
+                          <i className="fa-solid fa-location-dot"></i>
+                        </div>
+                        
+                        <div className="col-sm-6 col-lg-3 mb-3 mb-lg-0 position-relative">
+                          <select className="form-select" aria-label="Default select example">
+                            <option selected>Bedrooms</option>
+                            <option value="1">1 Bedroom</option>
+                            <option value="2">2 Bedrooms</option>
+                            <option value="36">3 Bedrooms</option>
+                            <option value="3+">3+ Bedrooms</option>
+                          </select>
+                          <i className="fa-solid fa-home"></i>
+                        </div>
+                        <div className="col-sm-6 col-lg-3 mb-3 mb-lg-0 position-relative">
+                          <select className="form-select" aria-label="Default select example">
+                            <option selected>Energy rating</option>
+                            <option value="7 Star+">7 Star+</option>
+                            <option value="Passivhaus">Passivhaus</option>
+                            <option value="Passivhaus">Passivhaus</option>
+                            <option value="Green Star">Green Star</option>
+                          </select>
+                          <i className="fa-solid fa-lightbulb"></i>
+                        </div>
+                        
+                        <div className="col-lg-1 ps-lg-0 text-center">
+                          <Link to='/search-homes'>
+                          <button className="nav_search">
+                            <i className="fa-solid fa-magnifying-glass"></i>
+                          </button>
+                          </Link>
                         </div>
                       </div>
 
                     </div>
                     <div className="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabIndex="0">
-                        <div className="row justify-content-center align-items-center hero_search_fields">
-                        <div className="col position-relative">
-                          <input type="text" placeholder='Location' className=' form-control w-100' />
+                         <div className="row align-items-center hero_search_fields">
+                        <div className="col-12 col-lg-5 mb-3 mb-lg-0 position-relative">
+                          <input type="text" placeholder='Enter State, Province or Zipcode' className=' form-control w-100' />
                           <i className="fa-solid fa-location-dot"></i>
                         </div>
-                        <div className="col position-relative">
-                          <input type="text" placeholder='Budget' className=' form-control w-100' />
-                          <i className="fa-solid fa-dollar"></i>
-                        </div>
-                        <div className="col position-relative">
+                        
+                        <div className="col-sm-6 col-lg-3 mb-3 mb-lg-0 position-relative">
                           <select className="form-select" aria-label="Default select example">
                             <option selected>Bedrooms</option>
                             <option value="1">1 Bedroom</option>
@@ -124,7 +153,7 @@ const HeroBanner = () => {
                           </select>
                           <i className="fa-solid fa-home"></i>
                         </div>
-                        <div className="col position-relative">
+                        <div className="col-sm-6 col-lg-3 mb-3 mb-lg-0 position-relative">
                           <select className="form-select" aria-label="Default select example">
                             <option selected>Energy rating</option>
                             <option value="7 Star+">7 Star+</option>
@@ -135,10 +164,12 @@ const HeroBanner = () => {
                           <i className="fa-solid fa-lightbulb"></i>
                         </div>
                         
-                        <div className="col-md-1 ps-lg-0">
+                        <div className="col-lg-1 ps-lg-0 text-center">
+                          <Link to='/search-homes'>
                           <button className="nav_search">
                             <i className="fa-solid fa-magnifying-glass"></i>
                           </button>
+                          </Link>
                         </div>
                       </div>
                     </div>

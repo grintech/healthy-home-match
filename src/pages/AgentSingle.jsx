@@ -152,6 +152,19 @@ const AgentSingle = () => {
                             For Sale
                           </button>
                         </li>
+                        <li className="nav-item" role="presentation">
+                          <button
+                            className="nav-link"
+                            id="pills-sold-tab"
+                            data-bs-toggle="pill"
+                            data-bs-target="#pills-sold"
+                            type="button"
+                            role="tab"
+                            aria-controls="pills-sold"
+                            aria-selected="false"
+                          > Sold
+                          </button>
+                        </li>
                       </ul>
                     </div>
                   </div>
@@ -413,6 +426,85 @@ const AgentSingle = () => {
                                     <div className="list-tag fz12 bg-dark">
                                       <i className="fa-solid fa-flag me-1"></i>
                                       Sale
+                                    </div>
+                                  </div>
+                                  <div className="list-price">$14,000</div>
+                                </div>
+                                <div className=" list-content">
+                                  <h6 className="list-title">
+                                    <Link
+                                      to="/property-single"
+                                      data-discover="true"
+                                    >
+                                      Equestrian Family Home
+                                    </Link>
+                                  </h6>
+                                  <p className="list-text">
+                                    San Diego City, CA, USA
+                                  </p>
+                                  <div className="list-meta d-flex align-items-center">
+                                    <Link to="#" data-discover="true">
+                                      <i className="fas fa-bed"></i> 5
+                                    </Link>
+                                    <Link to="#" data-discover="true">
+                                      <i className="fas fa-bath"></i> 4
+                                    </Link>
+                                    <Link to="#" data-discover="true">
+                                      <i className="fa-solid fa-chart-area"></i>
+                                      900 sq.
+                                    </Link>
+                                    <Link to="#" data-discover="true">
+                                      <i className="fa-solid fa-home"></i> House
+                                    </Link>
+                                  </div>
+                                  <hr />
+                                  <div className="list-meta2 d-flex justify-content-between align-items-center mt-3">
+                                    <Link
+                                      className="view_details"
+                                      to="/property-single"
+                                      data-discover="true"
+                                    >
+                                      View details
+                                    </Link>
+                                    <div className="icons d-flex align-items-center">
+                                      <Link to="#" data-discover="true">
+                                        <i className="fa-solid fa-arrow-up-right-from-square"></i>
+                                      </Link>
+                                      <Link to="#" data-discover="true">
+                                        <i className="fa-regular fa-heart"></i>
+                                      </Link>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                         <div
+                          className="tab-pane "
+                          id="pills-sold"
+                          role="tabpanel"
+                          aria-labelledby="pills-sold-tab"
+                          tabIndex="0"
+                        >
+                          <div className="row">
+                            <div className="col-md-6">
+                              <div className="listing-style1 ">
+                                <div className=" list-thumb">
+                                  <img
+                                    alt="listings"
+                                    className="w-100"
+                                    loading="lazy"
+                                    src="/images/card4.jpg"
+                                  />
+                                  <div className="sale-sticker-wrap">
+                                    <div className="list-tag fz12">
+                                      <i className="fa-solid fa-bolt me-1"></i>
+                                      Passivhaus
+                                    </div>
+                                    <div className="list-tag fz12 bg-dark">
+                                      <i className="fa-solid fa-flag me-1"></i>
+                                      Sold
                                     </div>
                                   </div>
                                   <div className="list-price">$14,000</div>

@@ -54,7 +54,7 @@
 .bg-theme{
   background-color: var(--primary) !important; color: #fff !important;
 }
-.btn-theme{background-color: var(--primary) !important; color: #fff !important; border: 1px solid var(--primary) !important; padding: 8px 12px;}
+.btn-theme{background-color: var(--primary) !important; color: #fff !important; border: 1px solid var(--primary) !important; padding:7px 7px;}
 .btn-theme:hover{background-color: #f19823 !important; color: #fff !important; border: 1px solid var(--primary) !important;}
 .btn-theme:focus{background-color: #f19823 !important; color: #fff !important; border: 1px solid var(--primary) !important;}
  .btn-theme:active{background-color: #f19823 !important; color: #fff !important; border: 1px solid var(--primary) !important;}
@@ -300,13 +300,16 @@ li { list-style: none;}
   padding: 7px 5px;
   display: block;
   position: relative;
-  font-weight: 500;
+  font-weight: 600;
   font-size: 14px;
   font-family: var(--font-heading);
   /* color: #181a20; */
   color: #fff;
   
 }
+.navbar li.nav-item .nav-link:hover{color: var(--theme-color);}
+.offcanvas .nav-link:hover{color: var(--theme-color);}
+
 .dropdown-toggle::after {
     font-family: 'FontAwesome'; /* must match the icon font */
     content: "\f107"; 
@@ -395,6 +398,8 @@ li { list-style: none;}
 }
 .navbar .login_btn{font-size: 14px; font-weight: 600; font-family: var(--font-heading); color: #fff;}
 .navbar .offcanvas-body li{margin: 5px 15px !important;}
+
+
 .offcanvas-header .btn-close{
     background-color: #dbdbdb ;
     border-radius: 50%;
@@ -409,6 +414,9 @@ li { list-style: none;}
 .offcanvas-header .btn-close:hover{background-color: var(--primary); transition: all .3s; --bs-btn-close-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414'/%3e%3c/svg%3e");
 ;
 }
+
+.offcanvas .nav-link{font-weight: 600;}
+.offcanvas .nav-link.active{color: var(--theme-color);}
 
 
 
