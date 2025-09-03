@@ -31,7 +31,7 @@ const Navbar = () => {
                                         <Link className="nav-link active" aria-current="page" to="/">Home</Link>
                                     </li>
                                     <li className="nav-item">
-                                        <Link className="nav-link" to='/search-homes' >Listing</Link>
+                                        <Link className="nav-link" to='/homes' >Listing</Link>
                                     </li>
                                     <li className="nav-item dropdown">
                                         <Link className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -98,7 +98,7 @@ const Navbar = () => {
                                 <Link className="nav-link active" aria-current="page" to="/">Home</Link>
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link" to='/search-homes' >Listing</Link>
+                                <Link className="nav-link" to='/homes' >Listing</Link>
                             </li>
                             <li className="nav-item dropdown">
                                 <Link className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">

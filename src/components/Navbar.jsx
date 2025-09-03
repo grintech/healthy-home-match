@@ -10,7 +10,9 @@ const Navbar = () => {
     const [showModal, setShowModal] = useState(false);
 
 
-    const isActive = (path) => location.pathname === path;
+    // const isActive = (path) => location.pathname === path;
+    const isActive = (path) => location.pathname + location.search === path;
+
 
     useEffect(() => {
         const handleScroll = () => {
@@ -56,13 +58,13 @@ const Navbar = () => {
     return (
         <>
             <header className="main-header">
-                <nav className={`navbar navbar-expand-lg d-none d-md-block ${isSticky ? 'sticky-nav shadow-sm bg-white' : ''}`}>
+                <nav className={`navbar navbar-expand-lg d-none d-lg-block ${isSticky ? 'sticky-nav shadow-sm bg-white' : ''}`}>
                     <div className="container d-flex justify-content-between align-items-center px-0">
 
-                        <div className="col-5">
+                        <div className="col">
                             <ul className="navbar-nav flex-row">
                                 <li className="nav-item mx-2">
-                                    <Link className={`nav-link ${isActive("/") ? "active" : ""}`} to="/">Buy</Link>
+                                    <Link className={`nav-link ${isActive("/homes?buy") ? "active" : ""}`} to="/homes?buy">Buy</Link>
                                 </li>
                                 <li className="nav-item mx-2">
                                     <Link className={`nav-link ${isActive("/rent") ? "active" : ""}`} to="/rent">Rent</Link>
@@ -71,14 +73,17 @@ const Navbar = () => {
                                     <Link className={`nav-link ${isActive("/build") ? "active" : ""}`} to="/build">Build</Link>
                                 </li>
                                 <li className="nav-item mx-2">
-                                    <Link className={`nav-link ${isActive("/mortgage") ? "active" : ""}`} to="/mortgage">Get a mortgage</Link>
+                                    <Link className={`nav-link ${isActive("/mortgage-calculator") ? "active" : ""}`} to="/mortgage-calculator">Get a mortgage</Link>
+                                </li>
+                                <li className="nav-item mx-2">
+                                    <Link className={`nav-link ${isActive("/get-finance") ? "active" : ""}`} to="/get-finance">Get a Finance</Link>
                                 </li>
 
                             </ul>
 
                         </div>
 
-                        <div className="col-2 text-center">
+                        <div className="col-1 text-center">
                             {/* Center Logo */}
                             <Link className="navbar-brand m-0 p-0" to="/">
                                 <img src="/images/healthy_logo.png" alt="logo" style={{ height: "65px" }} />
@@ -86,10 +91,13 @@ const Navbar = () => {
 
                         </div>
 
-                        <div className="col-5 ">
+                        <div className="col ">
                             <ul className="navbar-nav flex-row align-items-center justify-content-end">
                                 <li className="nav-item mx-2">
                                     <Link className={`nav-link ${isActive("/rentals") ? "active" : ""}`} to="/rentals">Manage Rentals</Link>
+                                </li>
+                                <li className="nav-item mx-2">
+                                    <Link className={`nav-link ${isActive("/agents") ? "active" : ""}`} to="/agents">Find an agent</Link>
                                 </li>
                                 <li className="nav-item mx-2">
                                     <Link className={`nav-link ${isActive("/sell") ? "active" : ""}`} to="/sell">Sell</Link>
@@ -116,7 +124,16 @@ const Navbar = () => {
                                                 data-bs-toggle="dropdown"
                                                 aria-expanded="false"
                                             >
-                                                <span className="text-capitalize">{user.name}</span>
+                                                {/* <span className="text-capitalize">{user.name}</span> */}
+                                                   <span className="text-uppercase fw-bold">
+                                                        {(() => {
+                                                            const nameParts = user.name.trim().split(" ");
+                                                            if (nameParts.length === 1) {
+                                                                return nameParts[0][0]; // first letter if only one word
+                                                            }
+                                                            return nameParts[0][0] + nameParts[1][0]; // first letters of first two words
+                                                        })()}
+                                                    </span>
                                             </button>
 
                                             <ul className="dropdown-menu">
@@ -207,7 +224,7 @@ const Navbar = () => {
                     </div>
                 </nav>
 
-                <nav className={`navbar navbar-expand-lg d-block d-md-none ${isSticky ? 'sticky-nav shadow-sm bg-white' : ''}`}>
+                <nav className={`navbar navbar-expand-lg d-block d-lg-none ${isSticky ? 'sticky-nav shadow-sm bg-white' : ''}`}>
                     <div className="container d-flex justify-content-between align-items-center">
 
                         <div className="navbar-toggler  ms-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
@@ -239,7 +256,16 @@ const Navbar = () => {
                                         data-bs-toggle="dropdown"
                                         aria-expanded="false"
                                     >
-                                        <span className="text-capitalize">{user.name}</span>
+                                        {/* <span className="text-capitalize">{user.name}</span> */}
+                                         <span className="text-uppercase fw-bold">
+                                                        {(() => {
+                                                            const nameParts = user.name.trim().split(" ");
+                                                            if (nameParts.length === 1) {
+                                                                return nameParts[0][0]; // first letter if only one word
+                                                            }
+                                                            return nameParts[0][0] + nameParts[1][0]; // first letters of first two words
+                                                        })()}
+                                                    </span>
                                     </button>
 
                                     <ul className="dropdown-menu">
@@ -337,7 +363,7 @@ const Navbar = () => {
                         <hr className='my-2' />
                         <ul className="navbar-nav ">
                             <li className="nav-item mx-2">
-                                <Link className={`nav-link ${isActive("/") ? "active" : ""}`} to="/">Buy</Link>
+                                <Link className={`nav-link ${isActive("/homes?buy") ? "active" : ""}`} to="/homes?buy">Buy</Link>
                             </li>
                             <li className="nav-item mx-2">
                                 <Link className={`nav-link ${isActive("/rent") ? "active" : ""}`} to="/rent">Rent</Link>
@@ -346,12 +372,19 @@ const Navbar = () => {
                                 <Link className={`nav-link ${isActive("/build") ? "active" : ""}`} to="/build">Build</Link>
                             </li>
                             <li className="nav-item mx-2">
-                                <Link className={`nav-link ${isActive("/mortgage") ? "active" : ""}`} to="/mortgage">Get a mortgage</Link>
+                                <Link className={`nav-link ${isActive("/mortgage-calculator") ? "active" : ""}`} to="/mortgage-calculator">Get a mortgage</Link>
                             </li>
+                            <li className="nav-item mx-2">
+                                <Link className={`nav-link ${isActive("/get-finance") ? "active" : ""}`} to="/get-finance">Get a Finance</Link>
+                             </li>
 
 
                             <li className="nav-item mx-2">
                                 <Link className={`nav-link ${isActive("/rentals") ? "active" : ""}`} to="/rentals">Manage Rentals</Link>
+                            </li>
+
+                            <li className="nav-item mx-2">
+                                <Link className={`nav-link ${isActive("/agents") ? "active" : ""}`} to="/agents">Find an Agent</Link>
                             </li>
                             <li className="nav-item mx-2">
                                 <Link className={`nav-link ${isActive("/sell") ? "active" : ""}`} to="/sell">Sell</Link>

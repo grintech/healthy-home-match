@@ -82,6 +82,7 @@ body {
   font-family: 'Century Gothic';
     font-size: 14px;
     font-weight: 400;
+    padding-right: 0 !important;
 }
 
 .min_height{min-height: 85vh !important;}
@@ -338,6 +339,17 @@ li { list-style: none;}
     min-width: 200px !important;
 }
 
+.navbar .user_dropdown .btn-theme{
+  height: 35px;
+  width: 35px;
+  border-radius: 50% !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+.navbar .user_dropdown button::after{display: none !important;}
+
 .add-property {
     font-size: 14px;
     height: 47px;
@@ -415,7 +427,7 @@ li { list-style: none;}
 ;
 }
 
-.offcanvas .nav-link{font-weight: 600;}
+.offcanvas .nav-link{font-weight: 600; font-size: 16px;}
 .offcanvas .nav-link.active{color: var(--theme-color);}
 
 
@@ -496,7 +508,7 @@ li { list-style: none;}
   border: 0 !important;
   border-radius: 12px 12px 0 0 !important;
   padding: 15px 13px 10px 13px;
-  font-weight: 500;
+  font-weight: 600;
   /* color: var(--secondary); */
   color: #000;
   /* font-family: var(--font-body); */
@@ -1798,7 +1810,13 @@ p {
 
 
 
+/*------- Mortgage Page ---------*/
 
+.mortgage_page .card {padding: 35px 30px;}
+.mortgage_page .card label{font-weight: 600;}
+.mortgage_page .card input{font-size: 14px; height: 42px;}
+.mortgage_page .card input:focus{box-shadow: none; border-color: var(--secondary);}
+.mortgage_faqs .accordion-body{padding-top: 0 !important;}
 
 
 /*---------- Media Query -----------*/
@@ -1908,6 +1926,7 @@ p {
     padding-bottom: 50px;
   }
   .scroll_top_button{right: 10px; padding: 8px 10px;}
+  .mortgage_page .card {padding: 25px 20px;}
 }
 
 @media screen and (max-width:425px) {

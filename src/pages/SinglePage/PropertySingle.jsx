@@ -181,9 +181,15 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
           <div className="mb-4 row justify-content-between">
             <div className="col-md-7 mb-4 mb-md-0">
               <h1 className="sec-title">{property.title}</h1>
+                {/* <p className="d-flex pe-2 mb-1">
+                  {property.address}, {property.city}, {property.state},{property.country}
+                </p> */}
                 <p className="d-flex pe-2 mb-1">
-                  {property.address}, {property.state}, {property.country}
+                  {[property.address, property.city, property.state, property.country]
+                    .filter(Boolean)
+                    .join(", ")}
                 </p>
+
               <div className="d-flex small_desc flex-wrap">
                 <p className="border-end pe-2 mb-1">
                   <i className="fa-solid fa-circle text-theme"></i> For
@@ -275,7 +281,7 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                   )}       
 
                 </div>
-                <h4 className="price">
+                <h4 className="price fw-bold">
                   {property.currency} {property.price}
                 </h4>
               </div>
@@ -283,7 +289,8 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
           </div>
 
           {/* Check conditions */}
-          {images.length > 0 ? (
+          
+          {/* {images.length > 0 ? (
             // Case 1: Show gallery if available
             <div className="gallery_images row g-3 mb-5">
               {images.map((src, i) => (
@@ -331,7 +338,126 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                 style={{ height: "350px", objectFit: "contain",backgroundColor:"#f5f5f5" }}
               />
             </div>
-          )}
+          )} */}
+
+
+
+        {images.length > 0 ? (
+          <div className="gallery_images row g-3 mb-5">
+            {/* Single Image */}
+            {images.length === 1 && (
+              <div className="col-12">
+                <div className="img_wrapper h-100">
+                  <img
+                    src={images[0]}
+                    className="w-100 h-100"
+                    alt="property-0"
+                    onClick={() => openLightbox(0)}
+                    style={{ cursor: "pointer", objectFit: "cover" }}
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* Two Images */}
+            {images.length === 2 &&
+              images.map((src, i) => (
+                <div className="col-sm-6" key={i}>
+                  <div className="img_wrapper h-100">
+                    <img
+                      src={src}
+                      className="w-100 h-100"
+                      alt={`property-${i}`}
+                      onClick={() => openLightbox(i)}
+                      style={{ cursor: "pointer", objectFit: "cover" }}
+                    />
+                  </div>
+                </div>
+              ))}
+
+            {/* Three or More Images */}
+            {images.length >= 3 && (
+              <>
+                <div className="col-sm-8">
+                  <div className="img_wrapper h-100 position-relative">
+                    <img
+                      src={images[0]}
+                      className="w-100 h-100"
+                      alt="property-0"
+                      onClick={() => openLightbox(0)}
+                      style={{ cursor: "pointer", objectFit: "cover" }}
+                    />
+                  </div>
+                </div>
+
+                <div className="col-sm-4 d-flex flex-column gap-3">
+                  {images.slice(1, 3).map((src, i) => (
+                    <div key={i} className="img_wrapper flex-fill position-relative">
+                      <img
+                        src={src}
+                        className="w-100 h-100"
+                        alt={`property-${i + 1}`}
+                        onClick={() => openLightbox(i + 1)}
+                        style={{ cursor: "pointer", objectFit: "cover" }}
+                      />
+                      {/* Overlay for extra images */}
+                      {i === 1 && images.length > 3 && (
+                        <div
+                          className="overlay_more_images position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center text-white fw-bold fs-3"
+                          style={{
+                            background: "rgba(0,0,0,0.5)",
+                            borderRadius: "8px",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => openLightbox(2)}
+                        >
+                          +{images.length - 3} more
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+        ) : property.featured_image ? (
+          // Case 2: Show featured image if gallery not present
+          <div className="gallery_images mb-5 overflow-hidden">
+            <div className="col-12 overflow-hidden">
+              <div className="img_wrapper overflow-hidden">
+                <img
+                  src={`https://${property.featured_image}`}
+                  className="w-100"
+                  alt="Featured Property"
+                  style={{
+                    height: "500px",
+                    borderRadius: "8px",
+                    objectFit: "cover",
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        ) : (
+          // Case 3: Default image if none available
+          <div className="row mb-5">
+            <img
+              src="/images/default-property.png"
+              className="w-100"
+              alt="Default Property"
+              style={{
+                height: "350px",
+                objectFit: "contain",
+                backgroundColor: "#f5f5f5",
+              }}
+            />
+          </div>
+        )}
+
+
+
+
+
 
           {/* Lightbox */}
           <Lightbox
@@ -405,11 +531,14 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                       <i className="fa-solid fa-chart-area"></i>
 
                       <div className="ms-3">
-                        <h6 className="mb-0">Sqft</h6>
+                        <h6 className="mb-0">Area</h6>
                         <p className="text mb-0 text-capitalize">
-                          {property.area_sqft == null
-                            ? "NA"
-                            : property.area_sqft}
+                          {/* {property.area_m2 == null
+                            ? "NA"  
+                            : property.area_m2} */}
+                            {property.area_m2 && property.area_unit
+                            ? `${property.area_m2 ?? ""} ${property.area_unit ?? ""}`.trim()
+                            : "NA"}
                         </p>
                       </div>
                     </div>
@@ -427,8 +556,23 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                       </div>
                     </div>
                   </div>
+                  <div className="col-6 col-lg-4 mb-4">
+                    <div className="overview-element position-relative d-flex align-items-center">
+                      <i className="fa-solid fa-car"></i>
+                      <div className="ms-3">
+                        <h6 className="mb-0">Parking Spaces</h6>
+                        <p className="text mb-0 text-capitalize">
+                          {property.parking_spaces == null
+                            ? "NA"
+                            : property.parking_spaces}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
+
+              
 
               <div className="card overview_card border-0">
                 <div className="mb-5">
@@ -500,8 +644,8 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                         </div>
                         <div className="pd-list">
                          <p className="text mb10">
-                          {property.area_sqft && property.area_unit
-                            ? `${property.area_sqft ?? ""} ${property.area_unit ?? ""}`.trim()
+                          {property.area_m2 && property.area_unit
+                            ? `${property.area_m2 ?? ""} ${property.area_unit ?? ""}`.trim()
                             : "NA"}
                         </p>
 
@@ -611,6 +755,52 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                   </div>
                 </div>
               </div>
+               <div className="card overview_card border-0">
+                <h4 className="mb-4 single_head">Location</h4>
+                <div className="row">
+                  {/* <div className="col-12  mb-3 mb-md-0">
+                    <div className="d-flex justify-content-between">
+                      <div className="pd-list">
+                        <p className="fw600 mb10 ff-heading dark-color">
+                          Address
+                        </p>
+                        <p className="fw600 mb10 ff-heading dark-color">City</p>
+                        <p className="fw600 mb10 ff-heading dark-color">
+                          State/county
+                        </p>
+                        <p className="fw600 mb-0 ff-heading dark-color">
+                          Zipcode{" "}
+                        </p>
+                      </div>
+                      <div className="pd-list">
+                        <p className="text mb10">
+                          {property.address == null ? "NA" : property.address}
+                        </p>
+                        <p className="text mb10">
+                          {property.city == null ? "NA" : property.city}
+                        </p>
+                        <p className="text mb10">
+                          {property.state == null ? "NA" : property.state}
+                        </p>
+                        <p className="text mb-0">
+                          {property.zip_code == null ? "NA" : property.zip_code}
+                        </p>
+                      </div>
+                    </div>
+                  </div> */}
+                  <div className="col-md-12">
+                    <iframe
+                      className="position-relative w-100"
+                      style={{ height: "250px" }}
+                      loading="lazy"
+                      src={`https://maps.google.com/maps?q=${property.latitude},${property.longitude}&t=m&z=14&output=embed&iwloc=near`}
+                      title="Property Location"
+                      aria-label="Property Location"
+                    />
+                  </div>
+                </div>
+              </div>
+
 
                <div className="card overview_card border-0">
                 <h4 className="mb-4 single_head">Energy Class</h4>
@@ -650,52 +840,7 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                 </div>
               </div>
 
-              <div className="card overview_card border-0">
-                <h4 className="mb-4 single_head">Location</h4>
-                <div className="row">
-                  <div className="col-12  mb-3 mb-md-0">
-                    <div className="d-flex justify-content-between">
-                      <div className="pd-list">
-                        <p className="fw600 mb10 ff-heading dark-color">
-                          Address
-                        </p>
-                        <p className="fw600 mb10 ff-heading dark-color">City</p>
-                        <p className="fw600 mb10 ff-heading dark-color">
-                          State/county
-                        </p>
-                        <p className="fw600 mb-0 ff-heading dark-color">
-                          Zipcode{" "}
-                        </p>
-                      </div>
-                      <div className="pd-list">
-                        <p className="text mb10">
-                          {property.address == null ? "NA" : property.address}
-                        </p>
-                        <p className="text mb10">
-                          {property.city == null ? "NA" : property.city}
-                        </p>
-                        <p className="text mb10">
-                          {property.state == null ? "NA" : property.state}
-                        </p>
-                        <p className="text mb-0">
-                          {property.zip_code == null ? "NA" : property.zip_code}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-md-12 mt-4">
-                    <iframe
-                      className="position-relative w-100"
-                      style={{ height: "250px" }}
-                      loading="lazy"
-                      src={`https://maps.google.com/maps?q=${property.latitude},${property.longitude}&t=m&z=14&output=embed&iwloc=near`}
-                      title="Property Location"
-                      aria-label="Property Location"
-                    />
-                  </div>
-                </div>
-              </div>
-
+             
                 {property.video_url && property.video_url.trim() !== "" &&(
                 <div className="card overview_card border-0">
                 <h4 className="mb-4 single_head">Video Tour</h4>
@@ -799,7 +944,7 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                                 <span className="ms-auto d-md-flex align-items-center justify-content-end floor_accordion">
                                   <span className="me-2 me-md-4">
                                     <span className="fw600">Size: </span>
-                                    <span className="text">1267 Sqft</span>
+                                    <span className="text">1267 ㎡</span>
                                   </span>
                                   <span className="me-2 me-md-4">
                                     <span className="fw600">Bedrooms: </span>
@@ -847,7 +992,7 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                                 <span className="ms-auto d-md-flex align-items-center justify-content-end floor_accordion">
                                   <span className="me-2 me-md-4">
                                     <span className="fw600">Size: </span>
-                                    <span className="text">1267 Sqft</span>
+                                    <span className="text">1267 ㎡</span>
                                   </span>
                                   <span className="me-2 me-md-4">
                                     <span className="fw600">Bedrooms: </span>
@@ -895,7 +1040,7 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                                 <span className="ms-auto d-md-flex align-items-center justify-content-end floor_accordion">
                                   <span className="me-2 me-md-4">
                                     <span className="fw600">Size: </span>
-                                    <span className="text">1267 Sqft</span>
+                                    <span className="text">1267 ㎡</span>
                                   </span>
                                   <span className="me-2 me-md-4">
                                     <span className="fw600">Bedrooms: </span>
@@ -952,11 +1097,10 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
               </div>
               <div className="enquiry_section  mb-4">
                 <div className="card mb-4 overview_card border-0 ">
-                  <h5 className="single_head mb-2">Schedule a tour</h5>
-                  <p className="text-muted small">Choose your preferred day</p>
+                  <h5 className="single_head mb-2">Send an enquiry</h5>
 
                   <form id="scheduleTourForm">
-                    <input
+                    {/* <input
                       type={inputType}
                       className="form-control mb-3"
                       placeholder="Time"
@@ -964,7 +1108,7 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                       onBlur={(e) => {
                         if (!e.target.value) setInputType("text");
                       }}
-                    />
+                    /> */}
 
                     <input
                       type="text"
@@ -986,7 +1130,7 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                       className="btn ud-btn btn-white search_home_btn w-100"
                     >
                       {" "}
-                      Send Inquiry <i className="fa-solid fa-arrow-right"></i>
+                      Submit <i className="fa-solid fa-arrow-right"></i>
                     </Link>
                   </form>
                 </div>
@@ -1072,9 +1216,9 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                           required
                         >
                           <option value="">Select Alert Type</option>
-                          <option value="Inspection">Inspection</option>
-                          <option value="Price Drop">Price Drop</option>
-                          <option value="Status Change">Status Change</option>
+                          <option value="Inspection">Open House Scheduling</option>
+                          <option value="Price Change">Price Change</option>
+                          <option value="high-interest">High Interest Alerts</option>
                         </select>
                       </div>
 

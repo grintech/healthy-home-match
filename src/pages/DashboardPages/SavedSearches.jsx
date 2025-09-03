@@ -58,7 +58,7 @@ const SavedSearches = () => {
 
   const redirectToSearch = (params) => {
     const query = new URLSearchParams(params).toString();
-    navigate(`/search-homes?${query}`);
+    navigate(`/homes?${query}`);
   };
 
   return (

@@ -54,7 +54,7 @@ const HeroBanner = () => {
                         </div>
                         
                         <div className="col-lg-1 ps-lg-0 text-center">
-                          <Link to='/search-homes'>
+                          <Link to='/homes'>
                           <button className="nav_search">
                             <i className="fa-solid fa-magnifying-glass"></i>
                           </button>
@@ -127,7 +127,7 @@ const HeroBanner = () => {
                         </div>
                         
                         <div className="col-lg-1 ps-lg-0 text-center">
-                          <Link to='/search-homes'>
+                          <Link to='/homes'>
                           <button className="nav_search">
                             <i className="fa-solid fa-magnifying-glass"></i>
                           </button>
@@ -165,7 +165,7 @@ const HeroBanner = () => {
                         </div>
                         
                         <div className="col-lg-1 ps-lg-0 text-center">
-                          <Link to='/search-homes'>
+                          <Link to='/homes'>
                           <button className="nav_search">
                             <i className="fa-solid fa-magnifying-glass"></i>
                           </button>

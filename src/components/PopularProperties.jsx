@@ -3,39 +3,66 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+
+
 const PopularProperties = () => {
   const ApiUrl = import.meta.env.VITE_API_URL;
   const ApiKey = import.meta.env.VITE_API_KEY;
+
   const [properties, setProperties] = useState([]);
+  const [loading, setLoading] = useState(true);
+
 
    const [shareModalOpen, setShareModalOpen] = useState(false);
   const [shareUrl, setShareUrl] = useState("");
 
-  // Store liked property IDs in a Set
   const [likedIds, setLikedIds] = useState(new Set());
 
   // Fetch API data
   useEffect(() => {
+    const cachedData = sessionStorage.getItem("popular_properties");
+
+    // Load cached data first for instant render
+    if (cachedData) {
+      setProperties(JSON.parse(cachedData));
+      setLoading(false);
+    }
+
+    // Always fetch fresh data in background
     axios
       .get(`${ApiUrl}/property-list`, {
         headers: {
           "X-API-DOMAIN": "$2y$10$Vs8ujkh6QGdPgRU4Qsub7uP6l8fu5deHcfhF/ePrPWOkVWi3lDT0u",
-          // "X-API-DOMAIN": ApiKey,
         },
       })
       .then((res) => {
         if (res.data.status === true) {
-          setProperties(res.data.data);
-          console.log(res.data.message || "Properties fetched successfully");
+          const newData = res.data.data;
+
+          // Update state only if data is different from cached
+          const oldData = cachedData ? JSON.parse(cachedData) : [];
+          const isDifferent = JSON.stringify(newData) !== JSON.stringify(oldData);
+
+          if (isDifferent) {
+            setProperties(newData);
+            sessionStorage.setItem("popular_properties", JSON.stringify(newData));
+          }
+
+          console.log(res.data.message || "Properties updated successfully");
         } else {
-          console.log(res.data.message || "Failed to fetch properties");
+          console.warn(res.data.message || "Failed to fetch properties");
         }
       })
       .catch((err) => {
-        console.log("Something went wrong while fetching properties");
-        console.error(err);
+        console.error("Error fetching properties:", err);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }, [ApiUrl]);
+
 
   // Copy URL to clipboard function
   const handleCopy = (textToCopy, e) => {
@@ -87,7 +114,7 @@ const PopularProperties = () => {
   };
 
   return (
-    <section className="popular_properties space">
+    <section className="popular_properties pt-5 mt-5 pb-5">
       <div className="container">
         <div className="row ">
           <div className="col-lg-6">
@@ -100,16 +127,16 @@ const PopularProperties = () => {
           {properties.length > 0 && (
             <div className="col-lg-6">
               <div className="filter-menu d-flex justify-content-lg-end align align-items-center">
-                <button className="th-btn tab-btn active rounded-2" type="button">
+                <Link to='/homes' className="th-btn tab-btn active rounded-2" type="button">
                   View All <i className="fa-solid fa-arrow-right"></i>
-                </button>
+                </Link>
               </div>
             </div>
           )}
         </div>
 
         {/* Cards */}
-        <div className="row">
+        {/* <div className="row ">
           {properties.length > 0 ? (
             properties.slice(0, 8).map((property) => {
               const url = `${window.location.origin}/property-single/${property.slug}`;
@@ -176,7 +203,97 @@ const PopularProperties = () => {
             <h6 className="text-theme fw-semibold">No properties found.</h6>
           )}
 
+        </div> */}
+
+
+        <div className="row">
+          {loading
+            ? Array.from({ length: 4 }).map((_, index) => (
+                <div className="col-md-6 col-xl-3" key={index}>
+                  <div className="listing-style6">
+                    <div className="list-thumb">
+                      <Skeleton height={330} borderRadius={8} />
+                    </div>
+                    <div className="list-content p-2">
+                      <h6 className="list-title">
+                        <Skeleton width={`80%`} height={20} />
+                      </h6>
+                      <p className="list-text">
+                        <Skeleton width={`60%`} height={15} />
+                      </p>
+                      <div className=" mb-2">
+                        <Skeleton width={120} height={40} />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))
+            : properties.length > 0
+            ? properties.slice(0, 8).map((property) => {
+                const url = `${window.location.origin}/property-single/${property.slug}`;
+                return (
+                <div className="col-md-6 col-xl-3" key={property.id}>
+                  <div className="listing-style6">
+                    <div className="list-thumb">
+                      <img
+                        alt={property.title}
+                        loading="lazy"
+                        className="w-100"
+                        src={
+                          property.featured_image
+                            ? `https://${property.featured_image}`
+                            : "/images/card1.jpg"
+                        }
+                      />
+                      {property.is_featured && (
+                        <div className="sale-sticker-wrap">
+                          <div className="list-tag fz12">
+                            <i className="fas fa-bolt me-1"></i>FEATURED
+                          </div>
+                        </div>
+                      )}
+                      <div className="list-meta">
+                        <div className="icons">
+                          <Link to="#" onClick={(e) => toggleHeart(property.id, e)}>
+                            <i
+                              className={
+                                likedIds.has(property.id)
+                                  ? "fa-solid fa-heart"
+                                  : "fa-regular fa-heart"
+                              }
+                            ></i>
+                          </Link>
+
+                          <Link to="#" onClick={(e) => handleCopy(url, e)}>
+                            <i className="fa-regular fa-copy"></i>
+                          </Link>
+
+                          <Link to="#" onClick={(e) => openShareModal(url, e)}>
+                            <i className="fa-regular fa-share-from-square"></i>
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                    <Link to={`/property-single/${property.slug}`}>
+                      <div className="list-content">
+                        <h6 className="list-title text-capitalize text-truncate">
+                          {property.title}
+                        </h6>
+                        <p className="list-text text-capitalize text-truncate">
+                          {property.address}
+                        </p>
+                        <div className="list-price mb-2">${property.price}</div>
+                      </div>
+                    </Link>
+                  </div>
+                </div>           
+                );
+              })
+            : (
+              <h6 className="text-theme fw-semibold">No properties found.</h6>
+            )}
         </div>
+
 
 
           {shareModalOpen && (

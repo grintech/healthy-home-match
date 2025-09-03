@@ -169,6 +169,7 @@
 .listing-style1 .list-content {
     padding: 20px;
     position: relative;
+    box-shadow: 0 2px 26px rgba(24, 26, 32, .07);
 }
 .listing-style1 .list-content a{
     color: var(--headings-color);
@@ -221,12 +222,12 @@
 }
 
 .listing-style1 .list-meta2 .icons a {
-    background-color: #fff;
-    border-radius: 6px;
-    height: 35px;
+    background-color: #f7f7f7;
+    border-radius: 50px;
+    height: 38px;
     line-height: 40px;
     text-align: center;
-    width: 35px;
+    width: 38px;
     transition: all .4s ease;
     margin-right: 2px;
 }
@@ -262,12 +263,23 @@
 #mobileFilter .list-title{font-size: 15px;margin-bottom: 5px;}
 .reset_filters p{text-decoration: underline;font-size: 15px;font-weight: 500;}
 
+.navbar .user_dropdown .dropdown-menu::after {
+    content: "";
+    display: block;
+    height: 22px;
+    width: 22px;
+    background: rgb(255, 255, 255);
+    transform: rotate(45deg);
+    position: absolute;
+    top: -10px;
+    right: 17px
+}
 .navbar .user_dropdown .dropdown-menu[data-bs-popper] {
-    top: 120%;
-    right: 5px !important;
+    top: 140%;
+    right: -10px !important;
     left: unset !important;
 }
-.navbar .user_dropdown button span{font-size: 14px;}
+.navbar .user_dropdown button span{font-size: 16px;}
 
 
 .page-item.active .page-link{
@@ -279,6 +291,10 @@
    background-color: #f6f9fc;
 }
 
+.home_card_left img{border-top-left-radius: 8px; border-bottom-left-radius: 10px;}
+.home_card_right{border-top-right-radius: 8px; border-bottom-right-radius: 10px;}
+.home_card_right{background-color: #e2e1e1;}
+.home_card{padding: 30px; }
 
 /*---------- Media Queries ----------*/
 
@@ -301,6 +317,19 @@
     }
 }
 
+@media screen and (max-width: 768px) {
+    .navbar .user_dropdown .dropdown-menu::after {
+    content: "";
+    display: block;
+    height: 18px;
+    width: 18px;
+    background: rgb(255, 255, 255);
+    transform: rotate(45deg);
+    position: absolute;
+    top: -9px;
+    right: 17px;
+}
+}
 @media screen and (max-width: 575px) {
    .listing-style1 .list-meta a {
         margin-right: 14px ;

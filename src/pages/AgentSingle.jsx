@@ -10,15 +10,15 @@ const AgentSingle = () => {
         <div className="cta-agency cta-agent">
           <div className="container">
             <div className="row align-items-center">
-              <div className="col-xl-7">
+              <div className="col-lg-8 mb-4 mb-lg-0">
                 <div className="agent-single d-sm-flex align-items-center">
-                  <div className="single-img mb-4 ">
+                  <div className="single-img mb-4 mb-sm-0">
                     <img alt="agents" src="/images/agent1.jpg" loading="lazy" />
                   </div>
                   <div className="single-contant ms-4 ">
                     <h1 className="title mb-0 text-white">Mark Kalsen</h1>
                     <p className="fz15 text-white">
-                      Company Agent at <b>All American Real Estate</b>
+                      <Link to="/agency-single">Company Agent at <b>All American Real Estate</b></Link>
                     </p>
                     <div className="agent-meta mb15 d-md-flex align-items-center">
                       <Link
@@ -38,18 +38,18 @@ const AgentSingle = () => {
                         <i className="fa-solid fa-envelope"></i> mark@gmail.com
                       </Link>
                     </div>
-                    <div class="agent-social mt-3">
-                      <Link class="me-3" to="#">
-                        <i class="fab fa-facebook-f"></i>
+                    <div className="agent-social mt-2">
+                      <Link className="me-3" to="#">
+                        <i className="fab fa-facebook-f"></i>
                       </Link>
-                      <Link class="me-3" to="#">
-                        <i class="fab fa-twitter"></i>
+                      <Link className="me-3" to="#">
+                        <i className="fab fa-twitter"></i>
                       </Link>
-                      <Link class="me-3" to="#">
-                        <i class="fab fa-instagram"></i>
+                      <Link className="me-3" to="#">
+                        <i className="fab fa-instagram"></i>
                       </Link>
-                      <Link class="me-3" to="#">
-                        <i class="fab fa-linkedin-in"></i>
+                      <Link className="me-3" to="#">
+                        <i className="fab fa-linkedin-in"></i>
                       </Link>
                     </div>
                   </div>
@@ -65,6 +65,30 @@ const AgentSingle = () => {
                     src="/images/agency-single1.png"
                     alt="svg image"
                   />
+                </div>
+              </div>
+              <div className="col-lg-4">
+                <div className="agent_company_details ">
+                 <img src="/images/agency1.png" className="mb-3" alt="" />
+                 <h5><Link to="/agency-single">All American Real Estate</Link></h5>
+                 <div className="row">
+                  <div className="col-6">
+                    <p className="fz14 mb-2"><i className="fa-solid fa-briefcase me-2"></i>12+ Years</p>
+                  </div>
+                  <div className="col-6">
+                    <p className="fz14 mb-2"><i className="fa-solid fa-users me-2"></i>250+ agents</p>
+                  </div>
+                  <div className="col-6">
+                    <p className="fz14 mb-2"><i className="fa-solid fa-house me-2"></i>1300+ Sold</p>
+                  </div>
+                  <div className="col-6">
+                     <Link className="fz14 mb-1"><i className="fa-solid fa-phone me-2"></i>+1 800 555 1234</Link>
+                  </div>
+                  <div className="col-12">
+                  <Link className="fz14 mb-2"><i className="fa-solid fa-envelope me-2"></i>contact@allamerican.com</Link>
+                  </div>
+
+                 </div>
                 </div>
               </div>
             </div>
@@ -583,42 +607,42 @@ const AgentSingle = () => {
                       <div className="col-sm-8"></div>
                     </div>
 
-                    <div class="col-md-12">
-                      <div class="mbp_first position-relative d-flex align-items-center justify-content-start mt-4 mb-sm-4">
+                    <div className="col-md-12">
+                      <div className="mbp_first position-relative d-flex align-items-center justify-content-start mt-4 mb-sm-4">
                         <img
                           src="/images/review.png"
                           alt="review.png"
                           loading="lazy"
                         />
-                        <div class="ms-4">
-                          <h6 class="mt-0 mb-0 fw-bold">Bessie Cooper</h6>
+                        <div className="ms-4">
+                          <h6 className="mt-0 mb-0 fw-bold">Bessie Cooper</h6>
                           <div>
-                            <span class="fz14">12 March 2022</span>
-                            <div class="blog-single-review">
-                              <ul class="mb0 ps-0">
-                                <li class="list-inline-item me-0">
+                            <span className="fz14">12 March 2022</span>
+                            <div className="blog-single-review">
+                              <ul className="mb0 ps-0">
+                                <li className="list-inline-item me-0">
                                   <Link to="#">
-                                    <i class="fas fa-star review-color2 fz10"></i>
+                                    <i className="fas fa-star review-color2 fz10"></i>
                                   </Link>
                                 </li>
-                                <li class="list-inline-item me-0">
+                                <li className="list-inline-item me-0">
                                   <Link to="#">
-                                    <i class="fas fa-star review-color2 fz10"></i>
+                                    <i className="fas fa-star review-color2 fz10"></i>
                                   </Link>
                                 </li>
-                                <li class="list-inline-item me-0">
+                                <li className="list-inline-item me-0">
                                   <Link to="#">
-                                    <i class="fas fa-star review-color2 fz10"></i>
+                                    <i className="fas fa-star review-color2 fz10"></i>
                                   </Link>
                                 </li>
-                                <li class="list-inline-item me-0">
+                                <li className="list-inline-item me-0">
                                   <Link to="#">
-                                    <i class="fas fa-star review-color2 fz10"></i>
+                                    <i className="fas fa-star review-color2 fz10"></i>
                                   </Link>
                                 </li>
-                                <li class="list-inline-item me-0">
+                                <li className="list-inline-item me-0">
                                   <Link to="#">
-                                    <i class="fas fa-star review-color2 fz10"></i>
+                                    <i className="fas fa-star review-color2 fz10"></i>
                                   </Link>
                                 </li>
                               </ul>
@@ -626,7 +650,7 @@ const AgentSingle = () => {
                           </div>
                         </div>
                       </div>
-                      <p class="text mt20 mb20">Every single thing we tried with Mark was delicious! Found some awesome places we would definitely go back to on our trip. Mark was also super friendly and passionate about Beşiktaş and Istanbul.</p>
+                      <p className="text mt20 mb20">Every single thing we tried with Mark was delicious! Found some awesome places we would definitely go back to on our trip. Mark was also super friendly and passionate about Beşiktaş and Istanbul.</p>
                       <div className="row g-2 review_images">
                         <div className="col-3 col-sm-2">
                             <img src="/images/card1.jpg" className="" alt="image1" />
@@ -651,42 +675,42 @@ const AgentSingle = () => {
                       </div>
                     </div>
                     <hr />
-                     <div class="col-md-12">
-                      <div class="mbp_first position-relative d-flex align-items-center justify-content-start mt-4 mb-sm-4">
+                     <div className="col-md-12">
+                      <div className="mbp_first position-relative d-flex align-items-center justify-content-start mt-4 mb-sm-4">
                         <img
                           src="/images/review.png"
                           alt="review.png"
                           loading="lazy"
                         />
-                        <div class="ms-4">
-                          <h6 class="mt-0 mb-0 fw-bold">John Wick</h6>
+                        <div className="ms-4">
+                          <h6 className="mt-0 mb-0 fw-bold">John Wick</h6>
                           <div>
-                            <span class="fz14">12 March 2022</span>
-                            <div class="blog-single-review">
-                              <ul class="mb0 ps-0">
-                                <li class="list-inline-item me-0">
+                            <span className="fz14">12 March 2022</span>
+                            <div className="blog-single-review">
+                              <ul className="mb0 ps-0">
+                                <li className="list-inline-item me-0">
                                   <Link to="#">
-                                    <i class="fas fa-star review-color2 fz10"></i>
+                                    <i className="fas fa-star review-color2 fz10"></i>
                                   </Link>
                                 </li>
-                                <li class="list-inline-item me-0">
+                                <li className="list-inline-item me-0">
                                   <Link to="#">
-                                    <i class="fas fa-star review-color2 fz10"></i>
+                                    <i className="fas fa-star review-color2 fz10"></i>
                                   </Link>
                                 </li>
-                                <li class="list-inline-item me-0">
+                                <li className="list-inline-item me-0">
                                   <Link to="#">
-                                    <i class="fas fa-star review-color2 fz10"></i>
+                                    <i className="fas fa-star review-color2 fz10"></i>
                                   </Link>
                                 </li>
-                                <li class="list-inline-item me-0">
+                                <li className="list-inline-item me-0">
                                   <Link to="#">
-                                    <i class="fas fa-star review-color2 fz10"></i>
+                                    <i className="fas fa-star review-color2 fz10"></i>
                                   </Link>
                                 </li>
-                                <li class="list-inline-item me-0">
+                                <li className="list-inline-item me-0">
                                   <Link to="#">
-                                    <i class="fas fa-star review-color2 fz10"></i>
+                                    <i className="fas fa-star review-color2 fz10"></i>
                                   </Link>
                                 </li>
                               </ul>
@@ -694,7 +718,7 @@ const AgentSingle = () => {
                           </div>
                         </div>
                       </div>
-                      <p class="text mt20 mb20">Every single thing we tried with Mark was delicious! Found some awesome places we would definitely go back to on our trip. Mark was also super friendly and passionate about Beşiktaş and Istanbul.</p>
+                      <p className="text mt20 mb20">Every single thing we tried with Mark was delicious! Found some awesome places we would definitely go back to on our trip. Mark was also super friendly and passionate about Beşiktaş and Istanbul.</p>
                       <div className="row g-2 review_images">
                         <div className="col-3 col-sm-2">
                             <img src="/images/card1.jpg" className="" alt="image1" />

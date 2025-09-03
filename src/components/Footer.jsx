@@ -25,10 +25,10 @@ const Footer = () => {
                                 <div className="col-xl-3 col-sm-6 mb-4 mb-xl-0">
                                     <h4>Featured Houses</h4>
                                     <ul className="menu p-0 m-0">
-                                        <li><Link to="/search-homes?villa"> Villa</Link></li>
-                                        <li><Link to="/search-homes?commercial"> Commercial</Link></li>
-                                        <li><Link to="/search-homes?farm-houses"> Farm Houses</Link></li>
-                                        <li><Link to="/search-homes?apartment"> Apartments</Link></li>
+                                        <li><Link to="/homes?villa"> Villa</Link></li>
+                                        <li><Link to="/homes?commercial"> Commercial</Link></li>
+                                        <li><Link to="/homes?farm-houses"> Farm Houses</Link></li>
+                                        <li><Link to="/homes?apartment"> Apartments</Link></li>
                                     </ul>
                                 </div>
                                 <div className="col-xl-3 col-sm-6 mb-4 mb-xl-0">

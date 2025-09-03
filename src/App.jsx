@@ -40,6 +40,8 @@ import OurBlogs from './pages/Blogs/OurBlogs.jsx';
 import PrivacyPolicy from './pages/OtherPages/PrivacyPolicy.jsx';
 import TermsAndConditions from './pages/OtherPages/TermsAndConditions.jsx';
 import BlogSingle from './pages/Blogs/BlogSingle.jsx';
+import MortgageCalculator from './components/MortgageCalculator.jsx';
+import Agents from './pages/Agents.jsx';
 
 
 const App = () => {
@@ -105,11 +107,12 @@ const App = () => {
 
         {/* Public Pages */}
         <Route path="/" element={<Homepage />} />
-        <Route path="/search-homes" element={<SearchHome />} />
+        <Route path="/homes" element={<SearchHome />} />
         <Route path="/property-single/:slug" element={<PropertySingle />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/agency" element={<Agency />} />
+        <Route path="/agents" element={<Agents />} />
         <Route path="/agency-single" element={<AgencySingle />} />
         <Route path="/agent-single" element={<AgentSingle />} />
         <Route path="/pricing" element={<PricingPage />} />
@@ -119,6 +122,10 @@ const App = () => {
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
 
+
+        <Route path="/mortgage-calculator" element={<MortgageCalculator />} />
+
+        
         {/* Dashboard (Protected) */}
         <Route path="/my-account" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
         <Route path="/saved-listings" element={<ProtectedRoute><SavedListings /></ProtectedRoute>} />
