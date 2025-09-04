@@ -372,6 +372,14 @@ iframe {
 #nearbyTabsContent p{margin: 0; font-size: 13.5px;}  
 .show_chart canvas{width: 100% !important;}
 
+#enquiryForm {
+  scroll-margin-top:180px; /* adjust offset */
+}
+.inspection_section .agency-details .search_home_btn{height: 40px; font-size: 13px !important;}
+
+#inspectionModal .btn-theme{font-size: 13px;}
+.gallery_more{font-size: 18px; background-color: #fff;color: #000; padding: 4px 10px; border-radius: 6px;}
+
 @media screen and (min-width:1400px) {
 .social_icons_container{left: 250px }
 }
@@ -396,6 +404,7 @@ iframe {
   .property_video .video_popup_btn {height: 50px; width: 50px;}
   .property_video .video_popup_btn i {font-size: 22px;}
   #VideoModal iframe{height: 300px;}
+  .inspection_section h6{font-size: 15px !important;}
 }
 
 @media screen and (max-width:425px) {
@@ -410,5 +419,6 @@ iframe {
 
 @media screen and (max-width:375px) {
   .floor_accordion{font-size: 12px;}
+  .inspection_section h6{font-size: 14px !important;}
 
 }

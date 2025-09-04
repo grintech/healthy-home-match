@@ -34,6 +34,37 @@ const PropertySingle = () => {
 
   const [inputType, setInputType] = useState("text");
 
+  const inspections = [
+    { day: "Wednesday", date: "Sep 10, 2025", time: "1:00 pm – 1:30 pm" },
+    { day: "Friday", date: "Sep 12, 2025", time: "11:00 am – 11:30 am" },
+    { day: "Sunday", date: "Sep 14, 2025", time: "3:00 pm – 3:30 pm" },
+  ];
+
+  const handleRequestAnotherTime = () => {
+    // Close modal
+    const modal = document.getElementById("inspectionModal");
+    const modalInstance = window.bootstrap.Modal.getInstance(modal);
+    modalInstance.hide();
+
+    const target = document.getElementById("enquiryForm");
+    if (target) {
+      setTimeout(() => {
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 300); // slight delay so modal fully closes first
+    }
+  };
+
+  const handleScrollToCalculator = () => {
+  const target = document.getElementById("calculatorSection");
+  if (target) {
+    const yOffset = -185; 
+    const y =
+      target.getBoundingClientRect().top + window.pageYOffset + yOffset;
+
+    window.scrollTo({ top: y, behavior: "smooth" });
+  }
+};
+
 
   useEffect(() => {
     if (slug) {
@@ -133,8 +164,6 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
 };
 
 
-
-
   const openLightbox = (index) => {
     setSlideIndex(index);
     setLightboxOpen(true);
@@ -171,7 +200,6 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
       <div className="property_single">
         <div className="container my-5">
         { !property ? (
-          // Loader in place of main body
           <div
             className="d-flex flex-column justify-content-center align-items-center"
             style={{ height: "80vh" }}
@@ -184,9 +212,6 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
           <div className="mb-4 row justify-content-between">
             <div className="col-md-7 mb-4 mb-md-0">
               <h1 className="sec-title">{property.title}</h1>
-                {/* <p className="d-flex pe-2 mb-1">
-                  {property.address}, {property.city}, {property.state},{property.country}
-                </p> */}
                 <p className="d-flex pe-2 mb-1">
                   {[property.address, property.city, property.state, property.country]
                     .filter(Boolean)
@@ -343,7 +368,75 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
             </div>
           )} */}
 
+          <div className="py-2 inspection_section d-flex flex-wrap justify-content-between align-items-end">
+            <h6 className="fw-bold">
+              Inspection on Sep 10, 2025 at 1.00 pm{" "}
+              <Link
+                data-bs-toggle="modal"
+                data-bs-target="#inspectionModal"
+                className="text-decoration-none text-theme"
+              >
+                (See All)
+              </Link>
+            </h6>
+            <div className="agency-details">
+              <button className="btn ud-btn btn-white search_home_btn" onClick={handleScrollToCalculator}>Calculate EMI</button>
+            </div>
+        </div>
 
+      {/* Modal */}
+      <div
+        className="modal fade"
+        id="inspectionModal"
+        tabIndex="-1"
+        aria-labelledby="inspectionModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog modal-dialog-centered modal-md">
+          <div className="modal-content rounded-3 shadow-lg">
+            <div className="modal-header border-0">
+              <h5 className="modal-title fw-bold" id="inspectionModalLabel">
+                Available Inspections
+              </h5>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div className="modal-body pb-0">
+              {inspections.map((item, index) => (
+                <div
+                  key={index}
+                  className="card mb-3  shadow-sm rounded-3"
+                >
+                  <div className="card-body d-flex  justify-content-between align-items-center">
+                    <div className="me-2">
+                      <h6 className="mb-1 fw-bold">{item.day}</h6>
+                      <p className="mb-0 text-muted small">
+                        {item.date} | {item.time}
+                      </p>
+                    </div>
+                    <button className="btn btn-sm btn-theme">
+                      Add to plan
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="modal-footer border-0">
+              <button
+                type="button"
+                className="btn btn-dark btn-sm"
+                onClick={handleRequestAnotherTime}
+              >
+                Request Another Time
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
 
         {images.length > 0 ? (
           <div className="gallery_images row g-3 mb-5">
@@ -414,7 +507,7 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                           }}
                           onClick={() => openLightbox(2)}
                         >
-                          +{images.length - 3} more
+                         <span className="gallery_more"> +{images.length - 3} more</span>
                         </div>
                       )}
                     </div>
@@ -1062,14 +1155,15 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
               );
             })()}
 
-
-            <SinglePageCalculator />
+            <div id="calculatorSection">
+              <SinglePageCalculator />
+            </div>
 
             </div>
 
             {/* Right Column - Sidebar */}
             <div className="col-lg-4">
-              <div className="mb-4 subscribe_button">
+              {/* <div className="mb-4 subscribe_button">
                 <button
                   className="btn ud-btn btn-white contact_btn_light2  w-100"
                   data-bs-toggle="modal"
@@ -1078,8 +1172,8 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                 >
                   Subscribe for alerts <i className="fas fa-bell"></i>
                 </button>
-              </div>
-              <div className="enquiry_section  mb-4">
+              </div> */}
+              <div id="enquiryForm" className="enquiry_section  mb-4">
                 <div className="card mb-4 overview_card border-0 ">
                   <h5 className="single_head mb-2">Send an enquiry</h5>
 
@@ -1104,6 +1198,13 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                       className="form-control mb-3"
                       placeholder="Email"
                     />
+                    <select name="" className="form-select mb-3" id="">
+                      <option value="">Select reason</option>
+                      <option value="">Schedule Inspection</option>
+                      <option value="">Price information</option>
+                      <option value="">Rates & Fees</option>
+
+                    </select>
                     <textarea
                       className="form-control mb-3"
                       placeholder="Message"
