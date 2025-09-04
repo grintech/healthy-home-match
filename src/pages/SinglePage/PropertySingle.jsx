@@ -11,6 +11,9 @@ import "./single.css";
 import Tooltip from "../../components/Tooltip";
 import axios from "axios";
 import { toast } from "react-toastify";
+import SinglePageCalculator from "../../components/SinglePageCalculator";
+import { FaRegHeart, FaShareAlt } from "react-icons/fa";
+
 
 const PropertySingle = () => {
   const ApiUrl = import.meta.env.VITE_API_URL;
@@ -471,9 +474,8 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
           <div className="row">
             {/* Left Column */}
             <div className="col-lg-8">
-
               <div className="card overview_card border-0">
-                <h4 className="mb-4 single_head">Overview</h4>
+                <h4 className="mb-3 single_head">Overview</h4>
                 <div className="row prop_desc">
                   <div className="col-6 col-lg-4 mb-4">
                     <div className="overview-element position-relative d-flex align-items-center">
@@ -570,13 +572,9 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                     </div>
                   </div>
                 </div>
-              </div>
 
-              
-
-              <div className="card overview_card border-0">
-                <div className="mb-5">
-                  <h4 className="mb-4 single_head">Property Description</h4>
+                 <div className="">
+                  <h4 className="mb-3 single_head">Property Description</h4>
                   <p
                     className={`text mb-2 description-text ${
                       showFullText ? "expanded" : ""
@@ -603,8 +601,11 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                   )}
                 </div>
 
+              </div>
+              
+              <div className="card overview_card border-0 d-none">
                 <div>
-                  <h4 className="mb-4 single_head">Property Details</h4>
+                  <h4 className="mb-3 single_head">Property Details</h4>
                   <div className="row">
                     <div className="col-md-6 col-xl-4">
                       <div className="d-flex justify-content-between">
@@ -755,39 +756,10 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                   </div>
                 </div>
               </div>
+
                <div className="card overview_card border-0">
-                <h4 className="mb-4 single_head">Location</h4>
+                <h4 className="mb-3 single_head">Location</h4>
                 <div className="row">
-                  {/* <div className="col-12  mb-3 mb-md-0">
-                    <div className="d-flex justify-content-between">
-                      <div className="pd-list">
-                        <p className="fw600 mb10 ff-heading dark-color">
-                          Address
-                        </p>
-                        <p className="fw600 mb10 ff-heading dark-color">City</p>
-                        <p className="fw600 mb10 ff-heading dark-color">
-                          State/county
-                        </p>
-                        <p className="fw600 mb-0 ff-heading dark-color">
-                          Zipcode{" "}
-                        </p>
-                      </div>
-                      <div className="pd-list">
-                        <p className="text mb10">
-                          {property.address == null ? "NA" : property.address}
-                        </p>
-                        <p className="text mb10">
-                          {property.city == null ? "NA" : property.city}
-                        </p>
-                        <p className="text mb10">
-                          {property.state == null ? "NA" : property.state}
-                        </p>
-                        <p className="text mb-0">
-                          {property.zip_code == null ? "NA" : property.zip_code}
-                        </p>
-                      </div>
-                    </div>
-                  </div> */}
                   <div className="col-md-12">
                     <iframe
                       className="position-relative w-100"
@@ -801,9 +773,8 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                 </div>
               </div>
 
-
                <div className="card overview_card border-0">
-                <h4 className="mb-4 single_head">Energy Class</h4>
+                <h4 className="mb-3 single_head">Energy Class</h4>
                 <div className="col-sm-12">
                   <div className="pd-list d-flex justify-content-between">
                     <p className="text mb10">Global Energy Performance Index</p>
@@ -839,11 +810,10 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                   />
                 </div>
               </div>
-
-             
-                {property.video_url && property.video_url.trim() !== "" &&(
+            
+              {property.video_url && property.video_url.trim() !== "" &&(
                 <div className="card overview_card border-0">
-                <h4 className="mb-4 single_head">Video Tour</h4>
+                <h4 className="mb-3 single_head">Video Tour</h4>
                   <div
                     className="property_video bdrs12 w-100"
                     style={{
@@ -901,9 +871,9 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                 </div>
               )}
 
-               {property.amenities && property.amenities.trim() !== "" && (
+              {property.amenities && property.amenities.trim() !== "" && (
                 <div className="card overview_card border-0 amenities_card">
-                  <h4 className="mb-4 single_head">Features & Amenities</h4>
+                  <h4 className="mb-3 single_head">Features & Amenities</h4>
                   <div className="row">
                     {property.amenities
                       .split(",")
@@ -920,167 +890,181 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                   </div>
                 </div>
               )}
-            
-         
-              <div className="card overview_card border-0">
-                <h4 className="mb-4 single_head">Floor Plan</h4>
+                 
 
-                <div className="row">
-                  <div className="col-md-12">
-                    <div className="accordion-style1 style2">
-                      <div className="accordion" id="accordionExample">
-                        <div className="accordion-item ">
-                          <h2 className="accordion-header" id="heading0">
+              {property.floors && property.floors.length > 0 && (
+                <div className="card overview_card border-0">
+                  <h4 className="mb-3 single_head">Floor Plan</h4>
+                  <div className="accordion-style1 style2">
+                    <div className="accordion" id="accordionExample">
+                      {property.floors.map((floor, index) => (
+                        <div className="accordion-item" key={floor.id}>
+                          <h2 className="accordion-header" id={`heading${index}`}>
                             <button
                               className="accordion-button collapsed"
                               type="button"
                               data-bs-toggle="collapse"
-                              data-bs-target="#collapse0"
+                              data-bs-target={`#collapse${index}`}
                               aria-expanded="false"
-                              aria-controls="collapse0"
+                              aria-controls={`collapse${index}`}
                             >
                               <span className="w-100 d-md-flex align-items-center">
-                                <span className="me-3 ">First Floor</span>
+                                <span className="me-3">{floor.floor_title}</span>
                                 <span className="ms-auto d-md-flex align-items-center justify-content-end floor_accordion">
-                                  <span className="me-2 me-md-4">
-                                    <span className="fw600">Size: </span>
-                                    <span className="text">1267 ㎡</span>
+                                  <span className="me-3">
+                                    <strong>Size:</strong> {floor.size}
                                   </span>
-                                  <span className="me-2 me-md-4">
-                                    <span className="fw600">Bedrooms: </span>
-                                    <span className="text">2</span>
+                                  <span className="me-3">
+                                    <strong>Bedrooms:</strong> {floor.bedrooms}
                                   </span>
-                                  <span className="me-2 me-md-4">
-                                    <span className="fw600">Bathrooms: </span>
-                                    <span className="text">2</span>
+                                  <span className="me-3">
+                                    <strong>Bathrooms:</strong> {floor.bathrooms}
                                   </span>
                                   <span>
-                                    <span className="fw600">Price: </span>
-                                    <span className="text">$920,99</span>
+                                    <strong>Price:</strong> {property.currency} {floor.price}
                                   </span>
                                 </span>
                               </span>
                             </button>
                           </h2>
                           <div
-                            id="collapse0"
-                            className="accordion-collapse collapse "
-                            aria-labelledby="heading0"
-                            data-parent="#accordionExample"
+                            id={`collapse${index}`}
+                            className="accordion-collapse collapse"
+                            aria-labelledby={`heading${index}`}
+                            data-bs-parent="#accordionExample"
                           >
                             <div className="accordion-body text-center">
-                              <img
-                                src="/images/floor.png"
-                                className="w-100"
-                                alt="floor image"
-                              />
+                              {floor.floor_image ? (
+                                <img
+                                  src={`https://${floor.floor_image}`}
+                                  alt={floor.floor_title}
+                                  className="w-100 rounded"
+                                />
+                              ) : (
+                                <p className="text-muted">No floor image available</p>
+                              )}
                             </div>
                           </div>
                         </div>
-                        <div className="accordion-item ">
-                          <h2 className="accordion-header" id="heading1">
-                            <button
-                              className="accordion-button collapsed"
-                              type="button"
-                              data-bs-toggle="collapse"
-                              data-bs-target="#collapse1"
-                              aria-expanded="false"
-                              aria-controls="collapse1"
-                            >
-                              <span className="w-100 d-md-flex align-items-center">
-                                <span className="me-3">Second Floor</span>
-                                <span className="ms-auto d-md-flex align-items-center justify-content-end floor_accordion">
-                                  <span className="me-2 me-md-4">
-                                    <span className="fw600">Size: </span>
-                                    <span className="text">1267 ㎡</span>
-                                  </span>
-                                  <span className="me-2 me-md-4">
-                                    <span className="fw600">Bedrooms: </span>
-                                    <span className="text">2</span>
-                                  </span>
-                                  <span className="me-2 me-md-4">
-                                    <span className="fw600">Bathrooms: </span>
-                                    <span className="text">2</span>
-                                  </span>
-                                  <span>
-                                    <span className="fw600">Price: </span>
-                                    <span className="text">$920,99</span>
-                                  </span>
-                                </span>
-                              </span>
-                            </button>
-                          </h2>
-                          <div
-                            id="collapse1"
-                            className="accordion-collapse collapse "
-                            aria-labelledby="heading1"
-                            data-parent="#accordionExample"
-                          >
-                            <div className="accordion-body text-center">
-                              <img
-                                src="/images/floor.png"
-                                className="w-100"
-                                alt="floor image"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <div className="accordion-item ">
-                          <h2 className="accordion-header" id="heading2">
-                            <button
-                              className="accordion-button collapsed"
-                              type="button"
-                              data-bs-toggle="collapse"
-                              data-bs-target="#collapse2"
-                              aria-expanded="false"
-                              aria-controls="collapse2"
-                            >
-                              <span className="w-100 d-md-flex align-items-center">
-                                <span className="me-3">Third Floor</span>
-                                <span className="ms-auto d-md-flex align-items-center justify-content-end floor_accordion">
-                                  <span className="me-2 me-md-4">
-                                    <span className="fw600">Size: </span>
-                                    <span className="text">1267 ㎡</span>
-                                  </span>
-                                  <span className="me-2 me-md-4">
-                                    <span className="fw600">Bedrooms: </span>
-                                    <span className="text">2</span>
-                                  </span>
-                                  <span className="me-2 me-md-4">
-                                    <span className="fw600">Bathrooms: </span>
-                                    <span className="text">2</span>
-                                  </span>
-                                  <span>
-                                    <span className="fw600">Price: </span>
-                                    <span className="text">$920,99</span>
-                                  </span>
-                                </span>
-                              </span>
-                            </button>
-                          </h2>
-                          <div
-                            id="collapse2"
-                            className="accordion-collapse collapse "
-                            aria-labelledby="heading2"
-                            data-parent="#accordionExample"
-                          >
-                            <div className="accordion-body text-center">
-                              <img
-                                src="/images/floor.png"
-                                className="w-100"
-                                alt="floor image"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                      ))}
                     </div>
                   </div>
                 </div>
-              </div>
+              )}
 
-              
-               
+            {property.meta && property.meta.length > 0 && (() => {
+              const schools = property.meta.filter(m => m.property_meta_key === "school");
+              const hospitals = property.meta.filter(m => m.property_meta_key === "hospital");
+
+              if (schools.length === 0 && hospitals.length === 0) return null;
+              const firstTab = schools.length > 0 ? "education" : "health";
+
+              return (
+                <div className="card overview_card border-0 ">
+                  <h4 className="mb-3 single_head">What's nearby the property?</h4>
+
+                  <ul className="nav nav-tabs mb-3" id="nearbyTabs" role="tablist">
+                    {schools.length > 0 && (
+                      <li className="nav-item">
+                        <button
+                          className={`nav-link ${firstTab === "education" ? "active" : ""}`}
+                          id="education-tab"
+                          data-bs-toggle="tab"
+                          data-bs-target="#education"
+                          type="button"
+                          role="tab"
+                        >
+                          Education
+                        </button>
+                      </li>
+                    )}
+
+                    {hospitals.length > 0 && (
+                      <li className="nav-item">
+                        <button
+                          className={`nav-link ${firstTab === "health" ? "active" : ""}`}
+                          id="health-tab"
+                          data-bs-toggle="tab"
+                          data-bs-target="#health"
+                          type="button"
+                          role="tab"
+                        >
+                          Health & Medical
+                        </button>
+                      </li>
+                    )}
+
+                  </ul>
+
+                  <div className="tab-content" id="nearbyTabsContent">
+                    {schools.length > 0 && (
+                      <div
+                        className={`tab-pane fade ${firstTab === "education" ? "show active" : ""}`}
+                        id="education"
+                        role="tabpanel"
+                       >
+                        <ul className="list-unstyled">
+                          {schools.map((m, i) => {
+                            const school = JSON.parse(m.property_meta_value);
+                            return (
+                              <li
+                                key={i}
+                                className="d-flex justify-content-between align-items-center mb-3"
+                              >
+                                <div className="d-flex">
+                                  <h6 className="me-2 fw-semibold">{i + 1})</h6>
+                                  <div>
+                                    <h6 className="mb-1 fw-semibold">{school.name}</h6>
+                                    <p className="text-muted">
+                                      Type: {school.type} | Owner: {school.owner} | Distance:{" "}
+                                      {school.distance}
+                                    </p>
+                                  </div>
+                                </div>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </div>
+                    )}
+
+                    {hospitals.length > 0 && (
+                      <div
+                        className={`tab-pane fade ${firstTab === "health" ? "show active" : ""}`}
+                        id="health"
+                        role="tabpanel"
+                      >
+                        <ul className="list-unstyled">
+                          {hospitals.map((m, i) => {
+                            const hospital = JSON.parse(m.property_meta_value);
+                            return (
+                              <li
+                                key={i}
+                                className="d-flex justify-content-between align-items-center mb-3"
+                              >
+                                <div className="d-flex">
+                                  <h6 className="me-2 fw-semibold">{i + 1})</h6>
+                                  <div>
+                                    <h6 className="mb-1 fw-semibold">{hospital.name}</h6>
+                                    <p className="text-muted">
+                                      Type: {hospital.type} | Distance: {hospital.distance}
+                                    </p>
+                                  </div>
+                                </div>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })()}
+
+
+            <SinglePageCalculator />
+
             </div>
 
             {/* Right Column - Sidebar */}
@@ -1101,14 +1085,14 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
 
                   <form id="scheduleTourForm">
                     {/* <input
-                      type={inputType}
-                      className="form-control mb-3"
-                      placeholder="Time"
-                      onFocus={() => setInputType("datetime-local")}
-                      onBlur={(e) => {
-                        if (!e.target.value) setInputType("text");
-                      }}
-                    /> */}
+                  type={inputType}
+                  className="form-control mb-3"
+                  placeholder="Time"
+                  onFocus={() => setInputType("datetime-local")}
+                  onBlur={(e) => {
+                    if (!e.target.value) setInputType("text");
+                  }}
+                /> */}
 
                     <input
                       type="text"
@@ -1129,7 +1113,7 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                       to="#"
                       className="btn ud-btn btn-white search_home_btn w-100"
                     >
-                      {" "}
+
                       Submit <i className="fa-solid fa-arrow-right"></i>
                     </Link>
                   </form>
@@ -1159,8 +1143,8 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                     to="/agent-single"
                     className="btn ud-btn black_btn search_home_btn w-100"
                   >
-                    {" "}
-                    Contact Agent <i className="fa-solid fa-arrow-right"></i>{" "}
+
+                    Contact Agent <i className="fa-solid fa-arrow-right"></i>
                   </Link>
                 </div>
               </div>
@@ -1233,6 +1217,7 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                 </div>
               </div>
             </div>
+        
           </div>
 
           <div className="row mt-4 search_right">
@@ -1266,20 +1251,20 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                   <p className="list-text">San Diego City, CA, USA</p>
                   <div className="list-meta d-flex align-items-center">
                     <Link to="#">
-                      {" "}
-                      <i className="fas fa-bed"></i> 4{" "}
+
+                      <i className="fas fa-bed"></i> 4
                     </Link>
                     <Link to="#">
-                      {" "}
-                      <i className="fas fa-bath"></i> 5{" "}
+
+                      <i className="fas fa-bath"></i> 5
                     </Link>
                     <Link to="#">
-                      {" "}
-                      <i className="fa-solid fa-chart-area"></i> 1500{" "}
+
+                      <i className="fa-solid fa-chart-area"></i> 1500
                     </Link>
                     <Link to="#">
-                      {" "}
-                      <i className="fa-solid fa-home"></i> Villa{" "}
+
+                      <i className="fa-solid fa-home"></i> Villa
                     </Link>
                   </div>
                   <hr />
@@ -1289,12 +1274,12 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                     </Link>
                     <div className="icons d-flex align-items-center">
                       <Link to="#">
-                        {" "}
-                        <i className="fa-heart fa-regular"></i>
+
+                        <FaRegHeart />
                       </Link>
                       <Link to="#">
-                        {" "}
-                        <i className="fa-solid fa-share"></i>{" "}
+
+                        <FaShareAlt />
                       </Link>
                     </div>
                   </div>
@@ -1329,20 +1314,20 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                   <p className="list-text">Austin, TX, USA</p>
                   <div className="list-meta d-flex align-items-center">
                     <Link to="#">
-                      {" "}
-                      <i className="fas fa-bed"></i> 4{" "}
+
+                      <i className="fas fa-bed"></i> 4
                     </Link>
                     <Link to="#">
-                      {" "}
-                      <i className="fas fa-bath"></i> 3{" "}
+
+                      <i className="fas fa-bath"></i> 3
                     </Link>
                     <Link to="#">
-                      {" "}
-                      <i className="fa-solid fa-chart-area"></i> 1200{" "}
+
+                      <i className="fa-solid fa-chart-area"></i> 1200
                     </Link>
                     <Link to="#">
-                      {" "}
-                      <i className="fa-solid fa-home"></i> Apartment{" "}
+
+                      <i className="fa-solid fa-home"></i> Apartment
                     </Link>
                   </div>
                   <hr />
@@ -1352,12 +1337,12 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                     </Link>
                     <div className="icons d-flex align-items-center">
                       <Link to="#">
-                        {" "}
-                        <i className="fa-heart fa-regular"></i>{" "}
+
+                        <FaRegHeart />
                       </Link>
                       <Link to="#">
-                        {" "}
-                        <i className="fa-solid fa-share"></i>{" "}
+
+                        <FaShareAlt />
                       </Link>
                     </div>
                   </div>
@@ -1392,19 +1377,19 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                   <p className="list-text">New Jersey City, CA, USA</p>
                   <div className="list-meta d-flex align-items-center">
                     <Link to="#">
-                      {" "}
-                      <i className="fas fa-bed"></i> 3{" "}
+
+                      <i className="fas fa-bed"></i> 3
                     </Link>
                     <Link to="#">
-                      {" "}
-                      <i className="fas fa-bath"></i> 2{" "}
+
+                      <i className="fas fa-bath"></i> 2
                     </Link>
                     <Link to="#">
-                      {" "}
-                      <i className="fa-solid fa-chart-area"></i> 1200{" "}
+
+                      <i className="fa-solid fa-chart-area"></i> 1200
                     </Link>
                     <Link to="#">
-                      {" "}
+
                       <i className="fa-solid fa-home"></i> Townhouse
                     </Link>
                   </div>
@@ -1415,12 +1400,12 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                     </Link>
                     <div className="icons d-flex align-items-center">
                       <Link to="#">
-                        {" "}
-                        <i className="fa-heart fa-regular"></i>{" "}
+
+                        <FaRegHeart />
                       </Link>
                       <Link to="#">
-                        {" "}
-                        <i className="fa-solid fa-share"></i>{" "}
+
+                        <FaShareAlt />
                       </Link>
                     </div>
                   </div>
@@ -1428,6 +1413,7 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
               </div>
             </div>
           </div>
+          
           </>
         )}
         </div>
