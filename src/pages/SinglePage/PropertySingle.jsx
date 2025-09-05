@@ -21,7 +21,14 @@ const PropertySingle = () => {
   const [property, setProperty] = useState(null);
   const [images, setImages] = useState([]);
 
+ const [addedPlans, setAddedPlans] = useState({});
 
+  const togglePlan = (index) => {
+    setAddedPlans((prev) => ({
+      ...prev,
+      [index]: !prev[index], // toggle only this index
+    }));
+  };
 
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [slideIndex, setSlideIndex] = useState(0);
@@ -418,8 +425,11 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                         {item.date} | {item.time}
                       </p>
                     </div>
-                    <button className="btn btn-sm btn-theme">
-                      Add to plan
+                    <button
+                      className="btn btn-sm btn-theme"
+                      onClick={() => togglePlan(index)}
+                    >
+                      {addedPlans[index] ? "Added" : "Add to plan"}
                     </button>
                   </div>
                 </div>
@@ -627,7 +637,7 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
 
                       <div className="ms-3">
                         <h6 className="mb-0">Area</h6>
-                        <p className="text mb-0 text-capitalize">
+                        <p className="text mb-0 ">
                           {/* {property.area_m2 == null
                             ? "NA"  
                             : property.area_m2} */}
@@ -1205,7 +1215,7 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                       <option value="">Rates & Fees</option>
 
                     </select>
-                    <textarea
+                     <textarea
                       className="form-control mb-3"
                       placeholder="Message"
                       rows={3}
@@ -1220,7 +1230,7 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                   </form>
                 </div>
 
-                <div className="card mb-0 overview_card border-0 ">
+                <div className="card mb-0 overview_card agent_contact_card border-0 ">
                   <h5 className="single_head mb-4">Get More Information</h5>
                   <div className="d-flex align-items-center mb-3">
                     <img
@@ -1240,14 +1250,16 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                     </div>
                   </div>
 
-                  <Link
-                    to="/agent-single"
-                    className="btn ud-btn black_btn search_home_btn w-100"
-                  >
-
+                  <Link to="/agent-single" className="btn ud-btn black_btn search_home_btn w-100" >
                     Contact Agent <i className="fa-solid fa-arrow-right"></i>
                   </Link>
                 </div>
+                  <Link to="/agency-single" className="d-flex justify-content-between align-items-center py-2 px-3 bg-green rounded-bottom-4">
+                    <h6 className="text-white m-0 fw-bold">Logitech</h6>
+                    <img src="/images/agency4.png" style={{width:"50px", height:"50px", objectFit:"cover"}} 
+                    className="rounded-circle "
+                    alt="" />
+                  </Link>
               </div>
             </div>
 

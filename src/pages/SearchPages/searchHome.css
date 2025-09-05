@@ -185,7 +185,7 @@
     margin-bottom: 10px;
 }
 
-.listing-style1 .list-meta a {
+.listing-style1 .list-meta div,.listing-style1 .list-meta a {
     font-family: var(--font-heading);
     font-size: 13px;
     margin-right: 20px;
@@ -295,6 +295,11 @@
 .home_card_right{border-top-right-radius: 8px; border-bottom-right-radius: 10px;}
 .home_card_right{background-color: #e2e1e1;}
 .home_card{padding: 30px; }
+
+.location-widget input{font-size: 13px;}
+.location-widget i{display: none !important;}
+
+#mobileFilter input:focus, #mobileFilter select:focus{box-shadow: none !important;}
 
 /*---------- Media Queries ----------*/
 

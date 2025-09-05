@@ -54,6 +54,10 @@
 .bg-theme{
   background-color: var(--primary) !important; color: #fff !important;
 }
+
+.bg-green{
+  background-color: var(--secondary) !important; color: #fff !important;
+}
 .btn-theme{background-color: var(--primary) !important; color: #fff !important; border: 1px solid var(--primary) !important; padding:7px 7px;}
 .btn-theme:hover{background-color: #f19823 !important; color: #fff !important; border: 1px solid var(--primary) !important;}
 .btn-theme:focus{background-color: #f19823 !important; color: #fff !important; border: 1px solid var(--primary) !important;}
@@ -545,7 +549,7 @@ li { list-style: none;}
 /* .hero_search_fields .nav_search i{color: #000;} */
 
 .hero_search_fields input {
-  padding-left: 25px;
+  padding-left: 35px;
   background-color: var(--bg-light);
   height: 45px;
   font-size: 15px;

@@ -29,6 +29,7 @@
     "react-router-dom": "^7.7.0",
     "react-toastify": "^11.0.5",
     "swiper": "^11.2.10",
+    "use-places-autocomplete": "^4.0.1",
     "yet-another-react-lightbox": "^3.25.0"
   },
   "devDependencies": {

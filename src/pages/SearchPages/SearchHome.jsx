@@ -6,6 +6,7 @@ import "rc-slider/assets/index.css";
 import "./searchHome.css";
 import Footer from "../../components/Footer";
 import axios from "axios";
+import LocationSearchInput from "../../components/LocationSearchInput";
 
 const ALL_PROPERTY_OPTIONS = [
   { value: "all-types", label: "All Types" },
@@ -278,15 +279,16 @@ const SearchHome = () => {
   // Sidebar
   const renderSidebar = () => (
     <>
-      <div className="widget-wrapper">
+      <div className="widget-wrapper location-widget">
         <h6 className="list-title">Location</h6>
-        <input
+        {/* <input
           type="text"
           className="form-control"
           placeholder="Enter Postcode or Suburb"
           value={locationText}
           onChange={(e) => setLocationText(e.target.value)}
-        />
+        /> */}
+        <LocationSearchInput />
       </div>
 
       <div className="widget-wrapper">
@@ -642,32 +644,32 @@ const SearchHome = () => {
                           </h6>
                           <p className="list-text text-capitalize text-truncate">{home.location}</p>
                           <div className="list-meta d-flex align-items-center">
-                            <Link to="#">
+                            <div >
                               <i className="fas fa-bed"></i> {home.bed}
-                            </Link>
-                            <Link to="#">
+                            </div>
+                            <div >
                               <i className="fas fa-bath"></i> {home.bath}
-                            </Link>
-                            <Link to="#">
+                            </div>
+                            <div >
                               <i className="fa-solid fa-chart-area"></i> {home.area}
-                            </Link>
-                            <Link to="#" className="text-capitalize">
+                            </div>
+                            <div  className="text-capitalize">
                               <i className="fa-solid fa-home"></i> {home.propertyType}
-                            </Link>
+                            </div>
                           </div>
                           <hr className="text-dark" />
                           <div className="list-meta2 d-flex justify-content-between align-items-center ">
-                            <Link to={`/property-single/${home.slug}`} className="view_details">
+                            <div  className="view_details">
                               View details
-                            </Link>
+                            </div>
                             <div className="icons d-flex align-items-center">
-                              <Link to="#" onClick={() => toggleLike(home.id)}>
+                              <div onClick={() => toggleLike(home.id)}>
                                 <i
                                   className={`fa-heart ${
                                     likedHomes.includes(home.id) ? "fa-solid text-danger" : "fa-regular"
                                   }`}
                                 ></i>
-                              </Link>
+                              </div>
                             </div>
                           </div>
                         </div>

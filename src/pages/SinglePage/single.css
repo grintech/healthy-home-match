@@ -156,8 +156,8 @@ iframe {
 }
 
 .agent_img {
-    width: 90px;
-    height: 90px;
+    width: 80px;
+    height: 80px;
     object-fit: cover;
 }
 
@@ -379,6 +379,8 @@ iframe {
 
 #inspectionModal .btn-theme{font-size: 13px;}
 .gallery_more{font-size: 18px; background-color: #fff;color: #000; padding: 4px 10px; border-radius: 6px;}
+
+.agent_contact_card{border-bottom-left-radius: 0 !important; border-bottom-right-radius: 0 !important;}
 
 @media screen and (min-width:1400px) {
 .social_icons_container{left: 250px }
