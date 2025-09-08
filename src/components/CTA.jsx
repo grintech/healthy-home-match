@@ -5,7 +5,7 @@ import '../pages/OtherPages/others.css'
 const CTA = () => {
   return (
     <>
-        <div className="out_cta mb-5">
+        <div className="out_cta">
                 <div className="container">
                     <div className="row align-items-center">
                         <div className="col-lg-7 col-xl-6 mb-4 mb-lg-0">

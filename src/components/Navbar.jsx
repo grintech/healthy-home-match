@@ -61,13 +61,13 @@ const Navbar = () => {
                 <nav className={`navbar navbar-expand-lg d-none d-lg-block ${isSticky ? 'sticky-nav shadow-sm bg-white' : ''}`}>
                     <div className="container d-flex justify-content-between align-items-center px-0">
 
-                        <div className="col">
+                        <div className="col-5">
                             <ul className="navbar-nav flex-row">
                                 <li className="nav-item mx-2">
                                     <Link className={`nav-link ${isActive("/homes?buy") ? "active" : ""}`} to="/homes?buy">Buy</Link>
                                 </li>
                                 <li className="nav-item mx-2">
-                                    <Link className={`nav-link ${isActive("/rent") ? "active" : ""}`} to="/rent">Rent</Link>
+                                    <Link className={`nav-link ${isActive("/homes?rent") ? "active" : ""}`} to="/homes?rent">Rent</Link>
                                 </li>
                                 <li className="nav-item mx-2">
                                     <Link className={`nav-link ${isActive("/build") ? "active" : ""}`} to="/build">Build</Link>
@@ -83,7 +83,7 @@ const Navbar = () => {
 
                         </div>
 
-                        <div className="col-1 text-center">
+                        <div className="col-2 text-center">
                             {/* Center Logo */}
                             <Link className="navbar-brand m-0 p-0" to="/">
                                 <img src="/images/healthy_logo.png" alt="logo" style={{ height: "65px" }} />
@@ -91,7 +91,7 @@ const Navbar = () => {
 
                         </div>
 
-                        <div className="col ">
+                        <div className="col-5 ">
                             <ul className="navbar-nav flex-row align-items-center justify-content-end">
                                 <li className="nav-item mx-2">
                                     <Link className={`nav-link ${isActive("/rentals") ? "active" : ""}`} to="/rentals">Manage Rentals</Link>
@@ -112,7 +112,8 @@ const Navbar = () => {
                                             className={`nav-link ms-1 login_btn ${isActive("/login") ? "active" : ""}`}
                                             to="/login"
                                         >
-                                            <i className="fa-regular fa-user-circle"></i> Login
+                                            {/* <i className="fa-regular fa-user-circle"></i> */}
+                                             Login
                                         </Link>
                                     </div>
                                 ) : (
@@ -366,7 +367,7 @@ const Navbar = () => {
                                 <Link className={`nav-link ${isActive("/homes?buy") ? "active" : ""}`} to="/homes?buy">Buy</Link>
                             </li>
                             <li className="nav-item mx-2">
-                                <Link className={`nav-link ${isActive("/rent") ? "active" : ""}`} to="/rent">Rent</Link>
+                                <Link className={`nav-link ${isActive("/homes?rent") ? "active" : ""}`} to="/homes?rent">Rent</Link>
                             </li>
                             <li className="nav-item mx-2">
                                 <Link className={`nav-link ${isActive("/build") ? "active" : ""}`} to="/build">Build</Link>

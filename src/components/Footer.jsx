@@ -66,7 +66,7 @@ const Footer = () => {
                 <div className="copyright-wrap position-relative">
                     {/* <div className="footer-bottom-top-shape "></div> */}
                     <div className="container">
-                        <p className="copyright-text text-center  m-0">Copyright
+                        <p className="copyright-text text-center  m-0">Copyright &copy;
                           <i className="fal fa-copyright"></i> 2025
                           <Link to="/" className='text-theme'> Healthy Home Match</Link>. All Rights Reserved.
                         </p>

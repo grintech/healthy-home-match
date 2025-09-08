@@ -121,7 +121,7 @@ const UserInspections = () => {
 
 
                       <h5 className="card-title mt-4 fw-bold text-truncate">
-                        <Link to="/property-single" className="text_blue">
+                        <Link to="/property" className="text_blue">
                           {inspection.title}
                         </Link>
                       </h5>

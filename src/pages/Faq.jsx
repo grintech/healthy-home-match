@@ -1,124 +1,78 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import CTA from "../components/CTA";
+import { useLocation } from "react-router-dom";
 
 const faqData = {
   All: [
-    {
-      question: "How do I search for properties?",
-      answer:
-        "Our powerful search tool allows you to filter properties based on location, property type, price range, number of bedrooms, bathrooms, and additional amenities. You can also sort results by newest listings, price, or popularity to quickly find homes that meet your specific needs."
-    },
-    {
-      question: "Can I save properties I like?",
-      answer:
-        "Absolutely! You can click the heart icon on any property card to save it to your watchlist. These saved listings will be accessible from your dashboard, allowing you to track price changes, receive updates, or revisit them anytime without starting your search over."
-    },
-    {
-      question: "Do I need an account to browse listings?",
-      answer:
-        "No, you can freely browse all listings without signing up. However, creating a free account unlocks advanced features like saving properties, creating alerts, messaging agents directly, and accessing your personalized dashboard."
-    },
-    {
-      question: "What kind of properties are listed?",
-      answer:
-        "Our platform includes residential homes, apartments, land plots, rental units, and commercial properties. Whether you’re buying your first home, renting, or investing, our listings cater to all real estate needs across various budgets."
-    },
-    {
-      question: "How often are listings updated?",
-      answer:
-        "Listings are updated daily to ensure you see the most accurate and current information. Agents and owners can edit their listings in real-time, which means price changes, availability, or inspection dates are reflected immediately."
-    }
+    { question: "How do I search for properties?", answer: "Our powerful search tool allows you to filter properties based on location, property type, price range, bedrooms, bathrooms, and amenities. You can also sort results by newest listings or price." },
+    { question: "Can I save properties I like?", answer: "Yes! Click the heart icon on any property card to save it to your watchlist. Access your saved listings anytime from your dashboard." },
+    { question: "Do I need an account to browse listings?", answer: "No account is required to browse. Creating an account unlocks features like saving properties, creating alerts, and messaging agents." },
+    { question: "What kind of properties are listed?", answer: "We list residential homes, apartments, land plots, rental units, and commercial properties across Australia." },
+    { question: "How often are listings updated?", answer: "Listings are updated daily. Price changes, availability, and inspection dates are reflected immediately." }
   ],
   Buy: [
-    {
-      question: "Do I need a pre-approval to buy?",
-      answer:
-        "While not strictly required, getting pre-approved for a mortgage gives you a significant advantage. It tells sellers that you're serious, financially capable, and can speed up the closing process. A lender will evaluate your credit score, debt-to-income ratio, and income to give you a pre-approved amount."
-    },
-    {
-      question: "How much down payment is required?",
-      answer:
-        "Typically, homebuyers are expected to pay between 10% to 20% of the property price as a down payment. However, this can vary depending on the loan type. Some government-backed loans may allow as low as 3.5%, while larger down payments can help avoid mortgage insurance."
-    },
-    {
-      question: "Are there additional costs when buying a property?",
-      answer:
-        "Yes. Apart from the property price, buyers should account for closing costs (2–5% of the purchase price), property taxes, homeowners insurance, title fees, inspection charges, and potential HOA fees. Your agent or lender can give you an itemized cost estimate."
-    },
-    {
-      question: "Can I buy a property without a real estate agent?",
-      answer:
-        "While it's possible to buy directly from an owner, having an agent simplifies negotiations, paperwork, inspections, and ensures your legal interests are protected. Agents can also access off-market listings and guide you through the full transaction."
-    },
-    {
-      question: "How do I know if a property is fairly priced?",
-      answer:
-        "Agents use comparative market analysis (CMA) to evaluate similar properties in the area. You can also use online tools and property history to gauge pricing trends. Key indicators include neighborhood demand, home condition, amenities, and recent nearby sales."
-    }
+    { question: "Do I need a pre-approval to buy?", answer: "Getting pre-approved for a mortgage is recommended. It shows sellers you are serious and financially capable, speeding up the closing process." },
+    { question: "How much down payment is required?", answer: "Typically 10-20% of the property price, but government-backed loans may allow as low as 3.5%." },
+    { question: "Are there additional costs when buying?", answer: "Yes, including closing costs, taxes, insurance, title fees, inspections, and potential HOA fees." },
+    { question: "Can I buy without an agent?", answer: "Yes, but agents simplify negotiations, paperwork, inspections, and legal protections." },
+    { question: "How do I know if a property is fairly priced?", answer: "Use Comparative Market Analysis (CMA) and online tools. Consider neighborhood demand, amenities, and recent sales." }
   ],
   Sell: [
-    {
-      question: "How do I list my property?",
-      answer:
-        "Log in to your account and go to your dashboard. Click on 'List Property' and fill in details such as address, property type, price, photos, and description. Once submitted, your listing will be reviewed and published within 24 hours."
-    },
-    {
-      question: "Are there any listing fees?",
-      answer:
-        "Basic property listings are free. However, we offer premium upgrades like featured spots, homepage banners, and video tours at a small additional cost. These increase visibility and can help sell faster."
-    },
-    {
-      question: "What documents do I need to list a home?",
-      answer:
-        "You’ll typically need proof of ownership, property tax records, recent utility bills, and identification. If you’re working with an agent, they may also require a signed agreement to list on your behalf."
-    },
-    {
-      question: "How do I attract more buyers to my listing?",
-      answer:
-        "Great photography, a compelling description, accurate pricing, and timely responses to inquiries help boost interest. Consider upgrading your listing to a premium package to appear at the top of search results and reach a wider audience."
-    },
-    {
-      question: "Can I edit my listing after publishing?",
-      answer:
-        "Yes. Simply go to your dashboard, open the listing, and click 'Edit'. You can change photos, update the price, correct descriptions, or mark it as sold or under contract anytime."
-    }
+    { question: "How do I list my property?", answer: "Log in, go to your dashboard, click 'List Property', fill in details, and submit. Your listing will be reviewed and published within 24 hours." },
+    { question: "Are there listing fees?", answer: "Basic listings are free. Premium upgrades like featured spots or video tours may cost extra." },
+    { question: "What documents are needed?", answer: "Proof of ownership, tax records, recent utility bills, ID, and agent agreements if applicable." },
+    { question: "How do I attract buyers?", answer: "Great photos, compelling descriptions, accurate pricing, and timely responses help. Premium listings increase visibility." },
+    { question: "Can I edit my listing?", answer: "Yes, go to your dashboard, open the listing, click 'Edit' to update photos, price, or description." }
+  ],
+  Rent: [
+    { question: "How do I find rental properties?", answer: "Use our search filters for location, price, and property type. You can also sort by newest listings or popularity." },
+    { question: "What documents are required to rent?", answer: "Typically ID, proof of income, rental history, and references. Some landlords may require a rental application fee." },
+    { question: "Can I apply online?", answer: "Yes, most rental applications can be submitted online through our platform." },
+    { question: "How do I pay rent?", answer: "Rent is usually paid via bank transfer or direct debit to the landlord or property manager. Your dashboard may provide payment tracking." },
+    { question: "Can I negotiate lease terms?", answer: "Yes, you can discuss lease duration, move-in dates, and other conditions directly with the landlord or agent." }
   ],
   Agents: [
-    {
-      question: "How can I contact an agent?",
-      answer:
-        "Each listing has a 'Contact Agent' button. You can message them directly through our platform or call using the provided phone number. Agents typically respond within 24 hours and can help arrange inspections or answer detailed questions."
-    },
-    {
-      question: "Can I follow an agent for updates?",
-      answer:
-        "Yes! Visit the agent’s profile and click the 'Follow' button. You’ll be notified when they post new listings, reduce prices, or host open inspections, helping you stay in the loop on their portfolio."
-    },
-    {
-      question: "How are agents verified on the platform?",
-      answer:
-        "Agents undergo a manual verification process that includes checking licenses, brokerage affiliation, and professional history. Verified agents display a badge on their profile, ensuring you’re working with legitimate professionals."
-    },
-    {
-      question: "What if I have a bad experience with an agent?",
-      answer:
-        "We take agent professionalism seriously. You can report issues through the agent's profile or by contacting our support team. We review all complaints and may take action including warnings, suspensions, or removals if necessary."
-    },
-    {
-      question: "Can agents help with legal paperwork?",
-      answer:
-        "Yes. Most agents assist with contracts, disclosures, and offer submission. However, for complex legal or financial issues, it’s recommended to consult with a real estate attorney or mortgage advisor alongside your agent."
-    }
+    { question: "How can I contact an agent?", answer: "Use the 'Contact Agent' button on listings or call directly using the number provided." },
+    { question: "Can I follow an agent?", answer: "Yes, visit their profile and click 'Follow' to get notifications about new listings and updates." },
+    { question: "How are agents verified?", answer: "Agents are verified via license checks, brokerage affiliation, and professional history. Verified agents have a badge." },
+    { question: "What if I have a bad experience?", answer: "Report issues through the agent profile or contact support. We review complaints and may take action if necessary." },
+    { question: "Can agents assist with contracts?", answer: "Yes, most agents help with contracts, disclosures, and offer submissions, but complex legal issues should involve a solicitor." }
+  ],
+  Account: [
+    { question: "How do I create an account?", answer: "Click 'Sign Up', enter your details, and verify your email. You can then access your dashboard." },
+    { question: "How do I reset my password?", answer: "Click 'Forgot Password' on the login page and follow the instructions to reset it." },
+    { question: "Can I update my profile info?", answer: "Yes, go to your account settings and update your personal information, contact details, and preferences." },
+    { question: "How do I delete my account?", answer: "Go to settings > delete account. Note: this action is permanent and will remove all saved data." },
+    { question: "Can I manage notifications?", answer: "Yes, in account settings, choose which alerts and notifications you want to receive via email or SMS." }
+  ],
+  Payments: [
+    { question: "What payment methods are accepted?", answer: "We accept bank transfers, credit/debit cards, and direct debit for applicable services." },
+    { question: "How do I view my payment history?", answer: "Go to your dashboard and click 'Payment History' to see past transactions." },
+    { question: "Are there fees for transactions?", answer: "Some services may include small processing fees. Details are displayed before confirming payments." },
+    { question: "Can I update my payment details?", answer: "Yes, go to account settings > payment methods to update your card or bank info." },
+    { question: "Is my payment information secure?", answer: "Yes, all payments are processed through secure, encrypted systems complying with Australian data protection standards." }
   ]
 };
 
 
-const tabs = ["All", "Buy", "Sell", "Agents"];
+
+const tabs = ["All", "Buy", "Sell", "Rent", "Agents", "Account", "Payments"];
 
 const FAQPage = () => {
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const category = params.get("category"); 
+  // console.log(category)
+
   const [activeTab, setActiveTab] = useState("All");
+
+   useEffect(() => {
+    if (category && tabs.includes(category)) {
+      setActiveTab(category);
+    }
+  }, [category]);
 
   return (
     <div className="faq_page">
@@ -133,7 +87,10 @@ const FAQPage = () => {
                 All: "fas fa-question-circle",
                 Buy: "fas fa-home",
                 Sell: "fas fa-dollar-sign",
+                Rent: "fas fa-key",
                 Agents: "fas fa-user-tie",
+                Account: "fas fa-user",
+                Payments: "fas fa-credit-card",
                 };
 
                 return (
@@ -143,7 +100,8 @@ const FAQPage = () => {
                     onClick={() => setActiveTab(tab)}
                     >
                     <i className={icons[tab]}></i>
-                    {tab}<span className="faq_ques">Questions</span>
+                    {tab}
+                    {/* <span className="faq_ques">Questions</span> */}
                     </button>
                 </li>
                 );

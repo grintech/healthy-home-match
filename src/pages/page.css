@@ -386,6 +386,11 @@ padding: 30px !important;
 
 .agents_section .agent_card img{height: 200px !important;}
 
+.agency_single_info .fz14{text-align:end ;}
+.agency_single_info a{color: #000; transition: all .3s;}
+.agency_single_info a:hover{color:var(--primary); transition: all .3s;}
+
+
 
 /*------ Agent Single ------*/
 .cta-agent{
@@ -468,10 +473,14 @@ padding: 30px !important;
   display: inline-block;
 }
 
+.faq_page .nav-tabs{padding: 0 !important;}
 
 .faq_page .nav-tabs .nav-link.active .tab-dot {
   background-color: var(--primary);
 }
+.faq_page .nav-tabs .nav-item{margin-right: 10px;}
+.faq_page .nav-tabs .nav-link{background-color: #f7f7f7;}
+.faq_page .nav-tabs .nav-link.active {background-color: var(--primary);color: #fff !important; border-bottom: none !important;}
 
 
 
@@ -504,16 +513,45 @@ padding: 30px !important;
 .agent_company_details a{color: #fff !important;}
 .agent_company_details a:hover{color: var(--primary) !important;}
 
-.agent_filter_tabs .btn-light{background-color: #e0dede !important;border: 1px solid #ccc; font-size: 14px; font-weight: 500; padding: 8px 13px;}
-.agent_filter_tabs .btn-active{background-color: var(--primary) !important;border: 1px solid var(--primary); color: #fff; font-size: 14px; padding: 8px 13px; }
+.agent_filter_tabs .btn-light{background-color: #f7f7f7 !important;border: 1px solid #ccc; font-size: 14px; font-weight: 500; padding: 8px 13px; border-radius: 50px;}
+.agent_filter_tabs .btn-active{background-color: var(--primary) !important;border: 1px solid var(--primary); color: #fff; font-size: 14px; padding: 8px 13px;border-radius: 50px; }
 .agent_filter_tabs .dropdown-item:active{background-color: #f5f5f5 !important; color: inherit !important;}
+
+
+
+.hero_sell p {font-size: 18px;}
+.hero_sell .btn{border-radius: 8px !important; font-size: 17px !important}
+
+.hero_sell ul li {font-size: 15px;}
+.hero_sell ul li i{color: var(--secondary); font-size: 15px;}
+#how-it-works .step-card{display: flex; flex-direction: column; justify-content: center; align-items: center;}
+#how-it-works .step-card .step-number{background-color: var(--secondary); height: 50px; width: 50px; display: flex; justify-content: center; align-items: center; border-radius: 50%; color: #fff; font-size: 17px;font-weight: 600; margin-bottom: 15px;}
+#how-it-works .step-card h6{font-weight: 600; font-size: 18px;}
+#how-it-works .step-card p{ font-size: 16px;}
+
+
+.faq_sell .accordion-style1 .accordion-button::before {left: unset !important; right: 20px !important}
+.sell-page #agents{scroll-margin-top:140px}
+
+
+
+
+
+
 
 /*--------- Media Queries --------*/
 
 @media screen and (min-width:1440px) {
-    .agent_card .team-style1 img {height: 250px !important;}
+    .agent_card .team-style1 .team-img img {height: 250px !important;}
 
 }
+@media screen and (min-width: 992px) and (max-width: 1199px) {
+  .sell-page .education-section .wrap { flex-wrap: wrap;  }
+  .sell-page .education-section .icon-wrapper {margin-bottom: 10px; }
+  .wrap { flex-wrap: wrap;  }
+  .education-section .icon-wrapper {margin-bottom: 10px; }
+}
+
 
 @media screen and (max-width:992px) {
     .page_not_found h1{font-size: 8rem;}
@@ -533,6 +571,11 @@ padding: 30px !important;
 
     .faq_page .nav-tabs .faq_ques{display: none;}
     
+}
+@media screen and (max-width: 767px) {
+  .sell-page .education-section .wrap { flex-direction: column; align-items: start !important; justify-content: start !important; flex-wrap: wrap;}
+  .sell-page .education-section .icon-wrapper {margin-bottom: 10px; }
+
 }
 @media screen and (max-width:575px) {
     .contact_btns .btn{margin-bottom: 15px;}

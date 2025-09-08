@@ -72,6 +72,9 @@
 .text_blue {
   color: var(--secondary) !important;
 }
+.text-green {
+  color: var(--secondary) !important;
+}
 .text-warning{color: var(--primary) !important;}
 
 .text-underline{text-decoration: underline !important;}
@@ -1124,6 +1127,7 @@ li { list-style: none;}
     height: 100%;
     width: 45%;
     border-bottom-right-radius: 24px;
+    border-top-right-radius: 24px;
 }
 
 .education-section .icon-wrapper, .education-section h6{transition: all .3s ;}
@@ -1706,7 +1710,7 @@ p {
     overflow: hidden;
     position: relative;
 }
-.agent_card .team-style1 img {
+.agent_card .team-style1 .team-img img {
     transform: scale(1);
     transition: all .4s ease;
     height: 250px;
@@ -1714,7 +1718,7 @@ p {
     object-fit: cover !important;
 }
 
-.agent_card .team-style1:hover img {
+.agent_card .team-style1:hover .team-img img {
     transform: scale(1.1) rotate(-1deg);
 }
 
@@ -1909,7 +1913,7 @@ p {
 }
 
 @media screen and (max-width:576px) {
-  .wrap{flex-wrap: wrap;}
+  .wrap{flex-wrap: wrap;flex-direction: column; align-items: start !important; justify-content: start !important;}
   .wrap .icon-wrapper{margin-bottom: 10px;}
   .education-section .column {
     width: 100% !important;

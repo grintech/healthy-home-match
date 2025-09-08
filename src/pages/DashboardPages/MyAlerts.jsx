@@ -97,7 +97,7 @@ const MyAlerts = () => {
                         />
                       </td>
                       <td className="listing_name">
-                        <Link to="/property-single" className="text_blue">{alert.propertyTitle}</Link>
+                        <Link to="/property" className="text_blue">{alert.propertyTitle}</Link>
                       </td>
                       <td>{alert.alertType}</td>
                       <td>{new Date(alert.date).toLocaleDateString()}</td>

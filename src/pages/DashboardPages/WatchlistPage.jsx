@@ -37,7 +37,7 @@ const WatchlistPage = () => {
                         <div className="list-price">{item.price}</div>
                         </div>
                         <div className="list-content">
-                        <Link to="/property-single"> <h6 className='list-title'>{item.title}</h6></Link>
+                        <Link to="/property"> <h6 className='list-title'>{item.title}</h6></Link>
                         <p className='list-text'>{item.location}</p>
                         </div>
                     </div>

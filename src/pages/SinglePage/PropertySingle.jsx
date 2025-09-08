@@ -88,10 +88,7 @@ const PropertySingle = () => {
             console.log(data);
 
             // Prepare gallery images
-            let gallery = [];
-            // if (data.featured_image) {
-            //   gallery.push(`https://${data.featured_image}`);
-            // }
+            let gallery = [];         
             if (data.gallery_images) {
               try {
                 const galleryArr = JSON.parse(data.gallery_images);
@@ -111,7 +108,6 @@ const PropertySingle = () => {
 
 
 
-  // Inside your component
 const shareUrl = `${window.location.origin}/property/${slug}`;
 
 const handleShare = (platform) => {
@@ -197,7 +193,6 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
       setIsTruncatable(lines > 5);
     }
   }, []);
-
 
 
 
@@ -617,7 +612,7 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                       </div>
                     </div>
                   </div>
-                  <div className="col-6 col-lg-4 mb-4">
+                  {/* <div className="col-6 col-lg-4 mb-4">
                     <div className="overview-element position-relative d-flex align-items-center">
                       <i className="fa-solid fa-warehouse"></i>
 
@@ -630,7 +625,7 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                         </p>
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                   <div className="col-6 col-lg-4 mb-4">
                     <div className="overview-element position-relative d-flex align-items-center">
                       <i className="fa-solid fa-chart-area"></i>
@@ -1359,7 +1354,7 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                 </div>
                 <div className="list-content">
                   <h6 className="list-title">
-                    <Link to="/property-single">Equestrian Family Home</Link>
+                    <Link to="/property">Equestrian Family Home</Link>
                   </h6>
                   <p className="list-text">San Diego City, CA, USA</p>
                   <div className="list-meta d-flex align-items-center">
@@ -1382,7 +1377,7 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                   </div>
                   <hr />
                   <div className="list-meta2 d-flex justify-content-between align-items-center mt-3">
-                    <Link to="/property-single" className="view_details">
+                    <Link to="/property" className="view_details">
                       View details
                     </Link>
                     <div className="icons d-flex align-items-center">
@@ -1422,7 +1417,7 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                 </div>
                 <div className="list-content">
                   <h6 className="list-title">
-                    <Link to="/property-single">Modern Glass Complex</Link>
+                    <Link to="/property">Modern Glass Complex</Link>
                   </h6>
                   <p className="list-text">Austin, TX, USA</p>
                   <div className="list-meta d-flex align-items-center">
@@ -1445,7 +1440,7 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                   </div>
                   <hr />
                   <div className="list-meta2 d-flex justify-content-between align-items-center mt-3">
-                    <Link to="/property-single" className="view_details">
+                    <Link to="/property" className="view_details">
                       View details
                     </Link>
                     <div className="icons d-flex align-items-center">
@@ -1485,7 +1480,7 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                 </div>
                 <div className="list-content">
                   <h6 className="list-title">
-                    <Link to="/property-single">Luxury villa in Rego Park</Link>
+                    <Link to="/property">Luxury villa in Rego Park</Link>
                   </h6>
                   <p className="list-text">New Jersey City, CA, USA</p>
                   <div className="list-meta d-flex align-items-center">
@@ -1508,7 +1503,7 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                   </div>
                   <hr />
                   <div className="list-meta2 d-flex justify-content-between align-items-center mt-3">
-                    <Link to="/property-single" className="view_details">
+                    <Link to="/property" className="view_details">
                       View details
                     </Link>
                     <div className="icons d-flex align-items-center">

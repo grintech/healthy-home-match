@@ -111,7 +111,7 @@ const SavedListings = () => {
 
                     <div className="list-content">
                       <h6 className="list-title">
-                        <Link to="/property-single">{listing.title}</Link>
+                        <Link to="/property">{listing.title}</Link>
                       </h6>
                       <p className="list-text">{listing.location}</p>
                       <div className="list-meta d-flex align-items-center">
@@ -122,7 +122,7 @@ const SavedListings = () => {
                       </div>
                       <hr />
                       <div className="list-meta2 d-flex justify-content-between align-items-center mt-3">
-                        <Link to='/property-single' className="view_details">View details</Link>
+                        <Link to='/property' className="view_details">View details</Link>
                      <div className="icons d-flex align-items-center gap-3 position-relative">
                       <Tooltip text={"Add to watchlist"}>
                           <Link

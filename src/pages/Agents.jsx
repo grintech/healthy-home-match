@@ -56,10 +56,8 @@ const Agents = () => {
             <div className="all_agents py-4">
                 <div className="container">
                     <div className="agents_section py-4">
-                        <h6 className=" mb-3">4 Agents Found</h6>
 
-        
-                        <div className="agent_filter_tabs d-flex align-items-center gap-3 flex-wrap">
+                        <div className="agent_filter_tabs d-flex align-items-center gap-3 flex-wrap mb-4">
                             {tabs.map((tab) => (
                                 <button
                                     key={tab}
@@ -148,7 +146,8 @@ const Agents = () => {
                             <Link><i className="fa-solid fa-rotate"></i> Reset all filters</Link>
                         </div>
 
-                        <div className="row g-4 g-xxl-5 mt-4">
+                        <h6 className=" mb-3">4 Agents Found</h6>
+                        <div className="row g-4 g-xxl-5">
                             <div className=" col-lg-3 col-md-4 col-6 single-agent-card ">
                                 <div className="item agent_card h-100">
                                     <Link to="/agent-single">

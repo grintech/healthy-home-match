@@ -139,7 +139,7 @@ const PopularProperties = () => {
         {/* <div className="row ">
           {properties.length > 0 ? (
             properties.slice(0, 8).map((property) => {
-              const url = `${window.location.origin}/property-single/${property.slug}`;
+              const url = `${window.location.origin}/property/${property.slug}`;
 
               return (
                 <div className="col-md-6 col-xl-3" key={property.id}>
@@ -184,7 +184,7 @@ const PopularProperties = () => {
                         </div>
                       </div>
                     </div>
-                    <Link to={`/property-single/${property.slug}`}>
+                    <Link to={`/property/${property.slug}`}>
                       <div className="list-content">
                         <h6 className="list-title text-capitalize text-truncate">
                           {property.title}
@@ -230,7 +230,7 @@ const PopularProperties = () => {
               ))
             : properties.length > 0
             ? properties.slice(0, 8).map((property) => {
-                const url = `${window.location.origin}/property-single/${property.slug}`;
+                const url = `${window.location.origin}/property/${property.slug}`;
                 return (
                 <div className="col-md-6 col-xl-3" key={property.id}>
                   <div className="listing-style6">
@@ -274,7 +274,7 @@ const PopularProperties = () => {
                         </div>
                       </div>
                     </div>
-                    <Link to={`/property-single/${property.slug}`}>
+                    <Link to={`/property/${property.slug}`}>
                       <div className="list-content">
                         <h6 className="list-title text-capitalize text-truncate">
                           {property.title}

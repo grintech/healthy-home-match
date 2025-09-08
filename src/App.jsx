@@ -42,6 +42,8 @@ import TermsAndConditions from './pages/OtherPages/TermsAndConditions.jsx';
 import BlogSingle from './pages/Blogs/BlogSingle.jsx';
 import MortgageCalculator from './components/MortgageCalculator.jsx';
 import Agents from './pages/Agents.jsx';
+import SellPropertyPage from './pages/SellProperty.jsx';
+import HelpPage from './pages/HelpPage.jsx';
 
 
 const App = () => {
@@ -108,13 +110,13 @@ const App = () => {
         {/* Public Pages */}
         <Route path="/" element={<Homepage />} />
         <Route path="/homes" element={<SearchHome />} />
-        <Route path="/property-single/:slug" element={<PropertySingle />} />
+        <Route path="/property/:slug" element={<PropertySingle />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/agency" element={<Agency />} />
         <Route path="/agents" element={<Agents />} />
-        <Route path="/agency-single" element={<AgencySingle />} />
-        <Route path="/agent-single" element={<AgentSingle />} />
+        <Route path="/agency-single/:slug" element={<AgencySingle />} />
+        <Route path="/agent-single/:slug" element={<AgentSingle />} />
         <Route path="/pricing" element={<PricingPage />} />
         <Route path="/faq" element={<FAQPage />} />
         <Route path="/blogs" element={<OurBlogs />} />
@@ -124,6 +126,8 @@ const App = () => {
 
 
         <Route path="/mortgage-calculator" element={<MortgageCalculator />} />
+        <Route path="/sell" element={<SellPropertyPage />} />
+        <Route path="/help" element={<HelpPage />} />
 
         
         {/* Dashboard (Protected) */}

@@ -6,37 +6,44 @@ import { Link } from "react-router-dom";
 const agents = [
   {
     name: "John Doe",
-    role: "Senior Agent",
+    agency: "Ray White",
+    agencyLogo: "/images/agency1.png",
     img: "/images/agent1.jpg",
   },
   {
     name: "Janny Smith",
-    role: "Real Estate Expert",
+    agency: "LJ Hooker",
+    agencyLogo: "/images/agency2.png",
     img: "/images/agent2.jpg",
   },
   {
     name: "David Johnson",
-    role: "Agent",
+    agency: "McGrath",
+    agencyLogo: "/images/agency3.png",
     img: "/images/agent3.jpg",
   },
   {
     name: "Emily Clark",
-    role: "Senior Advisor",
+    agency: "Belle Property",
+    agencyLogo: "/images/agency4.png",
     img: "/images/agent4.jpg",
   },
   {
     name: "Ketty Wilson",
-    role: "Senior Agent",
+    agency: "Harcourts",
+    agencyLogo: "/images/agency5.png",
     img: "/images/agent5.jpg",
   },
   {
     name: "Jane Smith",
-    role: "Real Estate Expert",
+    agency: "Century 21",
+    agencyLogo: "/images/agency3.png",
     img: "/images/agent6.jpg",
   },
   {
     name: "Cathy Johnson",
-    role: "Agent",
+    agency: "First National",
+    agencyLogo: "/images/agency4.png",
     img: "/images/agent7.jpg",
   },
 ];
@@ -44,7 +51,7 @@ const agents = [
 const AgentsSlider = () => {
   return (
     <div className="container py-5">
-      <h2 className="text-center mb-5 fw-bold">Meet Our Agents</h2>
+      <h2 className="text-center mb-4 sec-title">Meet Our Agents</h2>
       <Swiper
         modules={[Autoplay]}
         spaceBetween={25}
@@ -63,17 +70,30 @@ const AgentsSlider = () => {
         {agents.map((agent, index) => (
           <SwiperSlide key={index}>
             <div className="item agent_card">
-              <Link to="/agent-single">
                 <div className="team-style1">
-                  <div className="team-img">
-                    <img alt="agent team" src={agent.img} />
-                  </div>
+                  <Link to="/agent-single">
+                    <div className="team-img">
+                      <img alt="agent team" src={agent.img} />
+                    </div>
+                  </Link>
                   <div className="team-content pt-4">
-                    <h6 className="name mb-1">{agent.name}</h6>
-                    <p className="text fz15 mb-0">{agent.role}</p>
+                    <Link to="/agent-single">
+                     <h6 className="name mb-2">{agent.name}</h6>
+                      </Link>
+
+                      <Link to="/agency-single">
+                      <div className="d-flex justify-content-between align-items-center">
+                        <span className="text-secondary fw-bold">{agent.agency}</span>
+                        {/* <img
+                          src={agent.agencyLogo}
+                          alt={agent.agency}
+                          style={{ height: "45px", width:"45px", objectFit: "cover", border:"1px solid #ccc", borderRadius:"50%" }}
+                          className="shadow-sm"
+                        /> */}
+                      </div>
+                      </Link>
                   </div>
                 </div>
-              </Link>
             </div>
           </SwiperSlide>
         ))}

@@ -228,7 +228,7 @@ const AgentSingle = () => {
                                 <div className=" list-content">
                                   <h6 className="list-title">
                                     <Link
-                                      to="/property-single"
+                                      to="/property"
                                       data-discover="true"
                                     >
                                       Equestrian Family Home
@@ -256,7 +256,7 @@ const AgentSingle = () => {
                                   <div className="list-meta2 d-flex justify-content-between align-items-center mt-3">
                                     <Link
                                       className="view_details"
-                                      to="/property-single"
+                                      to="/property"
                                       data-discover="true"
                                     >
                                       View details
@@ -297,7 +297,7 @@ const AgentSingle = () => {
                                 <div className=" list-content">
                                   <h6 className="list-title">
                                     <Link
-                                      to="/property-single"
+                                      to="/property"
                                       data-discover="true"
                                     >
                                       Modern Glass Complex
@@ -326,7 +326,7 @@ const AgentSingle = () => {
                                   <div className="list-meta2 d-flex justify-content-between align-items-center mt-3">
                                     <Link
                                       className="view_details"
-                                      to="/property-single"
+                                      to="/property"
                                       data-discover="true"
                                     >
                                       View details
@@ -377,7 +377,7 @@ const AgentSingle = () => {
                                 <div className=" list-content">
                                   <h6 className="list-title">
                                     <Link
-                                      to="/property-single"
+                                      to="/property"
                                       data-discover="true"
                                     >
                                       Modern Glass Complex
@@ -406,7 +406,7 @@ const AgentSingle = () => {
                                   <div className="list-meta2 d-flex justify-content-between align-items-center mt-3">
                                     <Link
                                       className="view_details"
-                                      to="/property-single"
+                                      to="/property"
                                       data-discover="true"
                                     >
                                       View details
@@ -457,7 +457,7 @@ const AgentSingle = () => {
                                 <div className=" list-content">
                                   <h6 className="list-title">
                                     <Link
-                                      to="/property-single"
+                                      to="/property"
                                       data-discover="true"
                                     >
                                       Equestrian Family Home
@@ -485,7 +485,7 @@ const AgentSingle = () => {
                                   <div className="list-meta2 d-flex justify-content-between align-items-center mt-3">
                                     <Link
                                       className="view_details"
-                                      to="/property-single"
+                                      to="/property"
                                       data-discover="true"
                                     >
                                       View details
@@ -536,7 +536,7 @@ const AgentSingle = () => {
                                 <div className=" list-content">
                                   <h6 className="list-title">
                                     <Link
-                                      to="/property-single"
+                                      to="/property"
                                       data-discover="true"
                                     >
                                       Equestrian Family Home
@@ -564,7 +564,7 @@ const AgentSingle = () => {
                                   <div className="list-meta2 d-flex justify-content-between align-items-center mt-3">
                                     <Link
                                       className="view_details"
-                                      to="/property-single"
+                                      to="/property"
                                       data-discover="true"
                                     >
                                       View details

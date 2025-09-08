@@ -613,7 +613,7 @@ const SearchHome = () => {
                 <div className="row g-4">
                   {filteredHomes.map((home) => (
                     <div key={home.id} className={`${isListView ? "col-md-12 col-lg-6" : "col-lg-4 col-md-6"} mb-3`}>
-                      <Link to={`/property-single/${home.slug}`} className={`listing-style1 ${isListView ? "d-flex" : ""}`}>
+                      <Link to={`/property/${home.slug}`} className={`listing-style1 ${isListView ? "d-flex" : ""}`}>
                         <div className={`${isListView ? "col-5" : ""} list-thumb`}>
                           <img
                             alt="property"

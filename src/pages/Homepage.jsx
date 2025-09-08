@@ -39,7 +39,7 @@ const Homepage = () => {
                  <img src="/images/sell.png" className='mb-4' alt="buy property" />
                   <h4>Sell a home</h4>
                   <p>Selling your home doesn’t have to be overwhelming. With expert market analysis, strategic pricing, and professional marketing, we help you sell quickly while maximizing your return.</p>
-                  <Link className="th-btn sm style3 pill position-relative"> View options</Link>
+                  <Link to='/sell' className="th-btn sm style3 pill position-relative"> View options</Link>
               </div>
             </div>
           </div>
