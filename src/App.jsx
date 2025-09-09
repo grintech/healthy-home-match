@@ -115,8 +115,8 @@ const App = () => {
         <Route path="/contact" element={<Contact />} />
         <Route path="/agency" element={<Agency />} />
         <Route path="/agents" element={<Agents />} />
-        <Route path="/agency-single/:slug" element={<AgencySingle />} />
-        <Route path="/agent-single/:slug" element={<AgentSingle />} />
+        <Route path="/agency/:slug" element={<AgencySingle />} />
+        <Route path="/agent/:slug" element={<AgentSingle />} />
         <Route path="/pricing" element={<PricingPage />} />
         <Route path="/faq" element={<FAQPage />} />
         <Route path="/blogs" element={<OurBlogs />} />

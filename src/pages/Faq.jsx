@@ -57,7 +57,6 @@ const faqData = {
 };
 
 
-
 const tabs = ["All", "Buy", "Sell", "Rent", "Agents", "Account", "Payments"];
 
 const FAQPage = () => {
@@ -91,7 +90,7 @@ const FAQPage = () => {
                 Agents: "fas fa-user-tie",
                 Account: "fas fa-user",
                 Payments: "fas fa-credit-card",
-                };
+             };
 
                 return (
                 <li className="nav-item" key={tab}>

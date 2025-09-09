@@ -132,7 +132,7 @@ const UserInspections = () => {
                       </p>
                       <p className="card-text mb-2">
                         <strong>Agent : </strong>
-                        <Link to="/agent-single" className="text-theme fw-semibold">
+                        <Link to="/agent" className="text-theme fw-semibold">
                           {inspection.agent}
                         </Link>
                       </p>

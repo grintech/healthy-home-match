@@ -13,6 +13,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import SinglePageCalculator from "../../components/SinglePageCalculator";
 import { FaRegHeart, FaShareAlt } from "react-icons/fa";
+import Avatar from "react-avatar";
 
 
 const PropertySingle = () => {
@@ -1233,8 +1234,15 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                       alt="Agent"
                       className="rounded-circle agent_img me-3"
                     />
+                     {/* <Avatar
+                      name={"Mark Klasen" || "Unknown Agent"}
+                      src="" 
+                      size="70"
+                      round={true}
+                      className="me-3"
+                    /> */}
                     <div>
-                      <Link to="/agent-single">
+                      <Link to="/agent">
                         <h6 className="mb-0 fw-bold">Mark Klasen</h6>
                       </Link>
                       <div className="d-flex align-items-center text-muted py-2">
@@ -1245,11 +1253,11 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                     </div>
                   </div>
 
-                  <Link to="/agent-single" className="btn ud-btn black_btn search_home_btn w-100" >
+                  <Link to="/agent" className="btn ud-btn black_btn search_home_btn w-100" >
                     Contact Agent <i className="fa-solid fa-arrow-right"></i>
                   </Link>
                 </div>
-                  <Link to="/agency-single" className="d-flex justify-content-between align-items-center py-2 px-3 bg-green rounded-bottom-4">
+                  <Link to="/agency" className="d-flex justify-content-between align-items-center py-2 px-3 bg-green rounded-bottom-4">
                     <h6 className="text-white m-0 fw-bold">Logitech</h6>
                     <img src="/images/agency4.png" style={{width:"50px", height:"50px", objectFit:"cover"}} 
                     className="rounded-circle "

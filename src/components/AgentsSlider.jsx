@@ -71,13 +71,13 @@ const AgentsSlider = () => {
           <SwiperSlide key={index}>
             <div className="item agent_card">
                 <div className="team-style1">
-                  <Link to="/agent-single">
+                  <Link to="/agent">
                     <div className="team-img">
                       <img alt="agent team" src={agent.img} />
                     </div>
                   </Link>
                   <div className="team-content pt-4">
-                    <Link to="/agent-single">
+                    <Link to="/agent">
                      <h6 className="name mb-2">{agent.name}</h6>
                       </Link>
 

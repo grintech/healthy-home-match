@@ -1,8 +1,44 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 const AgentSingle = () => {
+
+  const { slug } = useParams();
+  const ApiUrl = import.meta.env.VITE_API_URL;
+  const [agent, setAgent] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+
+  /*--- Agent Single Api ----*/
+
+  useEffect(() => {
+    const fetchAgency = async () => {
+      try {
+        const res = await axios.get(`${ApiUrl}/agents/single/listing/${slug}`, {
+          headers: {
+            "X-API-DOMAIN":
+              "$2y$10$Vs8ujkh6QGdPgRU4Qsub7uP6l8fu5deHcfhF/ePrPWOkVWi3lDT0u",
+          },
+        });
+
+        if (res.data.success) {
+          setAgent(res.data.data);
+          console.log(res.data.data);
+        }
+      } catch (err) {
+        console.error("Error fetching agency:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    // fetchAgency();
+  }, [slug]);
+
+
   return (
     <div>
       <Navbar />
@@ -18,7 +54,7 @@ const AgentSingle = () => {
                   <div className="single-contant ms-4 ">
                     <h1 className="title mb-0 text-white">Mark Kalsen</h1>
                     <p className="fz15 text-white">
-                      <Link to="/agency-single">Company Agent at <b>All American Real Estate</b></Link>
+                      <Link to="/agency">Company Agent at <b>All American Real Estate</b></Link>
                     </p>
                     <div className="agent-meta mb15 d-md-flex align-items-center">
                       <Link
@@ -72,21 +108,21 @@ const AgentSingle = () => {
                  <img src="/images/agency1.png" className="mb-3" alt="" />
                  <h5><Link to="/agency-single">All American Real Estate</Link></h5>
                  <div className="row">
-                  <div className="col-6">
-                    <p className="fz14 mb-2"><i className="fa-solid fa-briefcase me-2"></i>12+ Years</p>
-                  </div>
-                  <div className="col-6">
-                    <p className="fz14 mb-2"><i className="fa-solid fa-users me-2"></i>250+ agents</p>
-                  </div>
-                  <div className="col-6">
-                    <p className="fz14 mb-2"><i className="fa-solid fa-house me-2"></i>1300+ Sold</p>
-                  </div>
-                  <div className="col-6">
-                     <Link className="fz14 mb-1"><i className="fa-solid fa-phone me-2"></i>+1 800 555 1234</Link>
-                  </div>
-                  <div className="col-12">
-                  <Link className="fz14 mb-2"><i className="fa-solid fa-envelope me-2"></i>contact@allamerican.com</Link>
-                  </div>
+                    <div className="col-6">
+                      <p className="fz14 mb-2"><i className="fa-solid fa-briefcase me-2"></i>12+ Years</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="fz14 mb-2"><i className="fa-solid fa-users me-2"></i>250+ agents</p>
+                    </div>
+                    <div className="col-6">
+                      <p className="fz14 mb-2"><i className="fa-solid fa-house me-2"></i>1300+ Sold</p>
+                    </div>
+                    <div className="col-6">
+                      <Link className="fz14 mb-1"><i className="fa-solid fa-phone me-2"></i>+1 800 555 1234</Link>
+                    </div>
+                    <div className="col-12">
+                    <Link className="fz14 mb-2"><i className="fa-solid fa-envelope me-2"></i>contact@allamerican.com</Link>
+                    </div>
 
                  </div>
                 </div>

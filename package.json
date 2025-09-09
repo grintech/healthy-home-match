@@ -18,6 +18,7 @@
     "chart.js": "^4.5.0",
     "rc-slider": "^11.1.8",
     "react": "^19.1.0",
+    "react-avatar": "^5.0.4",
     "react-bootstrap": "^2.10.10",
     "react-chartjs-2": "^5.3.0",
     "react-countup": "^6.5.3",

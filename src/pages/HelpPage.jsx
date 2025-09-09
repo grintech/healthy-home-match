@@ -41,7 +41,7 @@ export default function HelpPage() {
           <div className="d-flex justify-content-center mb-5">
             <div className="position-relative w-100" style={{ maxWidth: "500px" }}>
               <input
-                type="text"
+                type="search"
                 placeholder="Search for help articles..."
                 className="form-control rounded-pill ps-5 py-3 shadow-sm"
                 onChange={(e) => setSearchTerm (e.target.value) }
@@ -55,13 +55,12 @@ export default function HelpPage() {
 
           {/* Categories */}
          <div className="row g-4">
-            {/* {filteredCategories.length > 0 ? (
-                filteredCategories.map((item, index) => ( */}
-            {helpCategories.length > 0 ? (
-                helpCategories.map((item, index) => (
+              {/* {helpCategories.length > 0 ? (
+                helpCategories.map((item, index) => ( */}
+             {filteredCategories.length > 0 ? (
+                filteredCategories.map((item, index) => (
                 <div className="col-md-4" key={index}>
-                    {/* <Link to={item.link}> */}
-                    <Link to="#">
+                    <Link to={item.link}>
                     <div className="card h-100 border-0 shadow-sm rounded-4 p-4 text-center hover-shadow">
                         <div className="text-theme fs-2 mb-3">{item.icon}</div>
                         <h5 className="fw-semibold mb-2 text-green">{item.title}</h5>

@@ -4,6 +4,8 @@ import Footer from "../components/Footer";
 import { Link, Links, useParams } from "react-router-dom";
 import axios from "axios";
 import { useRef } from "react";
+import AgencySingleSkeleton from "../components/skeletons/AgencySingleSkeleton";
+import Avatar from "react-avatar";
 
 const AgencySingle = () => {
   const { slug } = useParams();
@@ -15,6 +17,39 @@ const AgencySingle = () => {
   const [isTruncatable, setIsTruncatable] = useState(false);
   const descRef = useRef(null);
   const toggleText = () => setShowFullText((prev) => !prev);
+
+  const [visibleCounts, setVisibleCounts] = useState({
+  all: 4,
+  rent: 4,
+  buy: 4,
+  sell: 4,
+});
+
+
+const handleShowMore = (type) => {
+  setVisibleCounts((prev) => ({
+    ...prev,
+    [type]: prev[type] + 4,
+  }));
+};
+
+const handleShowLess = (type) => {
+  setVisibleCounts((prev) => ({
+    ...prev,
+    [type]: 4,
+  }));
+};
+
+
+function formatTime(timeStr) {
+  if (!timeStr) return "";
+  const [hourStr, minStr] = timeStr.split(":");
+  let hour = parseInt(hourStr, 10);
+  const min = minStr;
+  const ampm = hour >= 12 ? "PM" : "AM";
+  hour = hour % 12 || 12; // convert 0->12, 13->1
+  return `${hour}:${min} ${ampm}`;
+}
 
 
  /*--- Agency Single Api ----*/
@@ -64,7 +99,14 @@ const AgencySingle = () => {
   let sellProperties = [];
 
   if (agency) {
-    allProperties = agency.agents?.flatMap((agent) => agent.properties || []) || [];
+    // allProperties = agency.agents?.flatMap((agent) => agent.properties || []) || [];
+     allProperties = agency.agents?.flatMap((agent) =>
+    (agent.properties || []).map((property) => ({
+      ...property,
+      agentName: agent.name,  
+      agentSlug: agent.slug,
+    }))
+  ) || [];
     rentProperties = allProperties.filter(
       (p) => p.listing_type?.toLowerCase() === "rent"
     );
@@ -124,17 +166,21 @@ const AgencySingle = () => {
             </div>
             {property.area_m2 && property.area_unit && (
               <div>
-                <i className="fa-solid fa-chart-area"></i>{" "}
+                <i className="fa-solid fa-chart-area"></i>
                 {property.area_m2} {property.area_unit}
               </div>
             )}
 
-            <div>
+            <div className="text-capitalize">
               <i className="fa-solid fa-home"></i> {property.property_type}
             </div>
           </div>
 
-          <hr />
+          <Link to={`/agent/${property.agentSlug}`} className="d-flex justify-content-end mt-2">
+           <span className="small badge bg-warning "> <strong className="text-dark">{property.agentName}</strong>  </span>
+          </Link>
+
+          <hr className="my-2" />
           <div className="list-meta2 d-flex justify-content-between align-items-center mt-3">
             <Link className="view_details" to={`/property/${property.slug}`}>
               View details
@@ -152,17 +198,21 @@ const AgencySingle = () => {
       </div>
     </div>
   );
+ 
+
 
   return (
     <div>
       <Navbar />
       {loading ? (
-       <div  className="d-flex flex-column justify-content-center align-items-center" style={{ height: "80vh" }}  >
-          <i className="fa-solid fa-home text-theme fs-1 loader-icon"></i>
-          <span>Please wait...</span>
-        </div>
+        // <div  className="d-flex flex-column justify-content-center align-items-center" style={{ height: "80vh" }}  >
+        //   <i className="fa-solid fa-home text-theme fs-1 loader-icon"></i>
+        //   <span>Please wait...</span>
+        // </div>
+        <AgencySingleSkeleton />
+
     ) : !agency ? (
-      <p className="text-center py-5">No Agency Found</p>
+      <p className="text-center fw-bold py-5">No Details Found</p>
     ) : (
       
       <div className="agency_single">
@@ -321,11 +371,41 @@ const AgencySingle = () => {
                           role="tabpanel"
                         >
                           <div className="row g-4">
-                            {allProperties.length > 0 ? (
+                            {/* {allProperties.length > 0 ? (
                               allProperties.map(renderPropertyCard)
                             ) : (
                               <p>No properties available.</p>
+                            )} */}
+
+                            {allProperties.length > 0 ? (
+                              <>
+                                {allProperties.slice(0, visibleCounts.all).map(renderPropertyCard)}
+
+                                {allProperties.length > 4 && (
+                                  <div className="col-12 d-flex justify-content-center mt-4">
+                                    {visibleCounts.all < allProperties.length ? (
+                                      <button
+                                        className="btn ud-btn btn-white search_home_btn black_btn"
+                                        onClick={() => handleShowMore("all")}
+                                      >
+                                        Show More
+                                      </button>
+                                    ) : (
+                                      <button
+                                        className="btn ud-btn btn-white search_home_btn black_btn"
+                                        onClick={() => handleShowLess("all")}
+                                      >
+                                        Show Less
+                                      </button>
+                                    )}
+                                  </div>
+                                )}
+                              </>
+                            ) : (
+                              <p>No properties available.</p>
                             )}
+
+
                           </div>
                         </div>
 
@@ -357,7 +437,7 @@ const AgencySingle = () => {
                             {sellProperties.length > 0 ? (
                               sellProperties.map(renderPropertyCard)
                             ) : (
-                              <p>No sold properties.</p>
+                              <p className="m-0 fw-bold text-center py-3">No sold properties yet.</p>
                             )}
                           </div>
                         </div>
@@ -382,13 +462,26 @@ const AgencySingle = () => {
                         {agency.agents.slice(0, 3).map((agent) => (
                           <div className="col-lg-4 col-sm-4 col-6" key={agent.id}>
                             <div className="item agent_card">
-                              <Link to={`/agent-single/${agent.slug}`}>
+                              <Link to={`/agent/${agent.slug}`}>
                                 <div className="team-style1">
                                   <div className="team-img">
-                                    <img
-                                      alt={agent.name}
-                                      src={agent.photo || "/images/agent1.jpg"}
-                                    />
+                                    {/* { agent.photo ?  <img
+                                          alt={agent.name}
+                                          src={agent.photo || "/images/deagult_img.png"}
+                                          className="w-100"
+                                        /> : 
+                                        <Avatar 
+                                          size="150"
+                                          name={agent.name }
+                                          className="w-100"
+                                          round={4}
+                                    />  } */}
+
+                                         <img
+                                          alt={agent.name}
+                                          src={agent.photo || "/images/default_img.png"}
+                                          className="w-100"
+                                        />
                                   </div>
                                   <div className="team-content pt-4">
                                     <h6 className="name mb-1 text-capitalize">
@@ -445,15 +538,33 @@ const AgencySingle = () => {
                   <div className="agency_single_info border-0">
                     <div className="widget-wrapper mb-0">
                       <h6 className="title fw-bold mb-4">Professional Information</h6>
+                      
                       {agency.location && (
                         <div className="list-news-style d-flex justify-content-between align-items-baseline mb10">
                           <h6 className="fw-bold mb-0 me-3">Address</h6>
                           <p className="text mb-0 fz14">{agency.location}</p>
                         </div>
                       )}
+                
+                      {(agency.open_time && agency.close_time) && (
+                        <div className="list-news-style d-flex justify-content-between align-items-baseline mb10">
+                          <h6 className="fw-bold mb-0 me-3">Office Hours</h6>
+                          <p className="text mb-0 fz14">
+                            {formatTime(agency.open_time)} - {formatTime(agency.close_time)}
+                          </p>
+                        </div>
+                      )}
+
+                      {agency.other_hours && agency.other_hours.trim() !== "" && (
+                        <div className="list-news-style d-flex justify-content-between align-items-baseline mb10">
+                          <h6 className="fw-bold mb-0 me-3">Other Hours</h6>
+                          <p className="text mb-0 fz14">{agency.other_hours}</p>
+                        </div>
+                      )}
+                      
                       {agency.phone && (
                         <div className="list-news-style d-flex justify-content-between align-items-baseline mb10">
-                          <h6 className="fw-bold mb-0 me-3">Office</h6>
+                          <h6 className="fw-bold mb-0 me-3">Phone</h6>
                           <p className="text mb-0 fz14">{agency.phone}</p>
                         </div>
                       )}

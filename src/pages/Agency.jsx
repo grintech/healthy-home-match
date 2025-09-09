@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import AgencySkeleton from "../components/skeletons/AgencySkeleton";
 
 const Agency = () => {
   const [selectedCategories, setSelectedCategories] = useState(["All"]);
@@ -81,7 +82,9 @@ const Agency = () => {
           <h1 className="sec-title mb-4">All Agencies</h1>
 
           {/* Filter Section */}
-          {!loading && filteredAgencies.length > 0 && (
+
+          {/* {!loading && filteredAgencies.length > 0 && (
+          )} */}
             <div className="row align-items-center mb-4">
               <div className="col-lg-9">
                 <div className="agent-page-meta dropdown-lists">
@@ -138,13 +141,14 @@ const Agency = () => {
                 </div>
               </div>
             </div>
-          )}
 
-          {/* Loading */}
           {loading && (
-            <div className="d-flex flex-column justify-content-center align-items-center py-5" >
-              <i className="fa-solid fa-home text-theme fs-1 loader-icon"></i>
-              <span>Loading...</span>
+            // <div className="d-flex flex-column justify-content-center align-items-center py-5" >
+            //   <i className="fa-solid fa-home text-theme fs-1 loader-icon"></i>
+            //   <span>Loading...</span>
+            // </div>
+            <div className="row g-4">
+              { [...Array(3)].map((_, i) => <AgencySkeleton key={i} />) }
             </div>
           )
           }
@@ -166,7 +170,7 @@ const Agency = () => {
                       <h6 className="agency-title text-truncate mb-1 fw-bold">{agency.agency_name}</h6>
                       <p className="fz15">{agency.location}</p>
                       <div className="d-grid">
-                        <Link to={`/agency-single/${agency.slug}`} className="btn ud-btn btn-white search_home_btn ">
+                        <Link to={`/agency/${agency.slug}`} className="btn ud-btn btn-white search_home_btn ">
                           View Listings <i className="fas fa-arrow-right-long"></i>
                         </Link>
                       </div>
