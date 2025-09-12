@@ -48,19 +48,19 @@ const PropertySingle = () => {
     { day: "Sunday", date: "Sep 14, 2025", time: "3:00 pm – 3:30 pm" },
   ];
 
-  const handleRequestAnotherTime = () => {
-    // Close modal
-    const modal = document.getElementById("inspectionModal");
-    const modalInstance = window.bootstrap.Modal.getInstance(modal);
-    modalInstance.hide();
+  // const handleRequestAnotherTime = () => {
+  //   // Close modal
+  //   const modal = document.getElementById("inspectionModal");
+  //   const modalInstance = window.bootstrap.Modal.getInstance(modal);
+  //   modalInstance.hide();
 
-    const target = document.getElementById("enquiryForm");
-    if (target) {
-      setTimeout(() => {
-        target.scrollIntoView({ behavior: "smooth", block: "start" });
-      }, 300); // slight delay so modal fully closes first
-    }
-  };
+  //   const target = document.getElementById("enquiryForm");
+  //   if (target) {
+  //     setTimeout(() => {
+  //       target.scrollIntoView({ behavior: "smooth", block: "start" });
+  //     }, 300); 
+  //   }
+  // };
 
   const handleScrollToCalculator = () => {
   const target = document.getElementById("calculatorSection");
@@ -431,7 +431,7 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                 </div>
               ))}
             </div>
-            <div className="modal-footer border-0">
+            {/* <div className="modal-footer border-0">
               <button
                 type="button"
                 className="btn btn-dark btn-sm"
@@ -439,7 +439,7 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
               >
                 Request Another Time
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
@@ -1229,11 +1229,13 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                 <div className="card mb-0 overview_card agent_contact_card border-0 ">
                   <h5 className="single_head mb-4">Get More Information</h5>
                   <div className="d-flex align-items-center mb-3">
-                    <img
-                      src="/images/agent1.jpg"
-                      alt="Agent"
-                      className="rounded-circle agent_img me-3"
-                    />
+                    <Link to={`/agent/${property.user.profile.slug}`} >
+                      <img
+                        src="/images/agent1.jpg"
+                        alt="Agent"
+                        className="rounded-circle agent_img me-3"
+                      />
+                    </Link>
                      {/* <Avatar
                       name={"Mark Klasen" || "Unknown Agent"}
                       src="" 
@@ -1242,24 +1244,24 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                       className="me-3"
                     /> */}
                     <div>
-                      <Link to="/agent">
-                        <h6 className="mb-0 fw-bold">Mark Klasen</h6>
+                      <Link to={`/agent/${property.user.profile.slug}`}>
+                        <h6 className="mb-2 fw-bold">{property.user.name}</h6>
                       </Link>
-                      <div className="d-flex align-items-center text-muted py-2">
-                        <i className="fa-solid fa-phone me-1"></i> (+1) 234 456
-                        445
-                      </div>
-                      <small className="">Real Estate Agent</small>
+                      
+                      <a href={`mailto:${property.user.email}`} className="d-flex align-items-center text-muted mb-1">
+                        <i className="fa-solid fa-envelope me-1"></i> {property.user.email}
+                      </a>
+                      {/* <small className="">{property.user.agency.agency_name}</small> */}
                     </div>
                   </div>
 
-                  <Link to="/agent" className="btn ud-btn black_btn search_home_btn w-100" >
+                  <Link to={`/agent/${property.user.profile.slug}`}className="btn ud-btn black_btn search_home_btn w-100" >
                     Contact Agent <i className="fa-solid fa-arrow-right"></i>
                   </Link>
                 </div>
-                  <Link to="/agency" className="d-flex justify-content-between align-items-center py-2 px-3 bg-green rounded-bottom-4">
-                    <h6 className="text-white m-0 fw-bold">Logitech</h6>
-                    <img src="/images/agency4.png" style={{width:"50px", height:"50px", objectFit:"cover"}} 
+                  <Link to={`/agency/${property.user.agency.slug}`} className="d-flex justify-content-between align-items-center py-2 px-3 bg-green rounded-bottom-4">
+                    <h6 className="text-white m-0 fw-bold">{property.user.agency.agency_name}</h6>
+                    <img src={`https://${property.user.agency.logo}`} style={{width:"50px", height:"50px", objectFit:"cover"}} 
                     className="rounded-circle "
                     alt="" />
                   </Link>

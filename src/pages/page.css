@@ -499,6 +499,7 @@ padding: 30px !important;
 /*--------- All agents page ------*/
 
 .all_agents_page .search_agent_form input{height: 50px;}
+.all_agents_page .search_agent_form i{ display: none !important; }
 .all_agents_page .search_agent_form input::placeholder{font-size: 14px; color: #000;}
 .all_agents_page .search_agent_form input:focus{box-shadow: none !important; border-color: var(--secondary)}
 .all_agents_page .search_agent_form button{height: 50px;}

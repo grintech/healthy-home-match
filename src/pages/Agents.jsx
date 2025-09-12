@@ -6,6 +6,7 @@ import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import axios from "axios";
 import AgentCardSkeleton from "../components/skeletons/AgentCardSkeleton";
+import LocationSearchInput from "../components/LocationSearchInput";
 
 const Agents = () => {
   const ApiUrl = import.meta.env.VITE_API_URL;
@@ -15,6 +16,12 @@ const Agents = () => {
   const [loading, setLoading] = useState(true);
   const [priceRange, setPriceRange] = useState(DEFAULT_RANGE);
   const [specialties, setSpecialties] = useState([]);
+
+  const [location, setLocation] = useState(null);
+  const [agentName, setAgentName] = useState("");
+
+
+
   const [pagination, setPagination] = useState({
     current_page: 1,
     last_page: 1,
@@ -37,6 +44,12 @@ const Agents = () => {
       if (filters.price_min !== undefined) params.append("price_min", filters.price_min);
       if (filters.price_max !== undefined) params.append("price_max", filters.price_max);
       if (filters.specialty?.length > 0) params.append("specialty", filters.specialty.join(","));
+
+      if (filters.latitude) params.append("latitude", filters.latitude);
+      if (filters.longitude) params.append("longitude", filters.longitude);
+      if (filters.name) params.append("name", filters.name);
+
+
 
       const res = await axios.get(`${ApiUrl}/agents/listing/?${params.toString()}`, {
         headers: {
@@ -65,6 +78,16 @@ const Agents = () => {
       filters.price_max = priceRange[1];
     }
     if (specialties.length > 0) filters.specialty = specialties;
+
+    if (location?.lat && location?.lng) {
+      filters.latitude = location.lat;
+      filters.longitude = location.lng;
+    }
+
+    if (agentName.trim() !== "") {
+      filters.name = agentName.trim();
+    }
+
 
     fetchAgents(1, filters);
 
@@ -99,14 +122,18 @@ const Agents = () => {
               applyFilters();
             }}
           >
-            <div className="row">
-              <div className="col-md-6">
-                <input type="text" className="form-control" placeholder="City, Province, State , Zipcode" />
+            <div className="row justify-content-center">
+              <div className="col-lg-6 col-md-5 mb-3 mb-lg-0">
+                {/* <input type="text" className="form-control" placeholder="City, Province, State , Zipcode" /> */}
+                <LocationSearchInput onSelect={(loc) => setLocation(loc)}  />
               </div>
-              <div className="col-md-4">
-                <input type="text" className="form-control" placeholder="Agent Name" />
+              <div className="col-lg-4 col-md-4 mb-3 mb-lg-0">
+                <input type="text" className="form-control" placeholder="Agent Name"
+                value={agentName}
+                onChange={(e) => setAgentName(e.target.value)}
+                />
               </div>
-              <div className="col-md-2">
+              <div className="col-lg-2 col-md-3 col-6 mb-3 mb-lg-0">
                 <button type="submit" className="btn btn-theme w-100">
                   <i className="fa-solid fa-magnifying-glass"></i> Find agent
                 </button>
@@ -179,7 +206,7 @@ const Agents = () => {
                   {agents.map((agent) => (
                     <div key={agent.id} className="col-lg-3 col-md-4 col-6 single-agent-card">
                       <div className="item agent_card h-100">
-                        <Link to={`/agent/${agent.user.slug}`}>
+                        <Link to={`/agent/${agent.slug}`}>
                           <div className="team-style1">
                             <div className="team-img">
                               <img

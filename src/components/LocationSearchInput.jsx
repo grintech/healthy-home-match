@@ -19,25 +19,29 @@ const LocationSearchInput = ({ onSelect }) => {
   }, []);
 
   const handleInput = (e) => {
-    const inputValue = e.target.value;
-    setValue(inputValue);
+  const inputValue = e.target.value;
+  setValue(inputValue);
 
-    if (!inputValue) {
-      setPredictions([]);
-      setShowDropdown(false);
-      return;
-    }
+  if (!inputValue) {
+    setPredictions([]);
+    setShowDropdown(false);
 
-    if (autocompleteServiceRef.current) {
-      autocompleteServiceRef.current.getPlacePredictions(
-        { input: inputValue },
-        (results) => {
-          setPredictions(results || []);
-          setShowDropdown(true);
-        }
-      );
-    }
-  };
+    // reset location if cleared
+    if (onSelect) onSelect(null);
+    return;
+  }
+
+  if (autocompleteServiceRef.current) {
+    autocompleteServiceRef.current.getPlacePredictions(
+      { input: inputValue },
+      (results) => {
+        setPredictions(results || []);
+        setShowDropdown(true);
+      }
+    );
+  }
+};
+
 
   const handleSelect = (prediction) => {
     setValue(prediction.description);
