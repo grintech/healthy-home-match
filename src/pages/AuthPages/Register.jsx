@@ -1,12 +1,11 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import "./auth.css";
+import api from "../../utils/axios";
 
 const Register = () => {
-  const ApiUrl = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
@@ -71,7 +70,7 @@ const Register = () => {
     }
 
     try {
-      const res = await axios.post(`${ApiUrl}/register`, form, {
+      const res = await api.post(`/register`, form, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
@@ -113,9 +112,12 @@ const Register = () => {
             <div className="row role_checks mb-4">
 
               {[
+                // { value: "4", label: "Buyer" },
+                // { value: "2", label: "Property Owner" },
+                // { value: "3", label: "Verified Professional" },
                 { value: "4", label: "Buyer" },
-                { value: "2", label: "Property Owner" },
-                { value: "3", label: "Verified Professional" },
+                { value: "3", label: "Agency" },
+                { value: "2", label: "Builder" },
               ].map((role, index) => (
                 <div key={index} className="col-lg-4 col-6 mb-2 mb-lg-0">
                   <div className="form-check h-100">

@@ -1,14 +1,14 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { Link, useNavigate ,useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import "./auth.css";
+import api from "../../utils/axios";
 
 const Login = () => {
-  const ApiUrl = import.meta.env.VITE_API_URL;
   const { login } = useAuth();
   const navigate = useNavigate();
-
+  const location = useLocation();
+  
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
@@ -28,45 +28,49 @@ const Login = () => {
     e.preventDefault();
     setErrorMsg("");
     setSuccessMsg("");
-    setLoading(true); 
+    setLoading(true);
 
     try {
-      const response = await axios.post(`${ApiUrl}/login`, formData);
+      const response = await api.post(`/login`, formData);
       const { token, user, message } = response.data;
 
       if (token && user) {
         login({ token, user });
         setSuccessMsg(message || "Login successful.");
-        setTimeout(() => navigate("/"), 2000);
+
+        // get where user came from, default to home
+        const from = location.state?.from?.pathname || location.state?.from ||  "/";
+        console.log("Location state:", location.state);
+
+        setTimeout(() => {
+          navigate(from, { replace: true });
+        }, 2000);
       } else {
         setErrorMsg("Invalid login response.");
       }
     } catch (err) {
       const resData = err.response?.data;
       const error =
-        resData?.message ||
-        resData?.error ||
-        "Login failed. Please try again.";
-         setErrorMsg(error);
+        resData?.message || resData?.error || "Login failed. Please try again.";
+      setErrorMsg(error);
 
-       // Show resend link if email not verified
-        if (error === "Email not verified.") {
-          setShowResendLink(true);
-        } else {
-          setShowResendLink(false);
-        }
-
+      if (error === "Email not verified.") {
+        setShowResendLink(true);
+      } else {
+        setShowResendLink(false);
+      }
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
-};
+  };
+
 
 // Resend Email API
 const handleResendVerification = async () => {
   setSuccessMsg("");
   setErrorMsg("");
   try {
-    const res = await axios.post(`${ApiUrl}/resend-verification`, {
+    const res = await api.post(`/resend-verification`, {
       email: formData.email
     });
     setSuccessMsg(res.data?.message || "Verification email resent.");

@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import AgencySkeleton from "../components/skeletons/AgencySkeleton";
+import api from "../utils/axios";
 
 const Agency = () => {
   const [selectedCategories, setSelectedCategories] = useState(["All"]);
@@ -13,7 +13,6 @@ const Agency = () => {
   const [pagination, setPagination] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const ApiUrl = import.meta.env.VITE_API_URL;
 
   // Handle category toggle
   const handleCategoryChange = (category) => {
@@ -34,11 +33,7 @@ const Agency = () => {
   const fetchAgencies = async (page = 1) => {
     try {
       setLoading(true);
-      const res = await axios.get(`${ApiUrl}/agency/listing?page=${page}`, {
-        headers: {
-          "X-API-DOMAIN": "$2y$10$Vs8ujkh6QGdPgRU4Qsub7uP6l8fu5deHcfhF/ePrPWOkVWi3lDT0u",
-        },
-      });
+      const res = await api.get(`/agency/listing?page=${page}`);
 
       if (res.data.success) {
         const response = res.data.data;

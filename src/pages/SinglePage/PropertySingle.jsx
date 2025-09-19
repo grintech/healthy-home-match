@@ -6,21 +6,32 @@ import "yet-another-react-lightbox/styles.css";
 import "yet-another-react-lightbox/plugins/thumbnails.css";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams , useLocation } from "react-router-dom";
 import "./single.css";
 import Tooltip from "../../components/Tooltip";
-import axios from "axios";
 import { toast } from "react-toastify";
 import SinglePageCalculator from "../../components/SinglePageCalculator";
 import { FaRegHeart, FaShareAlt } from "react-icons/fa";
 import Avatar from "react-avatar";
+import api from "../../utils/axios";
+import { useAuth } from "../../context/AuthContext";
 
 
 const PropertySingle = () => {
-  const ApiUrl = import.meta.env.VITE_API_URL;
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
   const { slug } = useParams();
   const [property, setProperty] = useState(null);
   const [images, setImages] = useState([]);
+
+  const [enquiry, setEnquiry] = useState({
+    name: "",
+    email: "",
+    reason: "",
+    message: "",
+  });
+
 
  const [addedPlans, setAddedPlans] = useState({});
 
@@ -73,15 +84,11 @@ const PropertySingle = () => {
   }
 };
 
+ /********* Fetch Property Api ****************/
 
   useEffect(() => {
     if (slug) {
-      axios
-        .get(`${ApiUrl}/property/${slug}`, {
-          headers: {
-            "X-API-DOMAIN": "$2y$10$Vs8ujkh6QGdPgRU4Qsub7uP6l8fu5deHcfhF/ePrPWOkVWi3lDT0u",
-          },
-        })
+      api.get(`/property/${slug}`)
         .then((res) => {
           if (res.data.status) {
             const data = res.data.data;
@@ -107,6 +114,52 @@ const PropertySingle = () => {
     }
   }, [slug]);
 
+
+ /******* Enquiry Form Api Starts***********/
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setEnquiry((prev) => ({ ...prev, [name]: value }));
+  };
+
+ const handleEnquirySubmit = async (e) => {
+    e.preventDefault();
+
+    if (!user) {
+    toast.error("Please login to submit enquiry!");
+    setTimeout(() => {
+      navigate("/login", { state: { from: location } } );
+    }, 2000);
+    return;
+  }
+
+    if (!property?.id || !property?.user_id) {
+      toast.error("Failed to get property data.");
+      return;
+    }
+
+    const payload = {
+      ...enquiry,
+      property_id: property.id,
+      user_id: property.user_id,
+    };
+
+    try {
+      const res = await api.post(`/enquiry`, payload,);
+
+      if (res.data.success === true) {
+        toast.success(res.data.message || "Enquiry submitted successfully!");
+        setEnquiry({ name: "", email: "", reason: "", message: "" }); 
+      } else {
+        toast.error(res.data.message || "Failed to submit enquiry.");
+      }
+    } catch (err) {
+      console.error("Enquiry API Error:", err);
+      toast.error("Server error. Please try again later.");
+    }
+  };
+
+/******* Enquiry Form Api Ends***********/
 
 
 const shareUrl = `${window.location.origin}/property/${slug}`;
@@ -195,6 +248,22 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
     }
   }, []);
 
+
+
+  const handleContactClick = (e) => {
+    e.preventDefault();
+
+    if (!user) {
+      toast.error("Please login to contact the agent!");
+      setTimeout(() => {
+        navigate("/login" , { state: { from: location } });
+      }, 2000);
+      return;
+    }
+
+    // If logged in → redirect to agent profile
+    navigate(`/agent/${property.user.profile.slug}`);
+  };
 
 
   return (
@@ -1180,58 +1249,64 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                 </button>
               </div> */}
               <div id="enquiryForm" className="enquiry_section  mb-4">
-                <div className="card mb-4 overview_card border-0 ">
-                  <h5 className="single_head mb-2">Send an enquiry</h5>
 
-                  <form id="scheduleTourForm">
-                    {/* <input
-                  type={inputType}
-                  className="form-control mb-3"
-                  placeholder="Time"
-                  onFocus={() => setInputType("datetime-local")}
-                  onBlur={(e) => {
-                    if (!e.target.value) setInputType("text");
-                  }}
-                /> */}
+               <div className="card mb-4 overview_card border-0">
+                <h5 className="single_head mb-2">Send an enquiry</h5>
 
+                <form onSubmit={handleEnquirySubmit}>
                     <input
                       type="text"
+                      name="name"
+                      value={enquiry.name}
+                      onChange={handleChange}
                       className="form-control mb-3"
                       placeholder="Your Name"
+                      required
                     />
                     <input
                       type="email"
+                      name="email"
+                      value={enquiry.email}
+                      onChange={handleChange}
                       className="form-control mb-3"
                       placeholder="Email"
+                      required
                     />
-                    <select name="" className="form-select mb-3" id="">
+                    <select
+                      name="reason"
+                      value={enquiry.reason}
+                      onChange={handleChange}
+                      className="form-select mb-3"
+                      required
+                    >
                       <option value="">Select reason</option>
-                      <option value="">Schedule Inspection</option>
-                      <option value="">Price information</option>
-                      <option value="">Rates & Fees</option>
-
+                      <option value="Schedule Inspection">Schedule Inspection</option>
+                      <option value="Price information">Price information</option>
+                      <option value="Rates & Fees">Rates & Fees</option>
                     </select>
-                     <textarea
+                    <textarea
+                      name="message"
+                      value={enquiry.message}
+                      onChange={handleChange}
                       className="form-control mb-3"
                       placeholder="Message"
                       rows={3}
+                      required
                     ></textarea>
-                    <Link
-                      to="#"
-                      className="btn ud-btn btn-white search_home_btn w-100"
-                    >
-
+                    <button type="submit" className="btn ud-btn btn-white search_home_btn w-100">
                       Submit <i className="fa-solid fa-arrow-right"></i>
-                    </Link>
-                  </form>
-                </div>
+                    </button>
+                </form>
+
+              </div>
+
 
                 <div className="card mb-0 overview_card agent_contact_card border-0 ">
                   <h5 className="single_head mb-4">Get More Information</h5>
                   <div className="d-flex align-items-center mb-3">
-                    <Link to={`/agent/${property.user.profile.slug}`} >
+                    <Link onClick={handleContactClick} >
                       <img
-                        src="/images/agent1.jpg"
+                        src={ property?.user?.profile?.profile_image ? `https://${property.user.profile.profile_image}` : "/images/default_img.png" }
                         alt="Agent"
                         className="rounded-circle agent_img me-3"
                       />
@@ -1244,27 +1319,29 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                       className="me-3"
                     /> */}
                     <div>
-                      <Link to={`/agent/${property.user.profile.slug}`}>
+                      <Link onClick={handleContactClick}>
                         <h6 className="mb-2 fw-bold">{property.user.name}</h6>
                       </Link>
-                      
-                      <a href={`mailto:${property.user.email}`} className="d-flex align-items-center text-muted mb-1">
-                        <i className="fa-solid fa-envelope me-1"></i> {property.user.email}
-                      </a>
-                      {/* <small className="">{property.user.agency.agency_name}</small> */}
+                      <div className="d-flex small align-items-center">
+                        <i className="fa-solid fa-star text-theme"> </i> 5.0 (39 reviews)
+                      </div>
+                    
                     </div>
                   </div>
 
-                  <Link to={`/agent/${property.user.profile.slug}`}className="btn ud-btn black_btn search_home_btn w-100" >
+                  <Link onClick={handleContactClick} className="btn ud-btn black_btn search_home_btn w-100" >
                     Contact Agent <i className="fa-solid fa-arrow-right"></i>
                   </Link>
                 </div>
+
+                {property?.user?.agency?.slug && (
                   <Link to={`/agency/${property.user.agency.slug}`} className="d-flex justify-content-between align-items-center py-2 px-3 bg-green rounded-bottom-4">
                     <h6 className="text-white m-0 fw-bold">{property.user.agency.agency_name}</h6>
                     <img src={`https://${property.user.agency.logo}`} style={{width:"50px", height:"50px", objectFit:"cover"}} 
                     className="rounded-circle "
                     alt="" />
                   </Link>
+                )}
               </div>
             </div>
 

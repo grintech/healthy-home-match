@@ -232,6 +232,7 @@ iframe {
 .enquiry_section form input:focus{ box-shadow: none !important; border-color: var(--secondary);}
 .enquiry_section form textarea:focus{ box-shadow: none !important; border-color: var(--secondary);}
 .enquiry_section form select{ height: 45px;}
+.enquiry_section form select{ color: #5c5c5c;}
 
 /* .enquiry_section .overview_card{position: sticky !important; top: 115px !important;} */
 

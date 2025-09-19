@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { Link, Links, useParams } from "react-router-dom";
-import axios from "axios";
+import { Link, Links, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useRef } from "react";
 import AgencySingleSkeleton from "../components/skeletons/AgencySingleSkeleton";
 import Avatar from "react-avatar";
+import api from "../utils/axios";
+import { toast } from "react-toastify";
+import { useAuth } from "../context/AuthContext";
 
 const AgencySingle = () => {
   const { slug } = useParams();
-  const ApiUrl = import.meta.env.VITE_API_URL;
+  const {user} = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [agency, setAgency] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -57,12 +61,7 @@ function formatTime(timeStr) {
   useEffect(() => {
     const fetchAgency = async () => {
       try {
-        const res = await axios.get(`${ApiUrl}/agency/single/listing/${slug}`, {
-          headers: {
-            "X-API-DOMAIN":
-              "$2y$10$Vs8ujkh6QGdPgRU4Qsub7uP6l8fu5deHcfhF/ePrPWOkVWi3lDT0u",
-          },
-        });
+        const res = await api.get(`/agency/single/listing/${slug}`);
 
         if (res.data.success) {
           setAgency(res.data.data);
@@ -77,6 +76,21 @@ function formatTime(timeStr) {
 
     fetchAgency();
   }, [slug]);
+
+
+  const handleContactClick = (e) => {
+      e.preventDefault();
+  
+      if (!user) {
+        toast.error("Login to view agent profile!");
+        setTimeout(() => {
+          navigate("/login" , { state: { from: location } });
+        }, 2000);
+        return;
+      }
+      // If logged in → redirect to agent profile
+      navigate(`/agent/${agent?.profile?.slug}`);
+    };
 
 
   useEffect(() => {
@@ -104,7 +118,8 @@ function formatTime(timeStr) {
     (agent.properties || []).map((property) => ({
       ...property,
       agentName: agent.name,  
-      agentSlug: agent.slug,
+      agentSlug: agent.profile.slug,
+      agentProfile: agent.profile.profile_image,
     }))
   ) || [];
     rentProperties = allProperties.filter(
@@ -176,9 +191,7 @@ function formatTime(timeStr) {
             </div>
           </div>
 
-          <Link to={`/agent/${property.agentSlug}`} className="d-flex justify-content-end mt-2">
-           <span className="small badge bg-warning "> <strong className="text-dark">{property.agentName}</strong>  </span>
-          </Link>
+          
 
           <hr className="my-2" />
           <div className="list-meta2 d-flex justify-content-between align-items-center mt-3">
@@ -186,11 +199,15 @@ function formatTime(timeStr) {
               View details
             </Link>
             <div className="icons d-flex align-items-center">
-              <Link to="#" className="me-2">
+              {/* <Link to="#" className="me-2">
                 <i className="fa-solid fa-arrow-up-right-from-square"></i>
-              </Link>
-              <Link to="#">
+              </Link> */}
+              <Link to="#" className="me-2">
                 <i className="fa-regular fa-heart"></i>
+              </Link>
+              <Link to={`/agent/${property.agentSlug}`} className="d-flex justify-content-end">
+              {/* <span className="small badge bg-warning "> <strong className="text-dark">{property.agentName}</strong>  </span> */}
+              <img className="rounded-circle shadow bg-0 w-100 h-100" src={`https://${property.agentProfile}`} alt="property.agentName" />
               </Link>
             </div>
           </div>
@@ -212,7 +229,11 @@ function formatTime(timeStr) {
         <AgencySingleSkeleton />
 
     ) : !agency ? (
-      <p className="text-center fw-bold py-5">No Details Found</p>
+      <div  className="d-flex flex-column justify-content-center align-items-center" style={{ height: "80vh" }}  >
+        <i className="fa-solid fa-home text-theme fs-1 loader-icon mb-2"></i>
+        <h5 className="text-center fw-bold ">No Agency Found</h5>
+
+      </div>
     ) : (
       
       <div className="agency_single">
@@ -231,7 +252,7 @@ function formatTime(timeStr) {
                   <div className="single-contant ms-4">
                     <h1 className="title mb-0 text-white">{agency.agency_name}</h1>
                     <p className="fz15 text-white">{agency.location}</p>
-                    <div className="agent-meta mb15 d-md-flex align-items-center">
+                    {/* <div className="agent-meta mb15 d-md-flex align-items-center">
                       <Link className="text fz15 pe-2 bdrr1 text-white" to="#">
                         <i className="fas fa-star fz10 review-color2 pe-3"></i>
                         4.6 • 49 Reviews
@@ -242,7 +263,7 @@ function formatTime(timeStr) {
                       <a href={`mailto:${agency.contact_email}`} className="text fz15 ps-2 text-white">
                         <i className="fa-solid fa-envelope"></i> {agency.contact_email}
                       </a>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
                 <div className="img-box-12 position-relative d-none d-xl-block">
@@ -462,7 +483,7 @@ function formatTime(timeStr) {
                         {agency.agents.slice(0, 3).map((agent) => (
                           <div className="col-lg-4 col-sm-4 col-6" key={agent.id}>
                             <div className="item agent_card">
-                              <Link to={`/agent/${agent.slug}`}>
+                              <Link onClick={handleContactClick}>
                                 <div className="team-style1">
                                   <div className="team-img">
                                     {/* { agent.photo ?  <img
@@ -479,15 +500,16 @@ function formatTime(timeStr) {
 
                                          <img
                                           alt={agent.name}
-                                          src={agent.photo || "/images/default_img.png"}
+                                          src={ agent?.profile?.profile_image ? `https://${agent?.profile?.profile_image}`: "/images/default_img.png"}
                                           className="w-100"
                                         />
+                                        {/* <p>{agent.profile.instagram}</p> */}
                                   </div>
                                   <div className="team-content pt-4">
                                     <h6 className="name mb-1 text-capitalize">
                                       {agent.name}
                                     </h6>
-                                    <p className="text fz15 mb-0">{agent.phone_number}</p>
+                                    {/* <p className="text fz15 mb-0">{agent.phone_number}</p> */}
                                   </div>
                                 </div>
                               </Link>
@@ -562,21 +584,7 @@ function formatTime(timeStr) {
                         </div>
                       )}
                       
-                      {agency.phone && (
-                        <div className="list-news-style d-flex justify-content-between align-items-baseline mb10">
-                          <h6 className="fw-bold mb-0 me-3">Phone</h6>
-                          <p className="text mb-0 fz14">{agency.phone}</p>
-                        </div>
-                      )}
-                      {agency.contact_email && (
-                        <div className="list-news-style d-flex justify-content-between align-items-baseline mb10">
-                          <h6 className="fw-bold mb-0 me-3">Email</h6>
-                          <a href={`mailto:${agency.contact_email}`} >
-                            <p className="text mb-0 fz14">{agency.contact_email}</p>
-                          </a>
-
-                        </div>
-                      )}
+                   
                       {agency.website && (
                         <div className="list-news-style d-flex justify-content-between align-items-baseline mb10">
                           <h6 className="fw-bold mb-0 me-3">Website</h6>

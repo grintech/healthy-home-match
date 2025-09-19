@@ -1,15 +1,19 @@
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
-import axios from "axios";
 import AgentCardSkeleton from "../components/skeletons/AgentCardSkeleton";
 import LocationSearchInput from "../components/LocationSearchInput";
+import api from "../utils/axios";
+import { useAuth } from "../context/AuthContext";
+import { toast } from "react-toastify";
 
 const Agents = () => {
-  const ApiUrl = import.meta.env.VITE_API_URL;
+  const {user} = useAuth();
+  const navigate = useNavigate();
+  const locations = useLocation();
   const DEFAULT_RANGE = [0, 1800000];
 
   const [agents, setAgents] = useState([]);
@@ -51,11 +55,7 @@ const Agents = () => {
 
 
 
-      const res = await axios.get(`${ApiUrl}/agents/listing/?${params.toString()}`, {
-        headers: {
-          "X-API-DOMAIN": "$2y$10$Vs8ujkh6QGdPgRU4Qsub7uP6l8fu5deHcfhF/ePrPWOkVWi3lDT0u",
-        },
-      });
+      const res = await api.get(`/agents/listing/?${params.toString()}` );
 
       if (res.data.success) {
         setAgents(res.data.data);
@@ -70,6 +70,22 @@ const Agents = () => {
       setLoading(false);
     }
   };
+
+
+  const handleContactClick = (e) => {
+        e.preventDefault();
+    
+        if (!user) {
+          toast.error("Login to view agent profile!");
+          setTimeout(() => {
+            navigate("/login" , { state: { from: locations } });
+          }, 2000);
+          return;
+        }
+        // If logged in → redirect to agent profile
+        navigate(`/agent/${agent.slug}}`);
+      };
+
 
   const applyFilters = () => {
     const filters = {};
@@ -206,7 +222,7 @@ const Agents = () => {
                   {agents.map((agent) => (
                     <div key={agent.id} className="col-lg-3 col-md-4 col-6 single-agent-card">
                       <div className="item agent_card h-100">
-                        <Link to={`/agent/${agent.slug}`}>
+                        <Link onClick={handleContactClick}>
                           <div className="team-style1">
                             <div className="team-img">
                               <img
@@ -216,7 +232,7 @@ const Agents = () => {
                             </div>
                             <div className="team-content">
                               <div className="d-flex justify-content-between align-items-start mb-2">
-                                <h6 className="name mb-0 text-truncate">{agent.user.name}</h6>
+                                <h6 className="name mb-0 text-truncate">{agent?.user?.name}</h6>
                                 <span className="small text-dark d-flex align-items-baseline">
                                   4.5 <i className="fa-solid fa-star text-theme small"></i> (20)
                                 </span>
@@ -228,7 +244,7 @@ const Agents = () => {
                                   Price Range: <b>AUD {agent.price_range}</b>
                                 </p>
                               )}
-                              <p className="mb-0">Sold Properties: <b>(48)</b></p>
+                              {/* <p className="mb-0">Sold Properties: <b>(48)</b></p> */}
                             </div>
                           </div>
                         </Link>

@@ -1,16 +1,13 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import { toast } from "react-toastify";
 
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import api from "../utils/axios";
 
 
 const PopularProperties = () => {
-  const ApiUrl = import.meta.env.VITE_API_URL;
-  const ApiKey = import.meta.env.VITE_API_KEY;
-
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -31,12 +28,7 @@ const PopularProperties = () => {
     }
 
     // Always fetch fresh data in background
-    axios
-      .get(`${ApiUrl}/property-list`, {
-        headers: {
-          "X-API-DOMAIN": "$2y$10$Vs8ujkh6QGdPgRU4Qsub7uP6l8fu5deHcfhF/ePrPWOkVWi3lDT0u",
-        },
-      })
+    api.get(`/property-list`)
       .then((res) => {
         if (res.data.status === true) {
           const newData = res.data.data;
@@ -61,7 +53,7 @@ const PopularProperties = () => {
       .finally(() => {
         setLoading(false);
       });
-  }, [ApiUrl]);
+  }, []);
 
 
   // Copy URL to clipboard function

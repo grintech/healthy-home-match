@@ -5,8 +5,8 @@ import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import "./searchHome.css";
 import Footer from "../../components/Footer";
-import axios from "axios";
 import LocationSearchInput from "../../components/LocationSearchInput";
+import api from "../../utils/axios";
 
 const ALL_PROPERTY_OPTIONS = [
   { value: "all-types", label: "All Types" },
@@ -35,12 +35,12 @@ const PROPERTY_BY_LISTING = {
     "rural",
     "block-of-units",
   ],
+  
   Rent: ["all-types", "apartment", "townhouse", "house"],
   Build: ["all-types", "land", "villa", "house", "acerage"],
 };
 
 const SearchHome = () => {
-  const ApiUrl = import.meta.env.VITE_API_URL;
   const routerLocation = useLocation();
 
   const [isListView, setIsListView] = useState(false);
@@ -155,15 +155,7 @@ const SearchHome = () => {
     if (filters.maxArea !== "any") queryParams.append("max_area", filters.maxArea.replace("m", ""));
 
     try {
-      const res = await axios.get(
-        `${ApiUrl}/properties/filter?${queryParams.toString()}`,
-        {
-          headers: {
-            "X-API-DOMAIN":
-              "$2y$10$Vs8ujkh6QGdPgRU4Qsub7uP6l8fu5deHcfhF/ePrPWOkVWi3lDT0u",
-          },
-        }
-      );
+      const res = await api.get(`/properties/filter?${queryParams.toString()}`);
 
       if (res.data.status && Array.isArray(res.data.listings)) {
         const mappedData = res.data.listings.map((item) => ({

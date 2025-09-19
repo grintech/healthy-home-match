@@ -1,10 +1,9 @@
 import { Link, useSearchParams, useNavigate } from "react-router-dom";
 import "./auth.css";
 import { useState } from "react";
-import axios from "axios";
+import api from "../../utils/axios";
 
 const ResetPassword = () => {
-  const ApiUrl = import.meta.env.VITE_API_URL;
   const [showPassword, setShowPassword] = useState(false);
   const [showPassword1, setShowPassword1] = useState(false);
   const [password, setPassword] = useState("");
@@ -43,7 +42,7 @@ const ResetPassword = () => {
 
     try {
       setLoading(true);
-      const response = await axios.post(`${ApiUrl}/reset-password`, {
+      const response = await api.post(`/reset-password`, {
         token,
         email,
         password,

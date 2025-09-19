@@ -1,16 +1,15 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { Link, useParams } from "react-router-dom";
-import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import AgencySingleSkeleton from "../components/skeletons/AgencySingleSkeleton";
+import api from "../utils/axios";
 
 const AgentSingle = () => {
 
   const { slug } = useParams();
-  const ApiUrl = import.meta.env.VITE_API_URL;
-  const [agent, setAgent] = useState([]);
-  const [agencies, setAgencies] = useState([]);
+  const [agent, setAgent] = useState(null);
+  const [agencies, setAgencies] = useState(null);
   const [loading, setLoading] = useState(true);
 
    const [showFullText, setShowFullText] = useState(false);
@@ -46,18 +45,23 @@ const handleShowLess = (type) => {
   useEffect(() => {
     const fetchAgency = async () => {
       try {
-        const res = await axios.get(`${ApiUrl}/agents/single/listing/${slug}`, {
-          headers: {
-            "X-API-DOMAIN":
-              "$2y$10$Vs8ujkh6QGdPgRU4Qsub7uP6l8fu5deHcfhF/ePrPWOkVWi3lDT0u",
-          },
-        });
+        const res = await api.get(`/agents/single/listing/${slug}`);
 
-        if (res.data.success) {
+        // if (res.data.success) {
+        //   setAgent(res.data.data);
+        //   setAgencies(res.data.data.agencies[0]);
+        //   console.log(res.data.data);
+        // }
+
+        if (res.data.success && res.data.data) {
           setAgent(res.data.data);
-          setAgencies(res.data.data.agencies[0]);
+          setAgencies(res.data.data.agencies?.[0] || null);
           console.log(res.data.data);
+        } else {
+          setAgent(null); 
+          setAgencies(null);
         }
+
       } catch (err) {
         console.error("Error fetching agency:", err);
       } finally {
@@ -183,14 +187,12 @@ const handleShowLess = (type) => {
     <div>
       <Navbar />
        {loading ? (
-        //  <div  className="d-flex flex-column justify-content-center align-items-center" style={{ height: "80vh" }}  >
-        //   <i className="fa-solid fa-home text-theme fs-1 loader-icon"></i>
-        //   <span>Please wait...</span>
-        // </div>
         <AgencySingleSkeleton />
-
     ) : !agent ? (
-      <p className="text-center fw-bold py-5">No Details Found</p>
+       <div  className="d-flex flex-column justify-content-center align-items-center" style={{ height: "80vh" }}  >
+        <i className="fa-solid fa-home text-theme fs-1 loader-icon mb-2"></i>
+        <h5 className="text-center fw-bold ">No Agent Found</h5>
+       </div>
     ) : (
       <div className="agency_single agent_single">
         <div className="cta-agency cta-agent">
@@ -199,56 +201,29 @@ const handleShowLess = (type) => {
               <div className="col-lg-8 mb-4 mb-lg-0">
                 <div className="agent-single d-sm-flex align-items-center">
                   <div className="single-img mb-4 mb-sm-0">
-                    <img alt="agents" src={`https://${agent.profile.profile_image}`} loading="lazy" />
+                    <img alt="agents" src={ agent?.profile?.profile_image ? `https://${agent?.profile?.profile_image}` : '/images/default_img.png'} loading="lazy" />
                   </div>
                   <div className="single-contant ms-4 ">
-                    <h1 className="title mb-0 text-white">{agent.name}</h1>
-                    <p className="fz15 text-white">
-                     Agent at<Link to={`/agency/${agencies.slug}`} className="ms-1"><b>{agencies.agency_name}</b></Link>
-                    </p>
+                    <h1 className="title mb-0 text-white ">{agent.name}</h1>
+                   <p className="mb-2">{agent?.profile?.location}</p>
+
                     <div className="agent-meta mb15 d-md-flex align-items-center">
-                      <Link
+                      {/* <Link
                         className="text fz15 pe-2 bdrr1 text-white"
                         to="#"
                       >
                         <i className="fas fa-star fz10 review-color2 pe-3"></i>
                         4.6 • 49 Reviews
-                      </Link>
-                      <a
-                        className="text fz15 pe-2 ps-2 bdrr1 text-white"
-                        href={`tel:${agent.phone_number}`}
-                      >
-                        <i className="fa-solid fa-phone"></i>{agent.phone_number}
-                      </a>
-                      <a href={`mailto:${agent.email}`} className="text fz15 ps-2 text-white">
-                        <i className="fa-solid fa-envelope"></i> {agent.email}
-                      </a>
+                      </Link> */}
+                      {agent?.profile?.experience_years && (
+                        <div className="me-2 border-black border-end pe-2"> <i className="fa-solid fa-briefcase"></i>{agent.profile.experience_years} years experience</div>
+                      )}
+                      {agent?.profile?.price_range && (
+                        <div  className="fz14 "><b>AUD -</b>{agent.profile.price_range} <b>(Max Dealing)</b></div>
+                      )}
+                     
                     </div>
-                    <div className="agent-social mt-2">
-                      {agent.profile.facebook && (
-                        <Link className="me-3" target="_blank" to={agent.profile.facebook}>
-                        <i className="fab fa-facebook-f"></i>
-                      </Link>
-                      )}
-                      
-                      {agent.profile.twitter && (
-                        <Link className="me-3" target="_blank" to={agent.profile.twitter}>
-                        <i className="fab fa-twitter"></i>
-                      </Link>
-                      )}
-                      
-                      {agent.profile.instagram && (
-                        <Link className="me-3" target="_blank" to={agent.profile.instagram}>
-                        <i className="fab fa-instagram"></i>
-                      </Link>
-                      )}
-                      
-                      {agent.profile.linkedin && (
-                        <Link className="me-3" target="_blank" to={agent.profile.linkedin}>
-                          <i className="fab fa-linkedin-in"></i>
-                        </Link>  
-                      )}
-                    </div>
+                   {/* <div className="btn btn-theme btn-sm mt-2">Get in touch</div> */}
                   </div>
                 </div>
                 <div className="img-box-12 position-relative d-none d-xl-block">
@@ -265,41 +240,49 @@ const handleShowLess = (type) => {
                 </div>
               </div>
               <div className="col-lg-4">
-                <div className="agent_company_details ">
-                  <Link to={`/agency/${agencies.slug}`}>
-                  <img src={`https://${agencies.logo}`} className="mb-3" alt="" />
-                 <h5>{agencies.agency_name}</h5>
-                 </Link>
-                 <div className="row">
-                    <div className="col-6 mb-2">
-                      <p className="fz14  mb-0"><i className="fa-solid fa-building me-2"></i>{agencies.established}</p>
-                    </div>
-                    {/* <div className="col-6">
-                      <p className="fz14 mb-2"><i className="fa-solid fa-users me-2"></i>250+ agents</p>
-                    </div>
-                    <div className="col-6">
-                      <p className="fz14 mb-2"><i className="fa-solid fa-house me-2"></i>1300+ Sold</p>
-                    </div> */}
-                    {agencies.phone && (
+                {agencies && (
+                  <div className="agent_company_details ">
+                    { agencies?.slug && (
+                        <Link to={`/agency/${agencies.slug}`}>
+                          <img src={`https://${agencies.logo}`} className="mb-3" alt="" />
+                          <h5>{agencies.agency_name}</h5>
+                      </Link>
+                      )}
+                  <div className="row">
+                    {agencies?.established && (
                       <div className="col-6 mb-2">
-                        <a href={`tel:${agencies.phone}`} className="fz14 "><i className="fa-solid fa-phone me-2"></i>{agencies.phone}</a>
+                        <p className="fz14  mb-0"><i className="fa-solid fa-building me-2"></i>{agencies?.established}</p>
                       </div>
                     )}
 
-                    {agencies.contact_email && (
-                      <div className="col-12 mb-2">
-                      <a href={`mailto:${agencies.contact_email}`} className="fz14 "><i className="fa-solid fa-envelope me-2"></i>{agencies.contact_email}</a>
+                      {/* <div className="col-6">
+                        <p className="fz14 mb-2"><i className="fa-solid fa-users me-2"></i>250+ agents</p>
                       </div>
-                    )}
+                      <div className="col-6">
+                        <p className="fz14 mb-2"><i className="fa-solid fa-house me-2"></i>1300+ Sold</p>
+                      </div> */}
 
-                    {agencies.website && (
-                      <div className="col-12 mb-2">
-                      <Link target="_blank" to={agencies.website} className="fz14 "><i className="fa-solid fa-globe me-2"></i>{agencies.website}</Link>
-                      </div>   
-                    )}
+                      {/* {agencies?.phone && (
+                        <div className="col-6 mb-2">
+                          <a href={`tel:${agencies.phone}`} className="fz14 "><i className="fa-solid fa-phone me-2"></i>{agencies.phone}</a>
+                        </div>
+                      )}
 
-                 </div>
-                </div>
+                      {agencies?.contact_email && (
+                        <div className="col-12 mb-2">
+                        <a href={`mailto:${agencies.contact_email}`} className="fz14 "><i className="fa-solid fa-envelope me-2"></i>{agencies.contact_email}</a>
+                        </div>
+                      )} */}
+
+                      {agencies?.website && (
+                        <div className="col-12 mb-2">
+                        <Link target="_blank" to={agencies.website} className="fz14 "><i className="fa-solid fa-globe me-2"></i>{agencies.website}</Link>
+                        </div>   
+                      )}
+
+                  </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -641,7 +624,7 @@ const handleShowLess = (type) => {
             <div className="col-lg-4">
               <div className="agency_single_right">
                 <div className="agency_single_right_wrapper">
-                  <div className="agency_single_form mb-4">
+                  <div className="agency_single_form mb-4 ">
                     <h5 className="form-title mb-4 fw-bold">Contact Form</h5>
                     <form className="form-style1">
                       <div className="row">
@@ -677,10 +660,24 @@ const handleShowLess = (type) => {
                         </div>
                         <div className="col-md-12">
                           <div className="mb-3">
+                            <select
+                                name="reason"
+                                className="form-select "
+                                required
+                              >
+                              <option value="">Select reason</option>
+                              <option value="General Enquiry">General Enquiry</option>
+                              <option value="Sell a Property">Sell a Property</option>
+                              <option value="Advertise a property">Advertise a property</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div className="col-md-12">
+                          <div className="mb-3">
                             <textarea
                               className="px-2 py-3"
                               cols="30"
-                              rows="4"
+                              rows="3"
                               placeholder="Write message here..."
                               required=""
                             ></textarea>
@@ -701,7 +698,7 @@ const handleShowLess = (type) => {
                     <div className="widget-wrapper mb-0">
                       <h6 className="title fw-bold mb-4"> Agent Information </h6>
                       {agent.profile.location && (
-                        <div className="list-news-style d-flex align-items-center justify-content-between mb10">
+                        <div className="list-news-style d-flex align-items-baseline justify-content-between mb10">
                           <div className="flex-shrink-0">
                             <h6 className="fw-bold mb-0">Address</h6>
                           </div>
@@ -712,7 +709,7 @@ const handleShowLess = (type) => {
                       )}
 
                       {agent.profile.experience_years && (
-                        <div className="list-news-style d-flex align-items-center justify-content-between mb10">
+                        <div className="list-news-style d-flex align-items-baseline justify-content-between mb10">
                           <div className="flex-shrink-0">
                             <h6 className="fw-bold mb-0">Experience</h6>
                           </div>
@@ -722,8 +719,8 @@ const handleShowLess = (type) => {
                         </div>
                       )}
 
-                      {agent.phone_number && (
-                        <div className="list-news-style d-flex align-items-center justify-content-between mb10">
+                      {/* {agent.phone_number && (
+                        <div className="list-news-style d-flex align-items-baseline justify-content-between mb10">
                           <div className="flex-shrink-0">
                             <h6 className="fw-bold mb-0">Phone</h6>
                           </div>
@@ -734,7 +731,7 @@ const handleShowLess = (type) => {
                       )}
 
                       {agent.email && (
-                        <div className="list-news-style d-flex align-items-center justify-content-between mb10">
+                        <div className="list-news-style d-flex align-items-baseline justify-content-between mb10">
                           <div className="flex-shrink-0">
                             <h6 className="fw-bold mb-0">Email</h6>
                           </div>
@@ -742,10 +739,10 @@ const handleShowLess = (type) => {
                             <p className="text mb-0 fz14"><a href={`mailto:${agent.email}`}> {agent.email}</a></p>
                           </div>
                         </div> 
-                      )}
+                      )} */}
 
-                      {agent.profile.website && (
-                        <div className="list-news-style d-flex align-items-center justify-content-between mb10">
+                      {/* {agent.profile.website && (
+                        <div className="list-news-style d-flex align-items-baseline justify-content-between mb10">
                           <div className="flex-shrink-0">
                             <h6 className="fw-bold mb-0">Website</h6>
                           </div>
@@ -753,9 +750,9 @@ const handleShowLess = (type) => {
                             <p className="text mb-0 fz14"><Link to={agent.profile.website} target="_blank" >{agent.profile.website}</Link></p>
                           </div>
                         </div>
-                      )}
+                      )} */}
 
-                      {/* <div className="list-news-style d-flex align-items-center justify-content-between mb10">
+                      {/* <div className="list-news-style d-flex align-items-baseline justify-content-between mb10">
                         <div className="flex-shrink-0">
                           <h6 className="fw-bold mb-0">Member since</h6>
                         </div>
