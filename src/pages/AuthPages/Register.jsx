@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import "./auth.css";
@@ -7,8 +7,41 @@ import api from "../../utils/axios";
 
 const Register = () => {
   const navigate = useNavigate();
-
+  const location = useLocation();
   const [loading, setLoading] = useState(false);
+  const [visibleRoles, setVisibleRoles] = useState(["4", "3", "5"]); // default all
+
+useEffect(() => {
+  const searchParams = new URLSearchParams(location.search);
+
+  if (searchParams.has("builder")) {
+    setFormData((prev) => ({ ...prev, role: "5" }));
+    setVisibleRoles(["5"]); // only show builder
+  } 
+  else if (searchParams.has("agency")) {
+    setFormData((prev) => ({ ...prev, role: "3" }));
+    setVisibleRoles(["3"]); // only show agency
+  } 
+  else {
+    setFormData((prev) => ({ ...prev, role: "4" }));
+    setVisibleRoles(["4", "3", "5"]); // show all roles (default)
+  }
+}, [location.search]);
+
+
+  useEffect(() => {
+  const searchParams = new URLSearchParams(location.search);
+  if (searchParams.has("builder")) {
+    setFormData((prev) => ({ ...prev, role: "5" })); // "5" = Builder role
+  }
+  else if (searchParams.has("agency")) {
+    setFormData((prev) => ({ ...prev, role: "3" })); // "3" = Agency role
+  }
+  else {
+    setFormData((prev) => ({ ...prev, role: "4" })); // "4" = Buyer role
+  }
+}, [location.search]);
+
 
 
   const [formData, setFormData] = useState({
@@ -109,32 +142,34 @@ const Register = () => {
 
           <form onSubmit={handleSubmit}>
             {/* Role radio */}
-            <div className="row role_checks mb-4">
-
-              {[
-                // { value: "4", label: "Buyer" },
-                // { value: "2", label: "Property Owner" },
-                // { value: "3", label: "Verified Professional" },
-                { value: "4", label: "Buyer" },
-                { value: "3", label: "Agency" },
-                { value: "2", label: "Builder" },
-              ].map((role, index) => (
+          <div className="row role_checks mb-4">
+            {[
+              { value: "4", label: "Buyer" },
+              { value: "3", label: "Agency" },
+              { value: "5", label: "Builder" },
+            ]
+              .filter((role) => visibleRoles.includes(role.value)) // filter by visible roles
+              .map((role, index) => (
                 <div key={index} className="col-lg-4 col-6 mb-2 mb-lg-0">
                   <div className="form-check h-100">
                     <input
+                      id={role.value}
                       className="form-check-input"
                       type="radio"
                       name="role"
                       value={role.value}
+                      checked={formData.role === role.value}
                       onChange={handleChange}
                       required
                     />
-                    <label className="form-check-label">{role.label}</label>
+                    <label htmlFor={role.value} className="form-check-label">
+                      {role.label}
+                    </label>
                   </div>
                 </div>
               ))}
+          </div>
 
-            </div>
 
             {/* Name */}
             <div className="mb-3 position-relative form_fields">
@@ -172,6 +207,9 @@ const Register = () => {
                 value={formData.phone_number}
                 onChange={handlePhoneChange}
                 inputClass="form-control"
+                enableSearch={true}
+                searchPlaceholder="Search country"
+                
               />
               <i className="fa-solid fa-phone"></i>
             </div>
@@ -212,10 +250,11 @@ const Register = () => {
               ></i>
             </div>
 
-            <div className="d-flex justify-content-between align-items-center mb-3">
-              <p>
+            <div className="d-flex justify-content-between align-items-start mb-3">
+              <input type="checkbox" required />
+              <p className="m-0 ms-2">
                 By signing up, you agree to our &nbsp;
-                <Link to="#" className="text-white text-semibold text-underline">Terms of Use</Link> and <Link to="#" className="text-white text-semibold text-underline">Privacy Policy</Link>.
+                <Link to="/terms-and-conditions" className="text-white text-semibold text-underline">Terms of Use</Link> and <Link to="/privacy-policy" className="text-white text-semibold text-underline">Privacy Policy</Link>.
               </p>
             </div>
 

@@ -94,7 +94,7 @@ const Navbar = () => {
                         <div className="col-5 ">
                             <ul className="navbar-nav flex-row align-items-center justify-content-end">
                                 <li className="nav-item mx-2">
-                                    <Link className={`nav-link ${isActive("/rentals") ? "active" : ""}`} to="/rentals">Manage Rentals</Link>
+                                    <Link className={`nav-link ${isActive("/agency") ? "active" : ""}`} to="/agency">Agencies</Link>
                                 </li>
                                 <li className="nav-item mx-2">
                                     <Link className={`nav-link ${isActive("/agents") ? "active" : ""}`} to="/agents">Find an agent</Link>
@@ -225,22 +225,22 @@ const Navbar = () => {
                     </div>
                 </nav>
 
-                <nav className={`navbar navbar-expand-lg d-block d-lg-none ${isSticky ? 'sticky-nav shadow-sm bg-white' : ''}`}>
+                <nav className={`navbar w-100 navbar-expand-lg d-block d-lg-none ${isSticky ? 'sticky-nav shadow-sm bg-white' : ''}`}>
                     <div className="container d-flex justify-content-between align-items-center">
 
-                        <div className="navbar-toggler  ms-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                        <div className="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
                             <i className="fa-solid fa-bars text-white"  > </i>
                         </div>
 
                         {/* Center Logo */}
-                        <Link className="navbar-brand mx-3" to="/">
+                        <Link className="navbar-brand " to="/">
                             <img src="/images/healthy_logo.png" alt="logo" style={{ height: "65px" }} />
                         </Link>
 
                         {/* Right side links */}
 
                         {!user ? (
-                            <div className="d-flex align-items-center">
+                            <div className="d-flex align-items-center ">
                                 <Link
                                     className={`nav-link ms-1 login_btn ${isActive("/login") ? "active" : ""}`}
                                     to="/login"
@@ -249,7 +249,7 @@ const Navbar = () => {
                                 </Link>
                             </div>
                         ) : (
-                            <div className="user_dropdown">
+                            <div className="user_dropdown ">
                                 <div className="dropdown">
                                     <button
                                         className="btn-theme rounded-pill dropdown-toggle"
@@ -381,7 +381,7 @@ const Navbar = () => {
 
 
                             <li className="nav-item mx-2">
-                                <Link className={`nav-link ${isActive("/rentals") ? "active" : ""}`} to="/rentals">Manage Rentals</Link>
+                                <Link className={`nav-link ${isActive("/agency") ? "active" : ""}`} to="/agency">Agencies</Link>
                             </li>
 
                             <li className="nav-item mx-2">

@@ -94,7 +94,7 @@
 }
 
 .search_home_btn{
-    height: 50px;
+    height: 46px;
     background-color: var(--primary);
     color: #fff !important;
     font-weight: 600;
@@ -339,6 +339,7 @@
    .listing-style1 .list-meta a {
         margin-right: 14px ;
     }
+    .search_home_btn{font-size: 15px;}
 }
 
 @media screen and (max-width: 350px) {

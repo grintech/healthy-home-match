@@ -65,12 +65,19 @@ const Footer = () => {
                 </div>
                 <div className="copyright-wrap position-relative">
                     {/* <div className="footer-bottom-top-shape "></div> */}
-                    <div className="container">
-                        <p className="copyright-text text-center  m-0">Copyright &copy;
-                          <i className="fal fa-copyright"></i> 2025
-                          <Link to="/" className='text-theme'> Healthy Home Match</Link>. All Rights Reserved.
-                        </p>
+                   <div className="container">
+                    <p className="copyright-text text-center m-0">
+                        Copyright &copy; <i className="fal fa-copyright"></i> 2025 
+                        <Link to="/" className="text-theme"> Healthy Home Match</Link>. 
+                        All Rights Reserved. <br />
+                    </p>
+                    <p className="copyright-text text-center m-0">
+                    Designed & Developed by <Link to="https://grintechwebagency.com/" target="_blank" rel="noopener noreferrer" className="text-theme ">
+                        Grintech Web Agency.
+                    </Link>
+                    </p>
                     </div>
+
                 </div>
             </footer>
         </>

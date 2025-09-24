@@ -23,7 +23,7 @@ const WatchlistPage = () => {
                     <div className='col-md-6 col-lg-4 ' key={item.id}>
                     <div className='card listing-style1'>
                         <div className="list-thumb">
-                        <img src={item.image} className='card-img-top' alt={item.title} />
+                        <img src={item.image || `https://${item.featured_image}`} className='card-img-top' alt={item.title} />
                         <div className="sale-sticker-wrap">
                             <div className="list-tag fz12">
                             <i className="fa-solid fa-bolt me-1"></i>
@@ -37,8 +37,8 @@ const WatchlistPage = () => {
                         <div className="list-price">{item.price}</div>
                         </div>
                         <div className="list-content">
-                        <Link to="/property"> <h6 className='list-title'>{item.title}</h6></Link>
-                        <p className='list-text'>{item.location}</p>
+                        <Link to="/property"> <h6 className='list-title text-truncate'>{item.title}</h6></Link>
+                        <p className='list-text text-truncate'>{item.location || item.address}</p>
                         </div>
                     </div>
                     </div>

@@ -232,7 +232,7 @@ const Agents = () => {
                             </div>
                             <div className="team-content">
                               <div className="d-flex justify-content-between align-items-start mb-2">
-                                <h6 className="name mb-0 text-truncate">{agent?.user?.name}</h6>
+                                <h6 className="name mb-0 text-truncate">{agent?.user?.name || agent?.user_name}</h6>
                                 <span className="small text-dark d-flex align-items-baseline">
                                   4.5 <i className="fa-solid fa-star text-theme small"></i> (20)
                                 </span>

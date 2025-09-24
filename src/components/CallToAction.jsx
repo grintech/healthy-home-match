@@ -18,7 +18,7 @@ const CallToAction = () => {
                 </div>
                 <h5 className="mb-2">List Your Property</h5>
                 <p className="text-muted ">Showcase your eco-friendly home to the right audience.</p>
-               <Link to="#" className="th-btn sm style3 pill position-relative" >Get Started</Link>
+               <Link to="/register" className="th-btn sm style3 pill position-relative" >Get Started</Link>
                 </div>
             </div>
 
@@ -27,9 +27,9 @@ const CallToAction = () => {
                 <div className="mb-3 ">
                     <i className="fas fa-user-check fa-2x"></i>
                 </div>
-                <h5 className="mb-2">Join as a Verified Professional</h5>
+                <h5 className="mb-2">Join as a Verified Builder</h5>
                 <p className="text-muted ">Become part of a trusted network of green professionals.</p>
-               <Link to="#" className="th-btn sm style3 pill position-relative" >Join Now</Link>
+               <Link to="/register?builder" className="th-btn sm style3 pill position-relative" >Join Now</Link>
                 </div>
             </div>
 

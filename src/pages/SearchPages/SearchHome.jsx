@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
@@ -7,6 +7,9 @@ import "./searchHome.css";
 import Footer from "../../components/Footer";
 import LocationSearchInput from "../../components/LocationSearchInput";
 import api from "../../utils/axios";
+import { useAuth } from "../../context/AuthContext";
+import { toast } from "react-toastify";
+import Tooltip from "../../components/Tooltip";
 
 const ALL_PROPERTY_OPTIONS = [
   { value: "all-types", label: "All Types" },
@@ -41,7 +44,12 @@ const PROPERTY_BY_LISTING = {
 };
 
 const SearchHome = () => {
+  const {user} = useAuth();
+  // console.log(user);
+  const navigate = useNavigate();
   const routerLocation = useLocation();
+  const [savingPropertyIds, setSavingPropertyIds] = useState([]);
+
 
   const [isListView, setIsListView] = useState(false);
   const [priceRange, setPriceRange] = useState([0, 10000000]);
@@ -115,6 +123,9 @@ const SearchHome = () => {
     setAmenities((prev) => (checked ? [...prev, id] : prev.filter((x) => x !== id)));
   };
 
+
+  /*----- Fetch Properties -------*/
+
   const fetchProperties = async (
     page = 1,
     filters = {
@@ -154,6 +165,11 @@ const SearchHome = () => {
     if (filters.minArea !== "any") queryParams.append("min_area", filters.minArea.replace("m", ""));
     if (filters.maxArea !== "any") queryParams.append("max_area", filters.maxArea.replace("m", ""));
 
+    //  Add user_id if logged in
+    if (user && user.id) {
+      queryParams.append("user_id", user.id);
+    }
+
     try {
       const res = await api.get(`/properties/filter?${queryParams.toString()}`);
 
@@ -173,12 +189,19 @@ const SearchHome = () => {
           area: item.area_m2 || "NA",
           currency: item.currency || "NA",
           propertyType: item.property_type || "NA",
+           is_saved: item.is_saved || false, // <-- for likedHomes
         }));
 
         setFilteredHomes(mappedData);
+
+        // Set likedHomes based on fetched data
+          const savedIds = mappedData.filter((h) => h.is_saved).map((h) => h.id);
+          setLikedHomes(savedIds);
+
         setPagination(res.data.pagination);
       } else {
         setFilteredHomes([]);
+        setLikedHomes([]);
       }
     } catch (err) {
       console.error("Error fetching properties:", err);
@@ -238,11 +261,61 @@ const SearchHome = () => {
     fetchProperties(1, clearedFilters);
   };
 
-  const toggleLike = (homeId) => {
+  // const toggleLike = (homeId) => {
+  //   setLikedHomes((prev) =>
+  //     prev.includes(homeId) ? prev.filter((id) => id !== homeId) : [...prev, homeId]
+  //   );
+  // };
+
+  /*---- Toggle Save Unsave property ----*/
+
+ const toggleSaveProperty = async (homeId) => {
+  if (!user || !user.id) {
+    toast.error("Please log in to save properties.");
+    setTimeout(() => {
+      navigate("/login", { state: { from: routerLocation } });
+    }, 2000);
+    return;
+  }
+
+  if (savingPropertyIds.includes(homeId)) return; // prevent multiple clicks
+
+  const isSaved = likedHomes.includes(homeId);
+
+  // Optimistically update UI
+  setLikedHomes((prev) =>
+    isSaved ? prev.filter((id) => id !== homeId) : [...prev, homeId]
+  );
+
+  setSavingPropertyIds((prev) => [...prev, homeId]);
+
+  try {
+    const url = isSaved ? "/properties/unsave" : "/properties/save";
+    const res = await api.post(url, { propertyId: homeId, user_id: user.id });
+
+    if (!res.data.success) {
+      // Revert if API failed
+      setLikedHomes((prev) =>
+        isSaved ? [...prev, homeId] : prev.filter((id) => id !== homeId)
+      );
+      toast.error(res.data.message || "Something went wrong");
+    } else {
+      toast.success(res.data.message);
+    }
+  } catch (err) {
+    console.error("Error saving/unsaving property:", err);
+    // Revert on error
     setLikedHomes((prev) =>
-      prev.includes(homeId) ? prev.filter((id) => id !== homeId) : [...prev, homeId]
+      isSaved ? [...prev, homeId] : prev.filter((id) => id !== homeId)
     );
-  };
+    toast.error("Failed to save property. Please try again.");
+  } finally {
+    // Remove from saving state
+    setSavingPropertyIds((prev) => prev.filter((id) => id !== homeId));
+  }
+};
+
+
 
   const renderOptionButtons = (type, value, setValue) => {
     const options = ["any", "1", "2", "3", "4", "5"];
@@ -273,13 +346,6 @@ const SearchHome = () => {
     <>
       <div className="widget-wrapper location-widget">
         <h6 className="list-title">Location</h6>
-        {/* <input
-          type="text"
-          className="form-control"
-          placeholder="Enter Postcode or Suburb"
-          value={locationText}
-          onChange={(e) => setLocationText(e.target.value)}
-        /> */}
         <LocationSearchInput />
       </div>
 
@@ -545,7 +611,7 @@ const SearchHome = () => {
                 data-bs-target="#mobileFilter"
                 aria-controls="mobileFilter"
               >
-                <i className="fa fa-sliders me-1"></i> Filter
+                <i className="fa fa-sliders me-1"></i> Filters
               </button>
             </div>
           </div>
@@ -604,8 +670,8 @@ const SearchHome = () => {
               ) : filteredHomes.length > 0 ? (
                 <div className="row g-4">
                   {filteredHomes.map((home) => (
-                    <div key={home.id} className={`${isListView ? "col-md-12 col-lg-6" : "col-lg-4 col-md-6"} mb-3`}>
-                      <Link to={`/property/${home.slug}`} className={`listing-style1 ${isListView ? "d-flex" : ""}`}>
+                    <div key={home.id} className={`${isListView ? "col-md-12 col-lg-6" : "col-lg-4 col-md-6"} `}>
+                      <Link to={`/property/${home.slug}`} className={`listing-style1 ${isListView ? "d-flex" : "d-block"}`}>
                         <div className={`${isListView ? "col-5" : ""} list-thumb`}>
                           <img
                             alt="property"
@@ -654,15 +720,27 @@ const SearchHome = () => {
                             <div  className="view_details">
                               View details
                             </div>
-                            <div className="icons d-flex align-items-center">
-                              <div onClick={() => toggleLike(home.id)}>
-                                <i
-                                  className={`fa-heart ${
-                                    likedHomes.includes(home.id) ? "fa-solid text-danger" : "fa-regular"
-                                  }`}
-                                ></i>
+                               <Tooltip text={likedHomes.includes(home.id) ? "Unsave" : "Save"}>
+                                <div className="btn btn-sm btn-light"
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    toggleSaveProperty(home.id);
+                                  }}
+                                  disabled={savingPropertyIds.includes(home.id)}>
+                                {savingPropertyIds.includes(home.id) ? (
+                                  <i className="fa fa-spinner fa-spin text-green"></i>
+                                ) : (
+                                  <i
+                                    className={`fa-heart ${
+                                      likedHomes.includes(home.id) ? "fa-solid text-danger" : "fa-regular"
+                                    }`}
+                                  ></i>
+                                )}
                               </div>
-                            </div>
+
+                               </Tooltip>
+
                           </div>
                         </div>
                       </Link>

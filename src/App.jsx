@@ -44,18 +44,21 @@ import MortgageCalculator from './components/MortgageCalculator.jsx';
 import Agents from './pages/Agents.jsx';
 import SellPropertyPage from './pages/SellProperty.jsx';
 import HelpPage from './pages/HelpPage.jsx';
+import BuildPage from './pages/BuildPage.jsx';
+import GetFinancePage from './pages/GetFinancePage.jsx';
+import CheckoutPage from './components/CheckoutPage.jsx';
 
 
 const App = () => {
-  const location = useLocation();
+  // const location = useLocation();
 
   // Initialize AOS
-  useEffect(() => {
-    Aos.init({
-      duration: 1000, // animation duration
-      // once: true,
-    });
-  }, []);
+  // useEffect(() => {
+  //   Aos.init({
+  //     duration: 1000, // animation duration
+  //     // once: true,
+  //   });
+  // }, []);
 
   // Reinitialize Bootstrap tooltips on route change
 
@@ -103,7 +106,7 @@ const App = () => {
       <Routes>
         {/* Auth Routes */}
         <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
-        <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} />
+        <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<PublicRoute><ForgotPassword /></PublicRoute>} />
         <Route path="/reset-password" element={<PublicRoute><ResetPassword /></PublicRoute>} />
 
@@ -126,6 +129,9 @@ const App = () => {
 
 
         <Route path="/mortgage-calculator" element={<MortgageCalculator />} />
+        <Route path="/build" element={<BuildPage />} />
+        <Route path="/get-finance" element={<GetFinancePage />} />
+        <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/sell" element={<SellPropertyPage />} />
         <Route path="/help" element={<HelpPage />} />
 

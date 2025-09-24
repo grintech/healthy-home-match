@@ -7,6 +7,7 @@ import Footer from '../components/Footer.jsx'
 import Topbar from '../components/Navbar.jsx'
 import Blogs from '../components/Blogs.jsx'
 import { Link } from 'react-router-dom'
+import PricingPlans from '../components/PricingPlans.jsx'
 
 const Homepage = () => {
   return (
@@ -45,7 +46,16 @@ const Homepage = () => {
           </div>
         </div>
       </div>
+
       <EducationSection />
+
+      <div className="pricing_section py-5">
+        <div className="container">
+           <h2 className=" mb-4 sec-title">Subscription Plans</h2>
+         <PricingPlans />
+        </div>
+      </div>
+
       <Events />
       <Blogs />
       <CallToAction />

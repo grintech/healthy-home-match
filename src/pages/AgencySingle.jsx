@@ -202,9 +202,9 @@ function formatTime(timeStr) {
               {/* <Link to="#" className="me-2">
                 <i className="fa-solid fa-arrow-up-right-from-square"></i>
               </Link> */}
-              <Link to="#" className="me-2">
+              {/* <Link to="#" className="me-2">
                 <i className="fa-regular fa-heart"></i>
-              </Link>
+              </Link> */}
               <Link to={`/agent/${property.agentSlug}`} className="d-flex justify-content-end">
               {/* <span className="small badge bg-warning "> <strong className="text-dark">{property.agentName}</strong>  </span> */}
               <img className="rounded-circle shadow bg-0 w-100 h-100" src={`https://${property.agentProfile}`} alt="property.agentName" />

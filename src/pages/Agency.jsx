@@ -74,7 +74,10 @@ const Agency = () => {
       <Navbar />
       <div className="all_agencies py-5">
         <div className="container">
-          <h1 className="sec-title mb-4">All Agencies</h1>
+          <div className="d-flex justify-content-between mb-4">
+           <h1 className="sec-title m-0">All Agencies</h1>
+            <Link to="/register?agency" className="btn ud-btn btn-white search_home_btn black_btn ">Register your agency</Link>
+          </div>
 
           {/* Filter Section */}
 

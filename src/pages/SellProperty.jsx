@@ -76,7 +76,7 @@ export default function SellPropertyPage() {
                             </p>
 
                             <div className="d-flex gap-2 flex-wrap">
-                                <Link to='/login' className="btn ud-btn btn-white search_home_btn rounded-3">Start Listing — Free </Link>
+                                {/* <Link to='/login' className="btn ud-btn btn-white search_home_btn rounded-3">Start Listing — Free </Link> */}
                                 <a href="#agents" className="btn ud-btn btn-white search_home_btn black_btn ">
                                     Find An Agent
                                 </a>

@@ -168,14 +168,14 @@ const handleShowLess = (type) => {
               <Link className="view_details" to={`/property/${property.slug}`}>
                 View details
               </Link>
-              <div className="icons d-flex align-items-center">
+              {/* <div className="icons d-flex align-items-center">
                 <Link to="#" className="me-2">
                   <i className="fa-solid fa-arrow-up-right-from-square"></i>
                 </Link>
                 <Link to="#">
                   <i className="fa-regular fa-heart"></i>
                 </Link>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

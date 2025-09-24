@@ -82,16 +82,18 @@ height: 100%;
 
 .role_checks .form-check{
   background-color: var(--bg-soft);
-  padding: 10px 25px;
+  padding: 10px 35px;
   border-radius: 4px;
 }
 
-
 .react-tel-input .form-control {width: 100% !important;height: 40px !important;}
 
-.resend_link{text-decoration: underline !important;
-}
+.resend_link{text-decoration: underline !important;}
 
+.react-tel-input .country-list {width: 275px !important; border-radius: 4px !important;}
+
+.country-list .search-emoji{display: none !important;}
+.country-list .search-box{height: 35px !important; width: 90% !important; border-radius: 4px !important;}
 
 .copyright{font-weight: 600 !important;}
 
@@ -100,6 +102,7 @@ height: 100%;
     display: none;
   }
 }
+
 @media (max-width: 576px) {
   .login-left {
     display: none;

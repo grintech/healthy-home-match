@@ -1,108 +1,107 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import api from "../utils/axios";
-
+import { useAuth } from "../context/AuthContext";
 
 const PopularProperties = () => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [likedIds, setLikedIds] = useState(new Set());
+  const [processingIds, setProcessingIds] = useState(new Set()); // new: for spinner
 
-
-   const [shareModalOpen, setShareModalOpen] = useState(false);
+  const [shareModal, setShareModal] = useState(false);
   const [shareUrl, setShareUrl] = useState("");
 
-  const [likedIds, setLikedIds] = useState(new Set());
-
-  // Fetch API data
   useEffect(() => {
-    const cachedData = sessionStorage.getItem("popular_properties");
-
-    // Load cached data first for instant render
-    if (cachedData) {
-      setProperties(JSON.parse(cachedData));
+    const cached = sessionStorage.getItem("popular_properties");
+    if (cached) {
+      setProperties(JSON.parse(cached));
       setLoading(false);
     }
 
-    // Always fetch fresh data in background
-    api.get(`/property-list`)
+    const url = user?.id ? `/property-list?user_id=${user.id}` : `/property-list`;
+
+    api
+      .get(url)
       .then((res) => {
-        if (res.data.status === true) {
-          const newData = res.data.data;
+        if (res.data.status) {
+          const fresh = res.data.data;
+          const saved = new Set(fresh.filter((p) => p.is_saved).map((p) => p.id));
+          setLikedIds(saved);
 
-          // Update state only if data is different from cached
-          const oldData = cachedData ? JSON.parse(cachedData) : [];
-          const isDifferent = JSON.stringify(newData) !== JSON.stringify(oldData);
-
-          if (isDifferent) {
-            setProperties(newData);
-            sessionStorage.setItem("popular_properties", JSON.stringify(newData));
+          const old = cached ? JSON.parse(cached) : [];
+          if (JSON.stringify(fresh) !== JSON.stringify(old)) {
+            setProperties(fresh);
+            sessionStorage.setItem("popular_properties", JSON.stringify(fresh));
           }
-
-          console.log(res.data.message || "Properties updated successfully");
-        } else {
-          console.warn(res.data.message || "Failed to fetch properties");
         }
       })
-      .catch((err) => {
-        console.error("Error fetching properties:", err);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, []);
+      .catch((err) => console.error("Error:", err))
+      .finally(() => setLoading(false));
+  }, [user]);
 
-
-  // Copy URL to clipboard function
-  const handleCopy = (textToCopy, e) => {
+  const toggleHeart = async (id, e) => {
     e.preventDefault();
-    if (navigator.clipboard) {
-      navigator.clipboard
-        .writeText(textToCopy)
-        .then(() => toast.success("Link copied to clipboard!"))
-        .catch(() => toast.error("Failed to copy!"));
-    } else {
-      toast.error("Clipboard API not supported.");
+    if (!user?.id) {
+      toast.error("Please login to save properties.");
+      setTimeout(() => navigate("/login"), 2000);
+      return;
+    }
+
+    // Start spinner for this property
+    setProcessingIds((prev) => new Set(prev).add(id));
+
+    try {
+      if (likedIds.has(id)) {
+        const res = await api.post("/properties/unsave", { user_id: user.id, propertyId: id });
+        setLikedIds((prev) => {
+          const updated = new Set(prev);
+          updated.delete(id);
+          return updated;
+        });
+        toast.success(res.data.message || "Removed from saved");
+      } else {
+        const res = await api.post("/properties/save", { user_id: user.id, propertyId: id });
+        setLikedIds((prev) => new Set(prev).add(id));
+        toast.success(res.data.message || "Property saved");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Something went wrong");
+    } finally {
+      // Remove spinner for this property
+      setProcessingIds((prev) => {
+        const updated = new Set(prev);
+        updated.delete(id);
+        return updated;
+      });
     }
   };
 
-  // Toggle like/unlike by property ID
-  const toggleHeart = (propertyId, e) => {
+  const handleCopy = (text, e) => {
     e.preventDefault();
-    setLikedIds((prev) => {
-      const newLiked = new Set(prev);
-      if (newLiked.has(propertyId)) {
-        newLiked.delete(propertyId); // unlike
-      } else {
-        newLiked.add(propertyId); // like
-      }
-      return newLiked;
-    });
+    navigator.clipboard.writeText(text)
+      .then(() => toast.success("Link copied!"))
+      .catch(() => toast.error("Copy failed"));
   };
 
-
-  // Open modal and set URL to share
-  const openShareModal = (url, e) => {
+  const openShare = (url, e) => {
     e.preventDefault();
     setShareUrl(url);
-    setShareModalOpen(true);
+    setShareModal(true);
   };
 
-  // Close modal
-  const closeShareModal = () => setShareModalOpen(false);
+  const closeShare = () => setShareModal(false);
 
-  // Social share URLs
-  const socialLinks = {
-    facebook: (url) =>
-      `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
-    twitter: (url) =>
-      `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}`,
-    linkedin: (url) =>
-      `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
-    instagram: () => `https://www.instagram.com/`, // Instagram doesn't support direct share URLs
+  const socials = {
+    facebook: (url) => `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
+    twitter: (url) => `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}`,
+    linkedin: (url) => `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
   };
 
   return (
@@ -111,97 +110,21 @@ const PopularProperties = () => {
         <div className="row ">
           <div className="col-lg-6">
             <h2 className="sec-title m-0">Discover Popular Properties</h2>
-            <p className="paragraph">
-              Handpicked properties that are trending right now.
-            </p>
+            <p className="paragraph">Handpicked properties trending now.</p>
           </div>
-
           {properties.length > 0 && (
-            <div className="col-lg-6">
-              <div className="filter-menu d-flex justify-content-lg-end align align-items-center">
-                <Link to='/homes' className="th-btn tab-btn active rounded-2" type="button">
-                  View All <i className="fa-solid fa-arrow-right"></i>
-                </Link>
-              </div>
+            <div className="col-lg-6 filter-menu d-flex justify-content-lg-end align-items-center">
+              <Link to="/homes" className="th-btn tab-btn active rounded-2">
+                View All <i className="fa-solid fa-arrow-right"></i>
+              </Link>
             </div>
           )}
         </div>
 
-        {/* Cards */}
-        {/* <div className="row ">
-          {properties.length > 0 ? (
-            properties.slice(0, 8).map((property) => {
-              const url = `${window.location.origin}/property/${property.slug}`;
-
-              return (
-                <div className="col-md-6 col-xl-3" key={property.id}>
-                  <div className="listing-style6">
-                    <div className="list-thumb">
-                      <img
-                        alt={property.title}
-                        loading="lazy"
-                        className="w-100"
-                        src={
-                          property.featured_image
-                            ? `https://${property.featured_image}`
-                            : "/images/card1.jpg"
-                        }
-                      />
-                      {property.is_featured && (
-                        <div className="sale-sticker-wrap">
-                          <div className="list-tag fz12">
-                            <i className="fas fa-bolt me-1"></i>FEATURED
-                          </div>
-                        </div>
-                      )}
-                      <div className="list-meta">
-                        <div className="icons">
-                          <Link to="#" onClick={(e) => toggleHeart(property.id, e)}>
-                            <i
-                              className={
-                                likedIds.has(property.id)
-                                  ? "fa-solid fa-heart"
-                                  : "fa-regular fa-heart"
-                              }
-                            ></i>
-                          </Link>
-
-                          <Link to="#" onClick={(e) => handleCopy(url, e)}>
-                            <i className="fa-regular fa-copy"></i>
-                          </Link>
-
-                          <Link to="#" onClick={(e) => openShareModal(url, e)}>
-                            <i className="fa-regular fa-share-from-square"></i>
-                          </Link>
-                        </div>
-                      </div>
-                    </div>
-                    <Link to={`/property/${property.slug}`}>
-                      <div className="list-content">
-                        <h6 className="list-title text-capitalize text-truncate">
-                          {property.title}
-                        </h6>
-                        <p className="list-text text-capitalize text-truncate">
-                          {property.address}
-                        </p>
-                        <div className="list-price mb-2">${property.price}</div>
-                      </div>
-                    </Link>
-                  </div>
-                </div>
-              );
-            })
-          ) : (
-            <h6 className="text-theme fw-semibold">No properties found.</h6>
-          )}
-
-        </div> */}
-
-
         <div className="row">
           {loading
-            ? Array.from({ length: 4 }).map((_, index) => (
-                <div className="col-md-6 col-xl-3" key={index}>
+            ? Array.from({ length: 4 }).map((_, i) => (
+                <div className="col-md-6 col-xl-3" key={i}>
                   <div className="listing-style6">
                     <div className="list-thumb">
                       <Skeleton height={330} borderRadius={8} />
@@ -213,151 +136,114 @@ const PopularProperties = () => {
                       <p className="list-text">
                         <Skeleton width={`60%`} height={15} />
                       </p>
-                      <div className=" mb-2">
-                        <Skeleton width={120} height={40} />
-                      </div>
+                      <Skeleton width={120} height={40} />
                     </div>
                   </div>
                 </div>
               ))
             : properties.length > 0
-            ? properties.slice(0, 8).map((property) => {
-                const url = `${window.location.origin}/property/${property.slug}`;
+            ? properties.slice(0, 8).map((p) => {
+                const url = `${window.location.origin}/property/${p.slug}`;
                 return (
-                <div className="col-md-6 col-xl-3" key={property.id}>
-                  <div className="listing-style6">
-                    <div className="list-thumb">
-                      <img
-                        alt={property.title}
-                        loading="lazy"
-                        className="w-100"
-                        src={
-                          property.featured_image
-                            ? `https://${property.featured_image}`
-                            : "/images/card1.jpg"
-                        }
-                      />
-                      {property.is_featured && (
-                        <div className="sale-sticker-wrap">
-                          <div className="list-tag fz12">
-                            <i className="fas fa-bolt me-1"></i>FEATURED
+                  <div className="col-md-6 col-xl-3" key={p.id}>
+                    <div className="listing-style6">
+                      <div className="list-thumb">
+                        <img
+                          alt={p.title}
+                          loading="lazy"
+                          className="w-100"
+                          src={p.featured_image ? `https://${p.featured_image}` : "/images/card1.jpg"}
+                        />
+                        {p.is_featured && (
+                          <div className="sale-sticker-wrap">
+                            <div className="list-tag fz12">
+                              <i className="fas fa-bolt me-1"></i>FEATURED
+                            </div>
+                          </div>
+                        )}
+                        <div className="list-meta">
+                          <div className="icons">
+                            <Link
+                              to="#"
+                              onClick={(e) => toggleHeart(p.id, e)}
+                              className="position-relative"
+                            >
+                              {processingIds.has(p.id) ? (
+                                <i className="fa fa-spinner fa-spin text-theme"></i>
+                              ) : (
+                                <i
+                                  className={
+                                    likedIds.has(p.id)
+                                      ? "fa-solid fa-heart text-theme"
+                                      : "fa-regular fa-heart"
+                                  }
+                                ></i>
+                              )}
+                            </Link>
+                            <Link to="#" onClick={(e) => handleCopy(url, e)}>
+                              <i className="fa-regular fa-copy"></i>
+                            </Link>
+                            <Link to="#" onClick={(e) => openShare(url, e)}>
+                              <i className="fa-regular fa-share-from-square"></i>
+                            </Link>
                           </div>
                         </div>
-                      )}
-                      <div className="list-meta">
-                        <div className="icons">
-                          <Link to="#" onClick={(e) => toggleHeart(property.id, e)}>
-                            <i
-                              className={
-                                likedIds.has(property.id)
-                                  ? "fa-solid fa-heart"
-                                  : "fa-regular fa-heart"
-                              }
-                            ></i>
-                          </Link>
-
-                          <Link to="#" onClick={(e) => handleCopy(url, e)}>
-                            <i className="fa-regular fa-copy"></i>
-                          </Link>
-
-                          <Link to="#" onClick={(e) => openShareModal(url, e)}>
-                            <i className="fa-regular fa-share-from-square"></i>
-                          </Link>
+                      </div>
+                      <Link to={`/property/${p.slug}`}>
+                        <div className="list-content">
+                          <h6 className="list-title text-capitalize text-truncate">{p.title}</h6>
+                          <p className="list-text text-capitalize text-truncate">{p.address}</p>
+                          <div className="list-price mb-2">${p.price}</div>
                         </div>
-                      </div>
+                      </Link>
                     </div>
-                    <Link to={`/property/${property.slug}`}>
-                      <div className="list-content">
-                        <h6 className="list-title text-capitalize text-truncate">
-                          {property.title}
-                        </h6>
-                        <p className="list-text text-capitalize text-truncate">
-                          {property.address}
-                        </p>
-                        <div className="list-price mb-2">${property.price}</div>
-                      </div>
-                    </Link>
                   </div>
-                </div>           
                 );
               })
-            : (
-              <h6 className="text-theme fw-semibold">No properties found.</h6>
-            )}
+            : !loading && (
+                <h6 className="text-theme fw-semibold">No properties found.</h6>
+              )}
         </div>
 
-
-
-          {shareModalOpen && (
-            <div
-              className="modal fade show shareModal"
-              style={{ display: "block", backgroundColor: "rgba(0,0,0,0.5)" }}
-              tabIndex="-1"
-              role="dialog"
-              onClick={closeShareModal}
-            >
-              <div
-                className="modal-dialog modal-dialog-centered"
-                role="document"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <div className="modal-content p-2">
-                  <div className="modal-header py-3">
-                    <h5 className="modal-title fw-bold">Share this property</h5>
-                    <button
-                      type="button"
-                      className="btn-close"
-                      onClick={closeShareModal}
-                    ></button>
-                  </div>
-                  <div className="modal-body d-flex justify-content-around">
-                    <Link
-                      to={socialLinks.facebook(shareUrl)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label="Share on Facebook"
-                    >
-                      <i className="fa-brands fa-facebook "></i>
-                    </Link>
-                    <Link
-                      to={socialLinks.twitter(shareUrl)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label="Share on Twitter"
-                    >
-                      <i className="fa-brands fa-twitter "></i>
-                    </Link>
-                    <Link
-                      to={socialLinks.linkedin(shareUrl)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label="Share on LinkedIn"
-                    >
-                      <i className="fa-brands fa-linkedin "></i>
-                    </Link>
-                    <Link
-                      to="https://www.whatsapp.com/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label="Share on Whatsapp"
-                    >
-                      <i className="fa-brands fa-whatsapp "></i>
-                    </Link>
-
-                    <Link 
-                     onClick={() => {
+        {shareModal && (
+          <div
+            className="modal fade show shareModal"
+            style={{ display: "block", backgroundColor: "rgba(0,0,0,0.5)" }}
+            onClick={closeShare}
+          >
+            <div className="modal-dialog modal-dialog-centered" onClick={(e) => e.stopPropagation()}>
+              <div className="modal-content p-2">
+                <div className="modal-header py-3">
+                  <h5 className="modal-title fw-bold">Share this property</h5>
+                  <button type="button" className="btn-close" onClick={closeShare}></button>
+                </div>
+                <div className="modal-body d-flex justify-content-around">
+                  <Link to={socials.facebook(shareUrl)} target="_blank">
+                    <i className="fa-brands fa-facebook"></i>
+                  </Link>
+                  <Link to={socials.twitter(shareUrl)} target="_blank">
+                    <i className="fa-brands fa-twitter"></i>
+                  </Link>
+                  <Link to={socials.linkedin(shareUrl)} target="_blank">
+                    <i className="fa-brands fa-linkedin"></i>
+                  </Link>
+                  <Link to="https://www.whatsapp.com/" target="_blank">
+                    <i className="fa-brands fa-whatsapp"></i>
+                  </Link>
+                  <Link
+                    to="#"
+                    onClick={() => {
                       navigator.clipboard.writeText(shareUrl);
-                      toast.success("Link copied to clipboard!");
+                      toast.success("Link copied!");
                     }}
-                     >
-                      <i className="fa-solid fa-link "></i>
-                    </Link>
-                  </div>
+                  >
+                    <i className="fa-solid fa-link"></i>
+                  </Link>
                 </div>
               </div>
             </div>
-          )}
-
+          </div>
+        )}
       </div>
     </section>
   );

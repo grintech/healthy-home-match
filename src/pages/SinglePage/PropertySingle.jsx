@@ -46,12 +46,14 @@ const PropertySingle = () => {
   const [slideIndex, setSlideIndex] = useState(0);
 
   const [liked, setLiked] = useState(false);
+  const [processing, setProcessing] = useState(false); // new: track API call
+  const [animate, setAnimate] = useState(false); // trigger heart animation
+
+
   const [showShare, setShowShare] = useState(false);
 
-  const toggleHeart = () => setLiked(!liked);
   const toggleShare = () => setShowShare(!showShare);
 
-  const [inputType, setInputType] = useState("text");
 
   const inspections = [
     { day: "Wednesday", date: "Sep 10, 2025", time: "1:00 pm – 1:30 pm" },
@@ -59,44 +61,27 @@ const PropertySingle = () => {
     { day: "Sunday", date: "Sep 14, 2025", time: "3:00 pm – 3:30 pm" },
   ];
 
-  // const handleRequestAnotherTime = () => {
-  //   // Close modal
-  //   const modal = document.getElementById("inspectionModal");
-  //   const modalInstance = window.bootstrap.Modal.getInstance(modal);
-  //   modalInstance.hide();
 
-  //   const target = document.getElementById("enquiryForm");
-  //   if (target) {
-  //     setTimeout(() => {
-  //       target.scrollIntoView({ behavior: "smooth", block: "start" });
-  //     }, 300); 
-  //   }
-  // };
-
-  const handleScrollToCalculator = () => {
-  const target = document.getElementById("calculatorSection");
-  if (target) {
-    const yOffset = -185; 
-    const y =
-      target.getBoundingClientRect().top + window.pageYOffset + yOffset;
-
-    window.scrollTo({ top: y, behavior: "smooth" });
-  }
-};
 
  /********* Fetch Property Api ****************/
 
   useEffect(() => {
     if (slug) {
-      api.get(`/property/${slug}`)
+      const url = user
+        ? `/property/${slug}?user_id=${user.id}` // pass user_id if logged in
+        : `/property/${slug}`; // no user_id if not logged in
+
+      api.get(url)
         .then((res) => {
           if (res.data.status) {
             const data = res.data.data;
             setProperty(data);
             console.log(data);
 
+            setLiked(data.is_saved || false); // <-- setting initial liked state
+
             // Prepare gallery images
-            let gallery = [];         
+            let gallery = [];
             if (data.gallery_images) {
               try {
                 const galleryArr = JSON.parse(data.gallery_images);
@@ -112,7 +97,52 @@ const PropertySingle = () => {
         })
         .catch((err) => console.error("API Error:", err));
     }
-  }, [slug]);
+  }, [slug, user]); 
+
+ /* ------- Toggle Save unsave Api ---------- */
+
+  const toggleHeart = async () => {
+    if (!user) {
+      toast.error("Please login to save properties!");
+      setTimeout(() => navigate("/login", { state: { from: location } }), 2000);
+      return;
+    }
+
+    if (processing) return;
+
+    setProcessing(true);
+
+    try {
+      if (!liked) {
+        // Save property
+        const res = await api.post(`/properties/save`, { propertyId: property.id, user_id: user.id });
+        if (res.data.success) {
+          setLiked(true);
+          setAnimate(true); // trigger pop
+          toast.success(res.data.message || "Property added to favorites!");
+        } else {
+          toast.error(res.data.message || "Failed to save property.");
+        }
+      } else {
+        // Unsave property
+        const res = await api.post(`/properties/unsave`, { propertyId: property.id, user_id: user.id });
+        if (res.data.success) {
+          setLiked(false);
+          toast.success(res.data.message || "Property removed from favorites!");
+        } else {
+          toast.error(res.data.message || "Failed to remove property.");
+        }
+      }
+    } catch (err) {
+      console.error("Save/Unsave API Error:", err);
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setProcessing(false);
+      if (liked) setTimeout(() => setAnimate(false), 500); // reset animation after pop
+    }
+  };
+
+
 
 
  /******* Enquiry Form Api Starts***********/
@@ -296,7 +326,7 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                   {property.listing_type}
                 </p>
                 <p className="border-end px-2 mb-1">
-                  <i className="fa-regular fa-clock"></i>{" "}
+                  <i className="fa-regular fa-clock"></i>
                   {new Date(property.created_at).toLocaleDateString()}
                 </p>
               </div>
@@ -313,17 +343,17 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
             <div className="col-md-5">
               <div className="property-action text-md-end">
                 <div className="d-flex gap-3 mb20 mb10-md align-items-center justify-content-md-end mb-3 position-relative">
-                  <Tooltip
-                    text={liked ? "Remove from Favorites" : "Add to Favorites"}
-                  >
-                    <Link to="#" onClick={toggleHeart} className="icon">
-                      <i
-                        className={`fa-heart ${
-                          liked ? "fa-solid text-danger" : "fa-regular"
-                        }`}
-                      ></i>
-                    </Link>
-                  </Tooltip>
+                  
+                   <Tooltip text={liked ? "Remove from Favorites" : "Add to Favorites"}>
+                  <Link to="#" onClick={toggleHeart} className="icon">
+                    {processing ? (
+                      <i className="fa fa-spinner fa-spin text-theme"></i>
+                    ) : (
+                      <i className={`fa-heart ${liked ? "fa-solid text-danger" : "fa-regular"} ${animate ? 'pop-heart' : ''}`}></i>
+                    )}
+                  </Link>
+                </Tooltip>
+
 
                   <Tooltip text={"Share"}>
                     <Link className="icon" to="#" onClick={toggleShare}>
@@ -389,60 +419,10 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
           </div>
 
           {/* Check conditions */}
-          
-          {/* {images.length > 0 ? (
-            // Case 1: Show gallery if available
-            <div className="gallery_images row g-3 mb-5">
-              {images.map((src, i) => (
-                <div
-                  key={i}
-                  className={
-                    i === 0
-                      ? "col-sm-6 overflow-hidden"
-                      : "col-6 overflow-hidden"
-                  }
-                >
-                  <div className="img_wrapper h-100">
-                    <img
-                      className="w-100 h-100"
-                      src={src}
-                      alt={`property-${i}`}
-                      onClick={() => openLightbox(i)}
-                      style={{ cursor: "pointer" }}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : property.featured_image ? (
-            // Case 2: Show featured image if gallery not present
-            <div className=" gallery_images mb-5 overflow-hidden">
-             <div className="col-12 overflow-hidden">
-               <div className="img_wrapper overflow-hidden">
-              <img
-                src={`https://${property.featured_image}`}
-                className="w-100"
-                alt="Featured Property"
-                style={{height:"500px", borderRadius:"8px", objectFit:"cover"}}
-              />
-              </div>
-             </div>
-            </div>
-          ) : (
-            // Case 3: Default image if none available
-            <div className="row  mb-5">
-              <img
-                src="/images/default-property.png"
-                className="w-100"
-                alt="Default Property"
-                style={{ height: "350px", objectFit: "contain",backgroundColor:"#f5f5f5" }}
-              />
-            </div>
-          )} */}
-
-          <div className="py-2 inspection_section d-flex flex-wrap justify-content-between align-items-end">
-            <h6 className="fw-bold">
-              Inspection on Sep 10, 2025 at 1.00 pm{" "}
+             
+          <div className="py-2 inspection_section d-flex flex-wrap justify-content-end align-items-end">
+            {/* <h6 className="fw-bold">
+              Inspection on Sep 10, 2025 at 1.00 pm
               <Link
                 data-bs-toggle="modal"
                 data-bs-target="#inspectionModal"
@@ -450,11 +430,30 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
               >
                 (See All)
               </Link>
-            </h6>
-            <div className="agency-details">
-              <button className="btn ud-btn btn-white search_home_btn" onClick={handleScrollToCalculator}>Calculate EMI</button>
+            </h6> */}
+            <div className="agency-details d-flex">
+             <button className="btn ud-btn btn-white search_home_btn me-3"  data-bs-toggle="modal"  data-bs-target="#inspectionModal" >Inspection Time</button>     
+              <button className="btn ud-btn btn-white search_home_btn" data-bs-toggle="modal" data-bs-target="#calculateEmi">Calculate EMI</button>
             </div>
         </div>
+
+
+     {/* Calculate Emi Modal */}
+    <div className="modal fade" id="calculateEmi" tabIndex="-1" aria-labelledby="calculateEmiLabel" aria-hidden="true">
+      <div className="modal-dialog modal-dialog-centered">
+        <div className="modal-content">
+          <div className="modal-header">
+            <h1 className="modal-title single_head fs-5" id="calculateEmiLabel">Mortgage Calculator</h1>
+            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div className="modal-body">
+            <SinglePageCalculator  propertyPrice={property.price} />
+          </div>
+        
+        </div>
+      </div>
+    </div>
+
 
       {/* Modal */}
       <div
@@ -626,10 +625,6 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
         )}
 
 
-
-
-
-
           {/* Lightbox */}
           <Lightbox
             open={lightboxOpen}
@@ -682,20 +677,7 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                       </div>
                     </div>
                   </div>
-                  {/* <div className="col-6 col-lg-4 mb-4">
-                    <div className="overview-element position-relative d-flex align-items-center">
-                      <i className="fa-solid fa-warehouse"></i>
-
-                      <div className="ms-3">
-                        <h6 className="mb-0">Balcony</h6>
-                        <p className="text mb-0 text-capitalize">
-                          {property.balconies == null
-                            ? "NA"
-                            : property.balconies}
-                        </p>
-                      </div>
-                    </div>
-                  </div> */}
+                 
                   <div className="col-6 col-lg-4 mb-4">
                     <div className="overview-element position-relative d-flex align-items-center">
                       <i className="fa-solid fa-chart-area"></i>
@@ -703,9 +685,6 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                       <div className="ms-3">
                         <h6 className="mb-0">Area</h6>
                         <p className="text mb-0 ">
-                          {/* {property.area_m2 == null
-                            ? "NA"  
-                            : property.area_m2} */}
                             {property.area_m2 && property.area_unit
                             ? `${property.area_m2 ?? ""} ${property.area_unit ?? ""}`.trim()
                             : "NA"}
@@ -1184,7 +1163,7 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                                   <div>
                                     <h6 className="mb-1 fw-semibold">{school.name}</h6>
                                     <p className="text-muted">
-                                      Type: {school.type} | Owner: {school.owner} | Distance:{" "}
+                                      Type: {school.type} | Owner: {school.owner} | Distance:
                                       {school.distance}
                                     </p>
                                   </div>
@@ -1230,9 +1209,6 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
               );
             })()}
 
-            <div id="calculatorSection">
-              <SinglePageCalculator />
-            </div>
 
             </div>
 
@@ -1293,7 +1269,7 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
                       rows={3}
                       required
                     ></textarea>
-                    <button type="submit" className="btn ud-btn btn-white search_home_btn w-100">
+                    <button type="submit" className="btn ud-btn black_btn search_home_btn w-100">
                       Submit <i className="fa-solid fa-arrow-right"></i>
                     </button>
                 </form>
@@ -1416,7 +1392,7 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
           </div>
 
           <div className="row mt-4 search_right">
-            <h2 className="sec-title mb-4">Discover Our Featured Listings</h2>
+            <h2 className="sec-title mb-4">Similar Properties</h2>
 
             <div className="col-lg-4 col-md-6 mb-0 mb-md-4">
               <div className="listing-style1">

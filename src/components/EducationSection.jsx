@@ -43,35 +43,37 @@ const educationData = [
 
 const EducationSection = () => {
   return (
-    <section className="education-section py-5">
-      <div className="container">
-        <div className="row align-items-center">
-          {/* Left Content */}
-          <div className="col-lg-6">
-            <h2 className="sec-title mb-5 text-white">
-              Let’s Find The Right Selling Option For You
-            </h2>
-            <div className="d-flex flex-column gap-4">
-              {educationData.map((item, index) => (
-                <div key={index} className="d-flex align-items-center wrap">
-                  <div className="icon-wrapper bg-light-subtle rounded-circle d-flex align-items-center justify-content-center me-3" style={{ width: 50, height: 50 }}>
-                    <FontAwesomeIcon icon={item.icon} className=" fs-5" />
+    <div className="container">
+      <section className="education-section py-5">
+        <div className="container">
+          <div className="row align-items-center">
+            {/* Left Content */}
+            <div className="col-lg-6 ps-4">
+              <h2 className="sec-title mb-5 text-white">
+                Let’s Find The Right Selling Option For You
+              </h2>
+              <div className="d-flex flex-column gap-4">
+                {educationData.map((item, index) => (
+                  <div key={index} className="d-flex align-items-center wrap">
+                    <div className="icon-wrapper bg-light-subtle rounded-circle d-flex align-items-center justify-content-center me-3" style={{ width: 50, height: 50 }}>
+                      <FontAwesomeIcon icon={item.icon} className=" fs-5" />
+                    </div>
+                  <div>
+                    <Link><h6 className="mb-0 fw-semibold text-white">{item.title}</h6></Link>
+                    <p className="m-0 text-white">{item.description}</p>
                   </div>
-                 <div>
-                   <Link><h6 className="mb-0 fw-semibold text-white">{item.title}</h6></Link>
-                   <p className="m-0 text-white">{item.description}</p>
-                 </div>
-                </div>
-              ))}
-             
+                  </div>
+                ))}
+              
+              </div>
             </div>
-          </div>
 
-         
-        
+          
+          
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
   );
 };
 

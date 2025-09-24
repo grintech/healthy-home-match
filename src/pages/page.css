@@ -437,9 +437,9 @@ padding: 30px !important;
 .plans_cards .card{
     box-shadow: 0 1px 26px rgba(24, 26, 32, .07);
     border: 1px solid rgba(37, 39, 40, 0.1) !important;
-    padding: 45px 30px;
+    padding: 45px 30px;transition: all .5s;
 }
-.plans_cards .card:hover{background-color: #f3f3f3; border: 1px solid var(--primary) !important;}
+.plans_cards .card:hover{background-color: #f3f3f3; border: 1px solid var(--secondary) !important;transition: all .5s;}
 .plans_cards .card h5{font-size: 17px; font-weight: 600;}
 .plans_cards .card h4{font-size: 24px; font-weight: 600;}
 .plans_cards .card h3{font-size: 20px; }
@@ -525,6 +525,7 @@ padding: 30px !important;
 .agent_filter_tabs .btn-light{background-color: #f7f7f7 !important;border: 1px solid #ccc; font-size: 14px; font-weight: 500; padding: 8px 13px; border-radius: 50px;}
 .agent_filter_tabs .btn-active{background-color: var(--primary) !important;border: 1px solid var(--primary); color: #fff; font-size: 14px; padding: 8px 13px;border-radius: 50px; }
 .agent_filter_tabs .dropdown-item:active{background-color: #f5f5f5 !important; color: inherit !important;}
+#builders .dropdown-item:active{background-color: #f5f5f5 !important; color: inherit !important;}
 
 
 
@@ -541,19 +542,46 @@ padding: 30px !important;
 
 .faq_sell .accordion-style1 .accordion-button::before {left: unset !important; right: 20px !important}
 .sell-page #agents{scroll-margin-top:140px}
+.build-page #builders{scroll-margin-top:140px}
+.get_finance_page #applyForm{scroll-margin-top:140px}
+
+.build-page .form-select{height: 42px; font-size: 14px; color: #000;}
+.build-page input[type="text"]{height: 42px; font-size: 14px; color: #000;}
+.build-page .dropdown button{height: 42px; font-size: 14px; color: #000;}
+.build-page .location_input input{height: 42px; font-size: 14px; color: #000;}
+.build-page .form-select:focus{box-shadow: none !important; border-color: var(--secondary);}
+.build-page input:focus{box-shadow: none !important; border-color: var(--secondary);}
+.build-page input::placeholder{font-size: 14px; color: #000;}
+.builder_card:hover{background-color: var(--tertiary);transition: all .5s;}
+.builder_card img { height: 200px; object-fit: cover;}
+.builder_card .search_home_btn.black_btn {height: 45px;}
+
+#builders .all_filters i {display: none !important;}
+#builders .all_filters .dropdown-toggle::after{display: none !important;}
+
+.get_finance_page .accordion-style1 .accordion-item {padding: 0 !important;}
+.get_finance_page .accordion-style1 .accordion-button::before {right: 20px; left: unset;}
+
+.get_finance_page textarea::placeholder{font-size: 13px; color: #000000da;}
+.get_finance_page input::placeholder{font-size: 13px; color: #000000da;}
+.get_finance_page textarea:focus{box-shadow: none !important; border-color: var(--secondary);}
+.get_finance_page input{height: 45px;}
+.get_finance_page input:focus{box-shadow: none !important; border-color: var(--secondary);}
+.get_finance_page .finance_plan_card{background-color: #fff; border: 2px solid var(--secondary); transition: all .5s; border-radius: 18px;}
+.get_finance_page .finance_plan_card:hover{border-color:  var(--primary) !important; background-color: whitesmoke;transition: all .5s;}
 
 
-
-
-
-
+.checkout_page li{list-style: disc; font-size: 15px;}
+.checkout_page li::marker{color: var(--secondary); font-size: 18px;}
 
 /*--------- Media Queries --------*/
 
 @media screen and (min-width:1440px) {
-    .agent_card .team-style1 .team-img img {height: 250px !important;}
+ .agent_card .team-style1 .team-img img {height: 250px !important;}
+ .builder_card img { height: 220px; object-fit: cover;}
 
 }
+
 @media screen and (min-width: 992px) and (max-width: 1199px) {
   .sell-page .education-section .wrap { flex-wrap: wrap;  }
   .sell-page .education-section .icon-wrapper {margin-bottom: 10px; }
@@ -568,6 +596,7 @@ padding: 30px !important;
     .page_not_found .search_home_btn{font-size: 16px !important;}
     .agency_single_right_wrapper{margin-top: 0; position: relative !important; top: unset !important;}
 }
+
 @media screen and (max-width:768px) {
     .page_not_found h1{font-size: 6rem;}
     .page_not_found h4{font-size: 20px !important;}
@@ -575,17 +604,15 @@ padding: 30px !important;
     .page_not_found .search_home_btn i{font-size: 15px !important;}
     .out_cta{padding: 100px 0;}
     .contact_banner { padding: 100px 0;}
-
     .agent-single .single-img img {width: 150px; height: 150px;}
-
-    .faq_page .nav-tabs .faq_ques{display: none;}
-    
+    .faq_page .nav-tabs .faq_ques{display: none;} 
 }
+
 @media screen and (max-width: 767px) {
   .sell-page .education-section .wrap { flex-direction: column; align-items: start !important; justify-content: start !important; flex-wrap: wrap;}
   .sell-page .education-section .icon-wrapper {margin-bottom: 10px; }
-
 }
+
 @media screen and (max-width:575px) {
     .contact_btns .btn{margin-bottom: 15px;}
     .out_cta{padding: 80px 0;}
@@ -606,27 +633,23 @@ padding: 30px !important;
     .out_cta{padding: 70px 0;}
     .contact_page_form {padding: 30px 20px;}
     .contact_infos .card-body { padding: 30px 20px !important;}
-     .contact_banner { padding: 70px 0;}
-     .counter_section p{font-size: 15px;}
-
-      .agent-single .single-img img {width: 100px; height: 100px;}
-
-      .single-contant p{font-size: 14px;}
-      .agent-page-meta .form-control {padding: 6px 12px; font-size: 14px;}
-      .agent-page-meta .open-btn{padding: 6px 12px; font-size: 14px;}
-
-      .plans_cards .card h4{font-size: 22px; font-weight: 600;}
-        .plans_cards .card h3{font-size: 18px; }
-        .plans_cards .card h3 span{font-size: 28px; font-weight: 600; }
-        .plans_cards .card p{font-size: 14px;}
-
-        .all_agents_page .single-agent-card{width: 100% !important;}
+    .contact_banner { padding: 70px 0;}
+    .counter_section p{font-size: 15px;}
+    .agent-single .single-img img {width: 100px; height: 100px;}
+    .single-contant p{font-size: 14px;}
+    .agent-page-meta .form-control {padding: 6px 12px; font-size: 14px;}
+    .agent-page-meta .open-btn{padding: 6px 12px; font-size: 14px;}
+    .plans_cards .card h4{font-size: 22px; font-weight: 600;}
+    .plans_cards .card h3{font-size: 18px; }
+    .plans_cards .card h3 span{font-size: 28px; font-weight: 600; }
+    .plans_cards .card p{font-size: 14px;}
+    .all_agents_page .single-agent-card{width: 100% !important;}
 }
 
 @media screen and (max-width:375px) {
     .counter_section h4 {font-size: 1.75rem;}
     .counter_section i{font-size: 22px;}
-     .counter_section p{font-size: 14px;}
+    .counter_section p{font-size: 14px;}
     .agent_reviews .review_images img {height: 80px;}
 }
 

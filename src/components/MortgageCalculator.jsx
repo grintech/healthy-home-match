@@ -15,6 +15,17 @@ export default function MortgageCalculator() {
   const [propertyTax, setPropertyTax] = useState("");
   const [insurance, setInsurance] = useState("");
   const [results, setResults] = useState(null);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  // Placeholder state
+  const [placeholders, setPlaceholders] = useState({
+    homePrice: "$150000",
+    downPayment: "$20000",
+    interestRate: "5%",
+    loanTerm: "30",
+    propertyTax: "$200",
+    insurance: "$250",
+  });
 
   const parseCurrency = (val) => val.replace(/\$|,/g, "");
 
@@ -25,17 +36,27 @@ export default function MortgageCalculator() {
     }
   };
 
-  const handleBlur = (value, setter) => {
+  const handleBlurFormat = (value, setter) => {
     if (value) {
       const num = parseFloat(value);
-      setter(num.toLocaleString());
+      if (!isNaN(num)) {
+        setter(num.toLocaleString());
+      }
     }
   };
 
   const calculatePayment = () => {
+    if (
+      parseFloat(downPayment.replace(/\$|,/g, "")) >
+      parseFloat(homePrice.replace(/\$|,/g, ""))
+    ) {
+      toast.error("Down Payment cannot exceed Home Price!");
+      return;
+    }
+
     if (!homePrice || !downPayment || !interestRate || !loanTerm) {
       toast.error(
-        "Please fill in Home Price, Down Payment, Interest Rate, and Loan Term."
+        "Please fill the required fields!"
       );
       return;
     }
@@ -70,10 +91,8 @@ export default function MortgageCalculator() {
     });
   };
 
-  // Dynamically build chart data
   const buildChartData = () => {
     if (!results) {
-      // Default chart when no calculation yet
       return {
         labels: ["Principal & Interest"],
         datasets: [
@@ -114,127 +133,168 @@ export default function MortgageCalculator() {
     };
   };
 
+  const handleFocus = (field) => {
+    setPlaceholders((prev) => ({ ...prev, [field]: "" }));
+  };
+
+  const handleBlur = (field, value, setter, defaultPlaceholder) => {
+    if (!value) {
+      setPlaceholders((prev) => ({ ...prev, [field]: defaultPlaceholder }));
+    }
+    handleBlurFormat(value, setter);
+  };
+
   return (
     <>
       <Navbar />
       <div className="container my-5 mortgage_page">
         <h1 className="mb-3 sec-title m-0">Mortgage Calculator</h1>
-        <p>
-          Use our advanced mortgage calculator to estimate your monthly mortgage
-          payments with precision. Simply input your property price, down
-          payment, interest rate, and loan term to generate an instant, detailed
-          payment breakdown. Property tax and home insurance are optional — even
-          if you leave them blank, your payment estimate will still be
-          calculated.
-        </p>
 
-          <div className="row mt-4 g-4 align-items-center">
-            {/* Input Form */}
-            <div className="col-lg-6 col-md-7 mb-4 mb-md-0">
-              <div className="card border-0 shadow">
-                <div className="row">
-                  <div className="mb-4 col-md-6">
-                    <label className="form-label">Home Price <span className="text-danger">*</span></label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      value={homePrice ? `$${homePrice}` : ""}
-                      placeholder="$150000"
-                      onChange={(e) => handleNumericInput(e, setHomePrice)}
-                      onBlur={() => handleBlur(homePrice, setHomePrice)}
-                    />
-                  </div>
-
-                  <div className="mb-4 col-md-6">
-                    <label className="form-label">Down Payment <span className="text-danger">*</span></label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      value={downPayment ? `$${downPayment}` : ""}
-                      placeholder="$20000"
-                      onChange={(e) => handleNumericInput(e, setDownPayment)}
-                      onBlur={() => handleBlur(downPayment, setDownPayment)}
-                    />
-                  </div>
-
-                  <div className="mb-4 col-md-6">
-                    <label className="form-label">Interest Rate (%) <span className="text-danger">*</span></label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      value={interestRate}
-                      placeholder="5%"
-                      onChange={(e) => handleNumericInput(e, setInterestRate)}
-                    />
-                  </div>
-
-                  <div className="mb-4 col-md-6">
-                    <label className="form-label">Loan Term (Years) <span className="text-danger">*</span></label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      value={loanTerm}
-                      placeholder="30"
-                      onChange={(e) => handleNumericInput(e, setLoanTerm)}
-                    />
-                  </div>
-
-                  <div className="mb-4 col-md-6">
-                    <label className="form-label">Property Tax (Yearly)</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      value={propertyTax ? `$${propertyTax}` : ""}
-                      placeholder="$200"
-                      onChange={(e) => handleNumericInput(e, setPropertyTax)}
-                      onBlur={() => handleBlur(propertyTax, setPropertyTax)}
-                    />
-                  </div>
-
-                  <div className="mb-4 col-md-6">
-                    <label className="form-label">Home Insurance (Yearly)</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      value={insurance ? `$${insurance}` : ""}
-                      placeholder="$250"
-                      onChange={(e) => handleNumericInput(e, setInsurance)}
-                      onBlur={() => handleBlur(insurance, setInsurance)}
-                    />
-                  </div>
+        <div className="row mt-4 g-4 align-items-center">
+          <div className="col-lg-6 col-md-7 mb-4 mb-md-0">
+            <div className="card border-0 shadow">
+              <div className="row">
+                <div className="mb-4 col-md-6">
+                  <label className="form-label">
+                    Home Price <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={homePrice ? `$${homePrice}` : ""}
+                    placeholder={placeholders.homePrice}
+                    onChange={(e) => handleNumericInput(e, setHomePrice)}
+                    onFocus={() => handleFocus("homePrice")}
+                    onBlur={() =>
+                      handleBlur("homePrice", homePrice, setHomePrice, "$150000")
+                    }
+                  />
                 </div>
 
-                <button
-                  className="btn btn-theme py-3 w-100"
-                  onClick={calculatePayment}
-                >
-                  Calculate
-                </button>
+                <div className="mb-4 col-md-6">
+                  <label className="form-label">
+                    Down Payment <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    className={`form-control ${errorMessage ? "is-invalid" : ""}`}
+                    value={downPayment ? `$${downPayment}` : ""}
+                    placeholder={placeholders.downPayment}
+                    onChange={(e) => {
+                      handleNumericInput(e, setDownPayment);
+                      const dp = parseFloat(e.target.value.replace(/\$|,/g, ""));
+                      const hp = parseFloat(homePrice.replace(/,/g, ""));
+                      if (!isNaN(dp) && !isNaN(hp) && dp > hp) {
+                        setErrorMessage("Down Payment cannot exceed Home Price");
+                      } else {
+                        setErrorMessage("");
+                      }
+                    }}
+                    onFocus={() => handleFocus("downPayment")}
+                    onBlur={() =>
+                      handleBlur("downPayment", downPayment, setDownPayment, "$20000")
+                    }
+                  />
+                  {errorMessage && (
+                    <div className="invalid-feedback d-block">{errorMessage}</div>
+                  )}
+                </div>
+
+                <div className="mb-4 col-md-6">
+                  <label className="form-label">
+                    Interest Rate (%) <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={interestRate}
+                    placeholder={placeholders.interestRate}
+                    onChange={(e) => handleNumericInput(e, setInterestRate)}
+                    onFocus={() => handleFocus("interestRate")}
+                    onBlur={() =>
+                      handleBlur("interestRate", interestRate, setInterestRate, "5%")
+                    }
+                  />
+                </div>
+
+                <div className="mb-4 col-md-6">
+                  <label className="form-label">
+                    Loan Term (Years) <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={loanTerm}
+                    placeholder={placeholders.loanTerm}
+                    onChange={(e) => handleNumericInput(e, setLoanTerm)}
+                    onFocus={() => handleFocus("loanTerm")}
+                    onBlur={() =>
+                      handleBlur("loanTerm", loanTerm, setLoanTerm, "30")
+                    }
+                  />
+                </div>
+
+                <div className="mb-4 col-md-6">
+                  <label className="form-label">Property Tax (Yearly)</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={propertyTax ? `$${propertyTax}` : ""}
+                    placeholder={placeholders.propertyTax}
+                    onChange={(e) => handleNumericInput(e, setPropertyTax)}
+                    onFocus={() => handleFocus("propertyTax")}
+                    onBlur={() =>
+                      handleBlur("propertyTax", propertyTax, setPropertyTax, "$200")
+                    }
+                  />
+                </div>
+
+                <div className="mb-4 col-md-6">
+                  <label className="form-label">Home Insurance (Yearly)</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={insurance ? `$${insurance}` : ""}
+                    placeholder={placeholders.insurance}
+                    onChange={(e) => handleNumericInput(e, setInsurance)}
+                    onFocus={() => handleFocus("insurance")}
+                    onBlur={() =>
+                      handleBlur("insurance", insurance, setInsurance, "$250")
+                    }
+                  />
+                </div>
               </div>
-            </div>
 
-            {/* Chart Section */}
-            <div className="col-lg-3 col-md-5 offset-lg-2">
-              <Doughnut
-                data={buildChartData()}
-                options={{
-                  cutout: "65%",
-                  responsive: true,
-                  plugins: {
-                    legend: { position: "bottom" },
-                  },
-                }}
-              />
-
-              <h5 className="mt-4 mb-0 fw-bold text-center">
-                {results
-                  ? `Monthly: $${parseFloat(results.total).toLocaleString()}`
-                  : "Fill the form to calculate"}
-              </h5>
+              <button
+                className="btn btn-theme py-3 w-100"
+                onClick={calculatePayment}
+              >
+                Calculate
+              </button>
             </div>
           </div>
 
-          <div className="mortgage_faqs faq_page mt-5">
+          <div className="col-lg-3 col-md-5 offset-lg-2">
+            <Doughnut
+              data={buildChartData()}
+              options={{
+                cutout: "65%",
+                responsive: true,
+                plugins: {
+                  legend: { position: "bottom" },
+                },
+              }}
+            />
+
+            <h5 className="mt-4 mb-0 fw-bold text-center">
+              {results
+                ? `Monthly: $${parseFloat(results.total).toLocaleString()}`
+                : "Fill the form to calculate"}
+            </h5>
+          </div>
+        </div>
+
+         <div className="mortgage_faqs faq_page mt-5">
             <h2 className="sec-title ">Frequently asked questions about mortgages</h2>
 
             <div className="accordion-style1">
@@ -314,12 +374,9 @@ export default function MortgageCalculator() {
               </div>
             </div>
           </div>
-
-
+          
       </div>
       <Footer />
     </>
   );
 }
-
-

@@ -31,6 +31,7 @@
   /* Secondary Accent - Blue for trust */
   /* --secondary: #2196F3; */
   --secondary: #042825;
+  --tertiary: #14918633;
 
   /* Neutral Backgrounds */
   --bg-light: #F5F5F5;
@@ -57,6 +58,9 @@
 
 .bg-green{
   background-color: var(--secondary) !important; color: #fff !important;
+}
+.bg-lgreen{
+  background-color: var(--tertiary) !important; color: #000 !important;
 }
 .btn-theme{background-color: var(--primary) !important; color: #fff !important; border: 1px solid var(--primary) !important; padding:7px 7px;}
 .btn-theme:hover{background-color: #f19823 !important; color: #fff !important; border: 1px solid var(--primary) !important;}
@@ -86,10 +90,11 @@ body {
   /* font-family: var(--font-body); */
   /* font-family: var(--font-body); */
   /* color: #181a20; */
-  font-family: 'Century Gothic';
+   font-family: 'Century Gothic';
     font-size: 14px;
     font-weight: 400;
     padding-right: 0 !important;
+    overflow-x: hidden;
 }
 
 .min_height{min-height: 85vh !important;}
@@ -1520,7 +1525,7 @@ p {
     color: #fff;
     font-size: 14px;
     font-weight: 400;
-    height: 70px;
+    height: 65px;
     padding-left: 20px;
 }
 .mailchimp-style1 input::placeholder{color: #dbdbdb;}
@@ -1536,11 +1541,12 @@ p {
     font-weight: 500;
     position: absolute;
     right: 10px;
-    top: 15px;
+    top: 12px;
     height: 35px;
     width: 35px;
     border-radius: 50%;
 }
+
 .mailchimp-style1 button i{font-size: 14px;}
 [type=submit], button {
   appearance: button;
@@ -1969,4 +1975,9 @@ p {
     flex: auto;
     margin-bottom: 15px;
   }
+  .footer p { font-size: 12px;}
+}
+
+@media screen and (max-width:350px) {
+  .footer p { font-size: 10px;}
 }
