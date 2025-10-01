@@ -142,33 +142,41 @@ useEffect(() => {
 
           <form onSubmit={handleSubmit}>
             {/* Role radio */}
+         {/* Role radio */}
           <div className="row role_checks mb-4">
             {[
               { value: "4", label: "Buyer" },
               { value: "3", label: "Agency" },
-              { value: "5", label: "Builder" },
+              { value: "5", label: "Builder /Architect" },
             ]
               .filter((role) => visibleRoles.includes(role.value)) // filter by visible roles
-              .map((role, index) => (
-                <div key={index} className="col-lg-4 col-6 mb-2 mb-lg-0">
-                  <div className="form-check h-100">
-                    <input
-                      id={role.value}
-                      className="form-check-input"
-                      type="radio"
-                      name="role"
-                      value={role.value}
-                      checked={formData.role === role.value}
-                      onChange={handleChange}
-                      required
-                    />
-                    <label htmlFor={role.value} className="form-check-label">
-                      {role.label}
-                    </label>
+              .map((role, index) => {
+                // Apply col-lg-6 for Buyer & Agency, col-12 for Builder
+                const colClass =
+                  role.value === "5" ? "col-12 mb-2" : "col-6  mb-2";
+
+                return (
+                  <div key={index} className={colClass}>
+                    <div className="form-check h-100">
+                      <input
+                        id={role.value}
+                        className="form-check-input"
+                        type="radio"
+                        name="role"
+                        value={role.value}
+                        checked={formData.role === role.value}
+                        onChange={handleChange}
+                        required
+                      />
+                      <label htmlFor={role.value} className="form-check-label">
+                        {role.label}
+                      </label>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
           </div>
+
 
 
             {/* Name */}

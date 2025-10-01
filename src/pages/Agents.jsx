@@ -59,6 +59,8 @@ const Agents = () => {
 
       if (res.data.success) {
         setAgents(res.data.data);
+        console.log(res.data.data);
+
         setPagination(res.data.pagination);
       } else {
         setAgents([]);
@@ -72,19 +74,22 @@ const Agents = () => {
   };
 
 
-  const handleContactClick = (e) => {
-        e.preventDefault();
-    
-        if (!user) {
-          toast.error("Login to view agent profile!");
-          setTimeout(() => {
-            navigate("/login" , { state: { from: locations } });
-          }, 2000);
-          return;
-        }
-        // If logged in → redirect to agent profile
-        navigate(`/agent/${agent.slug}}`);
-      };
+  const handleContactClick = (e, agent) => {
+  e.preventDefault();
+
+  if (!user) {
+    toast.error("Login to view agent profile!");
+    setTimeout(() => {
+      navigate("/login", { state: { from: locations } });
+    }, 2000);
+    return;
+  }
+
+  // If logged in → redirect to agent profile
+  navigate(`/agent/${agent?.slug || agent?.user?.slug}`);
+  console.log("Agent clicked:", agent);
+};
+
 
 
   const applyFilters = () => {
@@ -222,7 +227,7 @@ const Agents = () => {
                   {agents.map((agent) => (
                     <div key={agent.id} className="col-lg-3 col-md-4 col-6 single-agent-card">
                       <div className="item agent_card h-100">
-                        <Link onClick={handleContactClick}>
+                        <Link onClick={(e) => handleContactClick(e, agent)}>
                           <div className="team-style1">
                             <div className="team-img">
                               <img

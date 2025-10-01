@@ -325,7 +325,7 @@ const handleShowLess = (type) => {
                   <div className="row align-items-baseline mt-4">
                     <div className="col-sm-4 mb-3 mb-sm-0">
                       <h5 className="fw-bold mb-0 me-3">
-                        Listing ({allProperties.length})
+                        Properties ({allProperties.length})
                       </h5>
                     </div>
                     <div className="col-sm-8">

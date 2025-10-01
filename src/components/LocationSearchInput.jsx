@@ -70,7 +70,7 @@ const LocationSearchInput = ({ onSelect }) => {
       <input
         value={value}
         onChange={handleInput}
-        placeholder="Enter State, Province or Zipcode"
+        placeholder="Enter State, Province or Postcode"
         className="form-control w-100"
       />
       <i className="fa-solid fa-location-dot"></i>

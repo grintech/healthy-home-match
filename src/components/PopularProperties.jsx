@@ -109,7 +109,7 @@ const PopularProperties = () => {
       <div className="container">
         <div className="row ">
           <div className="col-lg-6">
-            <h2 className="sec-title m-0">Discover Popular Properties</h2>
+            <h2 className="sec-title m-0">Featured Properties</h2>
             <p className="paragraph">Handpicked properties trending now.</p>
           </div>
           {properties.length > 0 && (

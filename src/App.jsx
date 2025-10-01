@@ -47,6 +47,8 @@ import HelpPage from './pages/HelpPage.jsx';
 import BuildPage from './pages/BuildPage.jsx';
 import GetFinancePage from './pages/GetFinancePage.jsx';
 import CheckoutPage from './components/CheckoutPage.jsx';
+import BuilderDetail from './pages/BuilderDetail.jsx';
+import BuilderPropertySingle from './pages/BuilderPropertySingle.jsx';
 
 
 const App = () => {
@@ -130,6 +132,8 @@ const App = () => {
 
         <Route path="/mortgage-calculator" element={<MortgageCalculator />} />
         <Route path="/build" element={<BuildPage />} />
+        <Route path="/builder/:slug" element={<BuilderDetail />} />
+        <Route path="/property-single" element={<BuilderPropertySingle />} />
         <Route path="/get-finance" element={<GetFinancePage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/sell" element={<SellPropertyPage />} />

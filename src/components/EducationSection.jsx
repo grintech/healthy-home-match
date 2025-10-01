@@ -43,7 +43,7 @@ const educationData = [
 
 const EducationSection = () => {
   return (
-    <div className="container">
+    <div className="container pb-5">
       <section className="education-section py-5">
         <div className="container">
           <div className="row align-items-center">

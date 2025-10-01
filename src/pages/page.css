@@ -40,6 +40,7 @@
     color: #212529;
     background-color: #fff;
 }
+.form-style1 textarea{height: auto !important;}
 .agency_single_form .form-select{
     font-size: 12px;
     font-size: 13px;
@@ -547,14 +548,17 @@ padding: 30px !important;
 
 .build-page .form-select{height: 42px; font-size: 14px; color: #000;}
 .build-page input[type="text"]{height: 42px; font-size: 14px; color: #000;}
-.build-page .dropdown button{height: 42px; font-size: 14px; color: #000;}
+.build-page .dropdown button{height: 42px; font-size: 14px; color: #000; overflow: hidden; padding-right: 5px;}
 .build-page .location_input input{height: 42px; font-size: 14px; color: #000;}
 .build-page .form-select:focus{box-shadow: none !important; border-color: var(--secondary);}
 .build-page input:focus{box-shadow: none !important; border-color: var(--secondary);}
 .build-page input::placeholder{font-size: 14px; color: #000;}
-.builder_card:hover{background-color: var(--tertiary);transition: all .5s;}
-.builder_card img { height: 200px; object-fit: cover;}
+/* .builder_card:hover{background-color: var(--tertiary);transition: all .5s;} */
+/* .builder_card img { height: 200px; object-fit: cover;} */
 .builder_card .search_home_btn.black_btn {height: 45px;}
+#contactModal label{font-weight: 600;}
+#contactModal select{font-size: 13px;}
+#contactModal input::placeholder, #contactModal textarea::placeholder{font-size: 13px; color: rgb(71, 70, 70);}
 
 #builders .all_filters i {display: none !important;}
 #builders .all_filters .dropdown-toggle::after{display: none !important;}
@@ -573,6 +577,38 @@ padding: 30px !important;
 
 .checkout_page li{list-style: disc; font-size: 15px;}
 .checkout_page li::marker{color: var(--secondary); font-size: 18px;}
+
+.description-text p{margin: 0 !important;}
+.property_by_area .nav-tabs{padding: 0  !important;}
+.property_by_area .swiper{padding: 20px 10px; }
+
+.property_by_area .swiper-button-prev, .property_by_area .swiper-button-next {   
+   background-color: var(--primary); height: 30px; width: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+}
+.property_by_area .swiper-button-disabled{display: none;}
+.property_by_area .swiper-button-prev{left: 0 !important;}
+.property_by_area .swiper-button-next{right: 0 !important;}
+.property_by_area .swiper-button-prev:after, .property_by_area .swiper-button-next:after {   
+    font-size: 15px; color: #fff;
+}
+
+#buildNewhouseModal .location_div i{display: none !important;}
+#buildNewhouseModal label{display: inline-block; font-weight: 600; color: #555353;font-size: 15px;}
+#buildNewhouseModal  input::placeholder{font-size: 13px;}
+#buildNewhouseModal  input[type="checkbox"]{height: 15px !important;}
+#buildNewhouseModal .modal-title{font-size: 22px;}
+#buildNewhouseModal select{font-size: 14px;}
+#buildNewhouseModal .text-danger{font-size: 13px; margin-top: 4px; }
+
+#retrofyHouseModal .location_div i{display: none !important;}
+#retrofyHouseModal label{display: inline-block; font-weight: 600; color: #555353;font-size: 15px;}
+#retrofyHouseModal  input::placeholder{font-size: 13px;}
+#retrofyHouseModal  input[type="checkbox"]{height: 15px !important;}
+#retrofyHouseModal .modal-title{font-size: 22px;}
+#retrofyHouseModal select{font-size: 14px;}
+#retrofyHouseModal .text-danger{font-size: 13px; margin-top: 4px; }
+
+
 
 /*--------- Media Queries --------*/
 

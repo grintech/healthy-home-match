@@ -48,7 +48,7 @@ const AgencySingleSkeleton = () => {
           <div className="col-lg-8 mb-4 mb-lg-0 pe-lg-5">
             {/* About Agency */}
             <div className="agent-single-details pb30 bdrb1 pb-3">
-              <h5 className="mb-3 fw-bold">About Agency</h5>
+              <h5 className="mb-3 fw-bold">About </h5>
               <Skeleton count={3} />
               <Skeleton width={120} />
             </div>
@@ -80,7 +80,7 @@ const AgencySingleSkeleton = () => {
             </div>
 
             {/* Agents Section */}
-            <h5 className="fw-bold mb-3">Our Agents</h5>
+            {/* <h5 className="fw-bold mb-3">Our Agents</h5> */}
             <div className="row g-4">
               {[1, 2, 3].map((i) => (
                 <div className="col-lg-4 col-sm-4 col-6" key={i}>
@@ -106,7 +106,7 @@ const AgencySingleSkeleton = () => {
 
             {/* Professional Info */}
             <div className="card p-3">
-              <h6 className="fw-bold mb-2">Professional Information</h6>
+              <h6 className="fw-bold mb-2">Other Information</h6>
               {[1, 2, 3,4].map((i) => (
               <div className="row justify-content-between mt-2" key={i}>
                 <div className="col-4">

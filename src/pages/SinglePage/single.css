@@ -241,6 +241,7 @@ iframe {
     color: #fff !important;
 }
 
+.property_video1 { background-image: url("/images/card4.jpg");}
 .property_video {
     /* background-image: url("/images/card4.jpg"); */
     background-position: 50%;
