@@ -4,30 +4,30 @@
 
 
 .dash_sidebar{
-    background: #042825;
+    background: var(--secondary);
     padding: 30px 20px;
-    border-radius: 6px;
+    border-radius: 10px;
     position: sticky;
     top: 110px;
 }
 
-.dash_sidebar ul a{
-    padding: 14px 15px;
+.dash_sidebar ul a {
+    padding: 13px 15px;
     background: #f7f7f7;
     color: #000;
     border-radius: 12px;
     font-size: 15px;
     font-weight: 600;
 }
-.dash_sidebar ul a.active{
-    background: #ff9202;
+.dash_sidebar ul a.active {
+    background: var(--primary);
     color: #fff;
 }
 
 
 .modal-footer .btn-secondary{padding: 8px 12px;}
 .modal .btn-close {
-  background: #042825;
+  background: var(--secondary);
   opacity: 1;
   color: #fff;
   border-radius: 50%;
@@ -50,8 +50,8 @@
 .statistics_funfact {
     background-color: #fff;
     border-radius: 16px;
-    margin-bottom: 30px;
-    padding: 30px 25px;
+    /* margin-bottom: 30px; */
+    padding: 25px 20px;
     position: relative;
     box-shadow: 0 1px 4px rgba(24, 26, 32, 0.158);
     transition: all .3s;
@@ -72,7 +72,7 @@
 .statistics_funfact .title {
     color: var(--headings-color);
     font-weight: 600;
-    font-size: 36px;
+    font-size: 30px;
     line-height: 54px;
     transition: all .3s;
     
@@ -81,11 +81,11 @@
     background-color: #f3f5f6;
     border-radius: 50%;
     color: var(--headings-color);
-    font-size: 30px;
-    height: 70px;
-    line-height: 70px;
+    font-size: 20px;
+    height: 55px;
+    line-height: 55px;
     position: relative;
-    width: 70px;
+    width: 55px;
 }
 
 .modal input{height: 47px; border-radius: 8px; font-size: 15px;}
@@ -164,7 +164,7 @@
 .profile_page .card h5{font-size: 18px}
 .profile_page .card .search_home_btn.black_btn{font-size: 14px !important}
 
-.profile_page .card_height{height: 50%;}
+/* .profile_page .card_height{height: 50%;} */
 .profile_page .card label{font-weight: 600; }
 .profile_page .password_card input{padding-right: 35px;}
 .profile_page .password_card i{
@@ -199,7 +199,10 @@
     transition: all .3s ease;
 }
 
-.contact_agents_page .card img{height: 100%; width: 100%; object-fit: cover; border-top-left-radius: 6px; border-bottom-left-radius: 6px;transition: all .3s ease;}
+.contact_agents_page .card img{height: 250px; width: 100%; object-fit: cover; 
+    /* border-top-left-radius: 6px; border-bottom-left-radius: 6px; */
+     transition: all .3s ease;
+    }
 
 
 /*------- Saved Searches --------*/
@@ -240,12 +243,26 @@
 
 .contact_agents_page .card{overflow: visible;}
 
+
+
+.saved_listings .listing-style1 .list-meta a {margin: 0 !important;}
+
+
+
 /*-------- Media Queries --------*/
 
-@media screen and (max-width:992px) {
+@media screen and (min-width:1400px) {
+    .contact_agents_page .card img{height: 260px; }
+}
 
+@media screen and (max-width:1200px) {
+ .contact_agents_page .card img{ 
+    height: 260px; border-top-left-radius: 6px; border-top-right-radius: 6px; border-bottom-left-radius: 0px;
+  }
+}
+
+@media screen and (max-width:992px) {
  .dash_sidebar {
-    background: #042825;
     padding: 15px 10px;
     border-radius: 6px;
     position: sticky;
@@ -255,7 +272,8 @@
  .dash_sidebar ul{
     overflow-x: scroll; padding-bottom: 7px !important;
       scrollbar-width: thin; /* Firefox */
-     scrollbar-color: var(--primary) transparent; /* Firefox */
+     scrollbar-color: #e7e7e7 transparent; 
+     /* scrollbar-color: var(--primary) transparent;  */
  }
 
  /* For WebKit-based browsers (Chrome, Edge, Safari) */
@@ -274,10 +292,9 @@
 
 
  .dash_sidebar ul a{min-width: fit-content !important; font-size: 13px; padding: 12px 14px;}
- .contact_agents_page .card img{ 
-    height: 290px; border-top-left-radius: 6px; border-top-right-radius: 6px; border-bottom-left-radius: 0px;}
+ 
 
-}
+ }
 
 @media screen and (max-width:991px) {
    .profile_page .card_height{height: 100%;} 

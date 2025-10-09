@@ -14,13 +14,22 @@ const DashSidebar = () => {
     <>
       <div className="menu_items">
         <div className="dash_sidebar">
-          <ul className="d-flex flex-row flex-lg-column gap-1 gap-sm-2 gap-md-3 gap-lg-4 m-0 p-0">
+          <ul className="d-flex flex-row flex-lg-column gap-1 gap-sm-2 gap-md-3 gap-lg-4 m-0 p-0 ">
             <Link
               to="/my-account"
               className={currentPath === "/my-account" ? "active" : ""}
             >
               <li>
-                <i className="fa-solid fa-gauge me-1"></i> Dashboard
+                <i className="fa-solid fa-gauge me-1"></i> My Account
+              </li>
+            </Link>
+
+            <Link
+              to="/profile"
+              className={currentPath === "/profile" ? "active" : ""}
+            >
+              <li>
+                <i className="fa-solid fa-user me-1"></i> My Profile
               </li>
             </Link>
 
@@ -38,33 +47,54 @@ const DashSidebar = () => {
               className={currentPath === "/watchlist" ? "active" : ""}
             >
               <li>
-                <i className="fa-solid fa-file-circle-plus me-1"></i> Watchlists
+                <i className="fa-solid fa-bookmark me-1"></i> Watchlists
+              </li>
+            </Link>
+           
+            <Link
+              to="/saved-searches"
+              className={currentPath === "/saved-searches" ? "active" : ""}
+            >
+              <li>
+                <i className="fa-solid fa-magnifying-glass me-1"></i> Saved Searches
+              </li>
+            </Link>
+
+             <Link
+              to="/contact-agents"
+              className={currentPath === "/contact-agents" ? "active" : ""}
+            >
+              <li>
+                <i className="fa-solid fa-phone me-1"></i> Contacted Agents
               </li>
             </Link>
 
             <Link
-              to="#"
-              className={currentPath === "/contact-agent" ? "active" : ""}
+              to="/inspections"
+              className={currentPath === "/inspections" ? "active" : ""}
             >
               <li>
-                <i className="fa-solid fa-phone me-1"></i> Contact Agent
+                <i className="fa-solid fa-house-circle-check me-1"></i> My Inspections
               </li>
             </Link>
 
             <Link
-              to="#"
-              className={currentPath === "/profile" ? "active" : ""}
+              to="/my-alerts"
+              className={currentPath === "/my-alerts" ? "active" : ""}
             >
               <li>
-                <i className="fa-solid fa-user me-1"></i> My Profile
+                <i className="fa-solid fa-bell me-1"></i> My Alerts
               </li>
             </Link>
+
+            
 
             <Link  onClick={() => setShowModal(true)}>
               <li>
                 <i className="fa-solid fa-power-off me-1"></i> Logout
               </li>
             </Link>
+
           </ul>
         </div>
       </div>

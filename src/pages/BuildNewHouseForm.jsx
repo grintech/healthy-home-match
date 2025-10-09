@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Modal } from "react-bootstrap";
 import LocationSearchInput from "../components/LocationSearchInput";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 
 const BuildNewHouseForm = ({ show, onClose }) => {
   const [lat, setLat] = useState("");
@@ -49,7 +51,7 @@ const BuildNewHouseForm = ({ show, onClose }) => {
       carSpaces: 1,
       energyFeatures: [],
       budget: "",
-      startDate: "",
+      startDate: "immediately",
       name: "",
       email: "",
       phone: "",
@@ -79,6 +81,14 @@ const BuildNewHouseForm = ({ show, onClose }) => {
     }
   };
 
+  const handlePhoneChange = (value) => {
+    setFormData((prev) => ({
+      ...prev,
+      phone: `+${value}`, // always store with country code
+    }));
+  };
+
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     if (type === "checkbox") {
@@ -88,8 +98,14 @@ const BuildNewHouseForm = ({ show, onClose }) => {
           : prev.energyFeatures.filter((v) => v !== value);
         return { ...prev, energyFeatures: updated };
       });
-    } else {
-      setFormData((prev) => ({ ...prev, [name]: value }));
+    }  else {
+      if (name === "budget") {
+        // Allow only numbers, spaces, and hyphen for range
+        const sanitizedValue = value.replace(/[^0-9\s\-]/g, "");
+        setFormData((prev) => ({ ...prev, [name]: sanitizedValue }));
+      } else {
+        setFormData((prev) => ({ ...prev, [name]: value }));
+      }
     }
   };
 
@@ -103,9 +119,12 @@ const BuildNewHouseForm = ({ show, onClose }) => {
         newErrors.location =
           "Please select a location or enter it manually.";
       }
-      if (!formData.landSize || Number(formData.landSize) <= 0) {
-        newErrors.landSize = "Land size must be greater than 0.";
+      if (!formData.isLandSizeUnknown) {
+        if (!formData.landSize || Number(formData.landSize) <= 0) {
+          newErrors.landSize = "Land size must be greater than 0.";
+        }
       }
+
     }
 
     if (step === 2) {
@@ -136,9 +155,13 @@ const BuildNewHouseForm = ({ show, onClose }) => {
       }
       if (!formData.phone) {
         newErrors.phone = "Phone number is required.";
-      } else if (!/^(\+61|0)[0-9]{9}$/.test(formData.phone)) {
-        newErrors.phone = "Enter a valid Australian phone number.";
       }
+    //  if (!formData.phone) {
+    //     newErrors.phone = "Phone number is required.";
+    //   } else if (!/^(\+61|0)[0-9]{9}$/.test(formData.phone)) {
+    //     newErrors.phone = "Enter a valid Australian phone number.";
+    //   }
+
     }
 
     setErrors(newErrors);
@@ -174,42 +197,63 @@ const BuildNewHouseForm = ({ show, onClose }) => {
       </Modal.Header>
       <Modal.Body>
         {/* Step 1 */}
-        {step === 1 && (
-          <>
-            <div className="col-12 mb-3 location_div">
-              <label>Preferred Location / Suburb</label>
-              <LocationSearchInput onSelect={handleLocationSelect} />
-              {errors.location && (
-                <div className="text-danger">{errors.location}</div>
-              )}
-            </div>
+       {step === 1 && (
+        <>
+          <div className="col-12 mb-3 location_div">
+            <label>Preferred Location / Suburb</label>
+            <LocationSearchInput onSelect={handleLocationSelect} />
+            {errors.location && (
+              <div className="text-danger">{errors.location}</div>
+            )}
+          </div>
 
-            <div className="col-12 mb-3">
-              <input
-                type="text"
-                name="manualLocation"
-                className="form-control"
-                placeholder="Enter street address (optional)"
-                value={formData.manualLocation}
-                onChange={handleChange}
-              />
-            </div>
+          <div className="col-12 mb-3">
+            <input
+              type="text"
+              name="manualLocation"
+              className="form-control"
+              placeholder="Enter street address (optional)"
+              value={formData.manualLocation}
+              onChange={handleChange}
+            />
+          </div>
 
-            <div className="col-12 mb-3">
-              <label>Land Size (sqm)</label>
+          <div className="col-12 mb-3">
+            <label>Land Size (sqm)</label>
+            <input
+              type="number"
+              name="landSize"
+              className="form-control"
+              value={formData.landSize}
+              onChange={handleChange}
+              disabled={formData.isLandSizeUnknown}
+            />
+            {errors.landSize && (
+              <div className="text-danger">{errors.landSize}</div>
+            )}
+            <div className="form-check mt-2">
               <input
-                type="number"
-                name="landSize"
-                className="form-control"
-                value={formData.landSize}
-                onChange={handleChange}
+                type="checkbox"
+                id="isLandSizeUnknown"
+                name="isLandSizeUnknown"
+                className="form-check-input"
+                checked={formData.isLandSizeUnknown || false}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    isLandSizeUnknown: e.target.checked,
+                    landSize: e.target.checked ? "" : prev.landSize,
+                  }))
+                }
               />
-              {errors.landSize && (
-                <div className="text-danger">{errors.landSize}</div>
-              )}
+              <label htmlFor="isLandSizeUnknown" className="form-check-label">
+                I’m not sure about the land size.
+              </label>
             </div>
-          </>
-        )}
+          </div>
+        </>
+      )}
+
 
         {/* Step 2 */}
         {step === 2 && (
@@ -236,7 +280,7 @@ const BuildNewHouseForm = ({ show, onClose }) => {
                 onChange={handleChange}
               >
                 <option value="">Select</option>
-                <option value="detached">House</option>
+                <option value="house">House</option>
                 <option value="duplex">Duplex</option>
                 <option value="townhouse">Townhouse</option>
                 <option value="apartment">Apartment</option>
@@ -427,41 +471,43 @@ const BuildNewHouseForm = ({ show, onClose }) => {
               )}
             </div>
 
-            <div className="col-12 mb-3">
-              <label>Phone number</label>
-              <input
-                type="text"
-                name="phone"
-                className="form-control"
-                value={formData.phone}
-                onChange={(e) => {
-                  const val = e.target.value.replace(/[^\d+]/g, "").slice(0, 12);
-                  setFormData((prev) => ({ ...prev, phone: val }));
-                }}
-              />
-              {errors.phone && (
-                <div className="text-danger">{errors.phone}</div>
-              )}
-            </div>
+           <div className="col-12 mb-3">
+            <label>Phone Number</label>
+            <PhoneInput
+              country={"au"}
+              value={formData.phone}
+              onChange={handlePhoneChange}
+              inputClass="form-control"
+              enableSearch={true}
+              searchPlaceholder="Search country"
+              placeholder="Enter phone number"
+            />
+            {errors.phone && (
+              <div className="text-danger">{errors.phone}</div>
+            )}
+          </div>
+
           </>
         )}
       </Modal.Body>
       <Modal.Footer>
+        <div className="d-flex justify-content-center w-100">
         {step > 1 && (
-          <button className="btn btn-dark" onClick={() => setStep(step - 1)}>
+          <button className="btn btn-dark mx-2" onClick={() => setStep(step - 1)}>
             Back
           </button>
         )}
         {step < 6 && (
-          <button className="btn btn-theme" onClick={handleNext}>
+          <button className="btn btn-theme mx-2" onClick={handleNext}>
             Next
           </button>
         )}
         {step === 6 && (
-          <button className="btn btn-theme" onClick={handleSubmit}>
+          <button className="btn btn-theme mx-2" onClick={handleSubmit}>
             Submit
           </button>
         )}
+        </div>
       </Modal.Footer>
     </Modal>
   );

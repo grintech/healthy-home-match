@@ -141,9 +141,8 @@ useEffect(() => {
           <p className="mb-4">Welcome! Sign up to access Healthy Home Match</p>
 
           <form onSubmit={handleSubmit}>
-            {/* Role radio */}
          {/* Role radio */}
-          <div className="row role_checks mb-4">
+          <div className="d-flex flex-wrap justify-content-between role_checks mb-4 border-bottom pb-2">
             {[
               { value: "4", label: "Buyer" },
               { value: "3", label: "Agency" },
@@ -156,7 +155,8 @@ useEffect(() => {
                   role.value === "5" ? "col-12 mb-2" : "col-6  mb-2";
 
                 return (
-                  <div key={index} className={colClass}>
+                  // <div key={index} className={colClass}>
+                  <div key={index} className="d-inline-flex me-2">
                     <div className="form-check h-100">
                       <input
                         id={role.value}
@@ -211,7 +211,7 @@ useEffect(() => {
             <div className="mb-3 position-relative form_fields">
               <label className="form-label">Phone Number</label>
               <PhoneInput
-                country={"us"}
+                country={"au"}
                 value={formData.phone_number}
                 onChange={handlePhoneChange}
                 inputClass="form-control"
@@ -262,7 +262,7 @@ useEffect(() => {
               <input type="checkbox" required />
               <p className="m-0 ms-2">
                 By signing up, you agree to our &nbsp;
-                <Link to="/terms-and-conditions" className="text-white text-semibold text-underline">Terms of Use</Link> and <Link to="/privacy-policy" className="text-white text-semibold text-underline">Privacy Policy</Link>.
+                <Link target="_blank" to="/terms-and-conditions" className="text-white text-semibold text-underline">Terms of Use</Link> and <Link target="_blank" to="/privacy-policy" className="text-white text-semibold text-underline">Privacy Policy</Link>.
               </p>
             </div>
 

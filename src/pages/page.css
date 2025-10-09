@@ -374,12 +374,11 @@ box-shadow: 0 10px 40px rgba(24, 26, 32, .05);
 border-radius: 12px;
 border: 1px solid #ddd;
 background-color: #fff;
-
 padding: 30px !important;
-
 }
 
-.agency_single_form .search_home_btn{    background-color: unset !important;
+.agency_single_form .search_home_btn{
+    background-color: unset !important;
     color: var(--primary) !important;
     border: 1px solid var(--primary);
     font-size: 15px !important;
@@ -430,7 +429,7 @@ padding: 30px !important;
 }
 
 
-/* ------ Pricing Page ---------*/
+/* --------------- Pricing Page -------------------------*/
 
 .breadcumb-list a{color: rgb(97, 97, 97);}
 .pricing_page h2{font-size: 27px; font-weight: 600;}
@@ -446,8 +445,6 @@ padding: 30px !important;
 .plans_cards .card h3{font-size: 20px; }
 .plans_cards .card h3 span{font-size: 32px; font-weight: 600; }
 .plans_cards .card p{font-size: 15px;}
-
-
 
 
 
@@ -556,11 +553,19 @@ padding: 30px !important;
 /* .builder_card:hover{background-color: var(--tertiary);transition: all .5s;} */
 /* .builder_card img { height: 200px; object-fit: cover;} */
 .builder_card .search_home_btn.black_btn {height: 45px;}
-#contactModal label{font-weight: 600;}
+#contactModal label{font-weight: 600;font-size: 13px;}
 #contactModal select{font-size: 13px;}
 #contactModal input::placeholder, #contactModal textarea::placeholder{font-size: 13px; color: rgb(71, 70, 70);}
+#contactModal input[type="radio"]{height:15px !important; width: 15px !important;}
+#contactModal input, #contactModal select{height:42px; font-size: 13px;}
+#contactModal .form-check-label{font-size: 16px;}
+#contactModal .react-tel-input .form-control {font-size: 14px;}
+#builders #contactModal .react-tel-input .flag-dropdown {border-radius: 8px 0 0 8px !important;}
+#contactModal .react-tel-input .selected-flag {border-radius: 8px 0 0 8px !important;}
+#contactModal .modal-body{max-height: 400px; overflow-y: scroll;}
 
 #builders .all_filters i {display: none !important;}
+
 #builders .all_filters .dropdown-toggle::after{display: none !important;}
 
 .get_finance_page .accordion-style1 .accordion-item {padding: 0 !important;}
@@ -592,13 +597,24 @@ padding: 30px !important;
     font-size: 15px; color: #fff;
 }
 
-#buildNewhouseModal .location_div i{display: none !important;}
+#agents .swiper{padding: 20px 10px; }
+#agents .swiper-button-prev, #agents .swiper-button-next {   
+   background-color: var(--primary); height: 30px; width: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+}
+#agents .swiper-button-prev{left: 0 !important;}
+#agents .swiper-button-next{right: 0 !important;}
+#agents .swiper-button-prev:after, #agents .swiper-button-next:after {   
+    font-size: 15px; color: #fff;
+}
+
+ .location_div i{display: none !important;}
 #buildNewhouseModal label{display: inline-block; font-weight: 600; color: #555353;font-size: 15px;}
 #buildNewhouseModal  input::placeholder{font-size: 13px;}
 #buildNewhouseModal  input[type="checkbox"]{height: 15px !important;}
 #buildNewhouseModal .modal-title{font-size: 22px;}
 #buildNewhouseModal select{font-size: 14px;}
 #buildNewhouseModal .text-danger{font-size: 13px; margin-top: 4px; }
+
 
 #retrofyHouseModal .location_div i{display: none !important;}
 #retrofyHouseModal label{display: inline-block; font-weight: 600; color: #555353;font-size: 15px;}
@@ -608,15 +624,56 @@ padding: 30px !important;
 #retrofyHouseModal select{font-size: 14px;}
 #retrofyHouseModal .text-danger{font-size: 13px; margin-top: 4px; }
 
+/* Common styles for both modals */
+#buildNewhouseModal .modal-content,
+#retrofyHouseModal .modal-content {
+  height: 450px !important;
+  overflow-y: auto; 
+  scrollbar-width: thin; 
+  scrollbar-color: var(--secondary);
+}
+
+/* Webkit browsers (Chrome, Edge, Safari) */
+#buildNewhouseModal .modal-content::-webkit-scrollbar,
+#retrofyHouseModal .modal-content::-webkit-scrollbar {
+  width: 12px; 
+}
+
+#buildNewhouseModal .modal-content::-webkit-scrollbar-track,
+#retrofyHouseModal .modal-content::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+  border-radius: 8px;
+}
+
+#buildNewhouseModal .modal-content::-webkit-scrollbar-thumb,
+#retrofyHouseModal .modal-content::-webkit-scrollbar-thumb {
+  background: var(--secondary);
+  border-radius: 8px;
+}
+
+#buildNewhouseModal .modal-content::-webkit-scrollbar-thumb:hover,
+#retrofyHouseModal .modal-content::-webkit-scrollbar-thumb:hover {
+  background: var(--secondary);
+}
 
 
-/*--------- Media Queries --------*/
+
+
+/*---------------- Media Queries ----------------------*/
+
 
 @media screen and (min-width:1440px) {
  .agent_card .team-style1 .team-img img {height: 250px !important;}
  .builder_card img { height: 220px; object-fit: cover;}
+  #contactModal .modal-body{max-height: 450px; overflow-y: scroll;}
 
 }
+
+@media screen and (min-width:1920px) {
+ #contactModal .modal-body{max-height: 100%; overflow: auto;}
+
+}
+
 
 @media screen and (min-width: 992px) and (max-width: 1199px) {
   .sell-page .education-section .wrap { flex-wrap: wrap;  }

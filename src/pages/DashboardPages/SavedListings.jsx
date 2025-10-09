@@ -6,6 +6,7 @@ import Tooltip from '../../components/Tooltip';
 import api from '../../utils/axios';
 import { useAuth } from '../../context/AuthContext';
 import { toast } from 'react-toastify';
+import DashSidebar from './DashSidebar';
 
 const SavedListings = () => {
   const { user } = useAuth();
@@ -86,101 +87,110 @@ const SavedListings = () => {
       <Navbar />
       <div className="saved_listings py-5">
         <div className="container">
-          {loading ? (
-            <div className="d-flex flex-column justify-content-center align-items-center" style={{ height: "80vh" }}>
-              <i className="fa-solid fa-home text-theme fs-1 loader-icon"></i>
-              <span>Loading...</span>
+          <div className="row">
+            <div className="col-lg-4 col-xl-3 mb-4 mb-lg-0">
+              <DashSidebar />
             </div>
-          ) : properties.length === 0 ? (
-            <div className="d-flex flex-column justify-content-center align-items-center" style={{ height: "80vh" }}>
-              <i className="fa-regular fa-heart text-theme fs-1"></i>
-              <h5 className="mt-2 fw-bold">You have no saved properties yet!</h5>
-            </div>
-          ) : (
-            <div className="col-lg-12">
-              {properties.length > 0 && (
-                <h1 className="mb-3 sec-title">Saved Listings ({properties.length})</h1>
-              )}
+            <div className="col-lg-8 col-xl-9 mb-4 mb-lg-0 ">
 
-              <div className="row search_right">
-                {properties.map((listing) => (
-                  <div key={listing.id} className="col-md-6 col-lg-4">
-                    <div className="listing-style1">
-                      <div className="list-thumb">
-                        <img
-                          alt={listing.title}
-                          src={listing.featured_image ? `https://${listing.featured_image}` : "/images/default-property.png"}
-                          className="w-100"
-                          loading="lazy"
-                        />
-                        <div className="sale-sticker-wrap">
-                          <div className="list-tag fz12">
-                            <i className="fa-solid fa-bolt me-1"></i>{listing.performance_rating}
+              {loading ? (
+                <div className="d-flex flex-column justify-content-center align-items-center" style={{ height: "80vh" }}>
+                  <i className="fa-solid fa-home text-theme fs-1 loader-icon"></i>
+                  <span>Loading...</span>
+                </div>
+              ) : properties.length === 0 ? (
+                <div className="d-flex flex-column justify-content-center align-items-center" style={{ height: "80vh" }}>
+                  <i className="fa-regular fa-heart text-theme fs-1"></i>
+                  <h5 className="mt-2 fw-bold">You have no saved properties yet!</h5>
+                </div>
+              ) : (
+                <div className="col-lg-12">
+                  {properties.length > 0 && (
+                    <h1 className="mb-3 sec-title">Saved Listings ({properties.length})</h1>
+                  )}
+
+                  <div className="row search_right">
+                    {properties.map((listing) => (
+                      <div key={listing.id} className="col-md-6 col-lg-6 col-xl-4">
+                        <div className="listing-style1">
+                          <div className="list-thumb">
+                            <img
+                              alt={listing.title}
+                              src={listing.featured_image ? `https://${listing.featured_image}` : "/images/default-property.png"}
+                              className="w-100"
+                              loading="lazy"
+                            />
+                            <div className="sale-sticker-wrap">
+                              <div className="list-tag fz12">
+                                <i className="fa-solid fa-bolt me-1"></i>{listing.performance_rating}
+                              </div>
+                              <div className="list-tag fz12 bg-dark">
+                                <i className="fa-solid fa-flag me-1"></i>{listing.listing_type}
+                              </div>
+                            </div>
+                            <div className="list-price">{listing.currency}-{listing.price}</div>
                           </div>
-                          <div className="list-tag fz12 bg-dark">
-                            <i className="fa-solid fa-flag me-1"></i>{listing.listing_type}
-                          </div>
-                        </div>
-                        <div className="list-price">{listing.currency}-{listing.price}</div>
-                      </div>
 
-                      <div className="list-content">
-                        <h6 className="list-title text-truncate">
-                          <Link to={`/property/${listing.slug}`}>{listing.title}</Link>
-                        </h6>
-                        <p className="list-text">{listing.location}</p>
-                        <div className="list-meta d-flex align-items-center">
-                          <Link className='text-capitalize'><i className="fas fa-bed"></i> {listing.bedrooms}</Link>
-                          <Link className='text-capitalize'><i className="fas fa-bath"></i> {listing.bathrooms}</Link>
-                          {listing.area_m2 && listing.area_unit &&
-                            <Link className=''><i className="fa-solid fa-chart-area"></i> {listing.area_m2} {listing.area_unit}</Link>
-                          }
-                          <Link className='text-capitalize'><i className="fa-solid fa-home"></i> {listing.property_type}</Link>
-                        </div>
-                        <hr />
-                        <div className="list-meta2 d-flex justify-content-between align-items-center mt-3">
-                          <Link to={`/property/${listing.slug}`} className="view_details">View details</Link>
+                          <div className="list-content">
+                            <h6 className="list-title text-truncate">
+                              <Link to={`/property/${listing.slug}`}>{listing.title}</Link>
+                            </h6>
+                            <p className="list-text">{listing.location}</p>
+                            <div className="list-meta d-flex align-items-baseline gap-3">
+                              <Link className='text-capitalize d-flex flex-wrap align-items-center'><i className="fas fa-bed"></i> {listing.bedrooms}</Link>
+                              <Link className='text-capitalize d-flex flex-wrap align-items-center'><i className="fas fa-bath"></i> {listing.bathrooms}</Link>
+                              {listing.area_m2 && listing.area_unit &&
+                                <Link className='d-flex flex-wrap align-items-center'><i className="fa-solid fa-chart-area "></i> {listing.area_m2} {listing.area_unit}</Link>
+                              }
+                              <Link className='text-capitalize d-flex flex-wrap align-items-center'><i className="fa-solid fa-home"></i> {listing.property_type}</Link>
+                            </div>
+                            <hr />
+                            <div className="list-meta2 d-flex justify-content-between align-items-center mt-3">
+                              <Link to={`/property/${listing.slug}`} className="view_details">View details</Link>
 
-                          <div className=" d-flex align-items-center gap-3 position-relative">
-                      
-                            <Tooltip text={"Add to watchlist"}>
-                              <Link
-                                data-bs-toggle="modal"
-                                data-bs-target="#addWatchlistModal"
-                                onClick={() => setSelectedListing(listing)}
-                                className="btn btn-light btn-sm"
-                              >
-                                <i className="fa-solid fa-plus"></i>
-                              </Link>
-                            </Tooltip>                        
-
-                            <Tooltip text={listing.liked ? "Unsave" : "Save"}>
-                              <Link
-                                to="#"
-                               type="button"
-                                onClick={() => listing.liked ? handleUnsaveProperty(listing.id) : null}
-                                className="btn btn-light btn-sm "
-                                disabled={unsavingIds.includes(listing.id)}
-                              >
-                               {unsavingIds.includes(listing.id) ? (
-                                    <i className="fa fa-spinner fa-spin"></i>
-                                  ) : (
-                                    <i className={`fa-heart ${listing.liked ? "fa-solid text-danger" : "fa-regular"}`}></i>
-                                  )}
-                              </Link>
-                            </Tooltip>
-
+                              <div className=" d-flex align-items-center gap-3 position-relative">
                           
+                                <Tooltip text={"Add to watchlist"}>
+                                  <Link
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#addWatchlistModal"
+                                    onClick={() => setSelectedListing(listing)}
+                                    className="btn btn-light btn-sm"
+                                  >
+                                    <i className="fa-solid fa-plus"></i>
+                                  </Link>
+                                </Tooltip>                        
 
+                                <Tooltip text={listing.liked ? "Unsave" : "Save"}>
+                                  <Link
+                                    to="#"
+                                  type="button"
+                                    onClick={() => listing.liked ? handleUnsaveProperty(listing.id) : null}
+                                    className="btn btn-light btn-sm "
+                                    disabled={unsavingIds.includes(listing.id)}
+                                  >
+                                  {unsavingIds.includes(listing.id) ? (
+                                        <i className="fa fa-spinner fa-spin"></i>
+                                      ) : (
+                                        <i className={`fa-heart ${listing.liked ? "fa-solid text-danger" : "fa-regular"}`}></i>
+                                      )}
+                                  </Link>
+                                </Tooltip>
+
+                              
+
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
+                    ))}
                   </div>
-                ))}
-              </div>
+                </div>
+              )}
             </div>
-          )}
+
+          </div>
         </div>
       </div>
 

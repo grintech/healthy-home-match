@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
@@ -6,20 +6,20 @@ import { BiSearchAlt2 } from "react-icons/bi";
 import { useAuth } from "../context/AuthContext";
 import api from "../utils/axios";
 import LocationSearchInput from "../components/LocationSearchInput";
-import { toast } from "react-toastify";
 import BuildNewHouseForm from "./BuildNewHouseForm";
 import RetrofitHouseForm from "./RetrofitHouseForm";
-import { width } from "@fortawesome/free-solid-svg-icons/fa0";
 import CTA from "../components/CTA";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 
 const BuildPage = () => {
   const { user } = useAuth();
+  const [selectedType, setSelectedType] = useState("build");
 
   const [showNewHouseForm, setShowNewHouseForm] = useState(false);
   const [showRetrofitForm, setShowRetrofitForm] = useState(false);
 
   const [builderData, setBuilderData] = useState([]);
-  const [selectedBuilder, setSelectedBuilder] = useState(null);
 
   const [searchName, setSearchName] = useState("");
   const [filterLocation, setFilterLocation] = useState({ name: "", lat: "", lng: "" });
@@ -67,7 +67,6 @@ const BuildPage = () => {
 
   useEffect(() => {
     fetchBuilders();
-    // eslint-disable-next-line
   }, [page]);
 
   // ================== RESET FILTERS ==================
@@ -92,12 +91,12 @@ const BuildPage = () => {
                 <h1 className="hero_title mb-3">
                   Find Trusted <span className="text-theme">Builders</span> to build your homes
                 </h1>
-                <p className="text-muted mb-4">
-                  Discover top-rated builders, explore custom home designs, and start your home-building journey with confidence.
+               <p className="text-muted mb-4 fs-6">
+                  Discover top-rated and verified builders near you who bring your dream home to life with quality craftsmanship and transparency. Explore modern and custom home designs, compare trusted professionals, and start your building journey with complete confidence. Whether you’re planning a new house from the ground up or upgrading your current one, we help you connect with the right experts every step of the way.
                 </p>
-                <div className="d-flex gap-2 flex-wrap">
+
+                {/* <div className="d-flex gap-2 flex-wrap">
                   <Link
-                    // to="/register?builder"
                     className="btn ud-btn btn-white search_home_btn rounded-3 d-inline-flex"
                     onClick={() => setShowNewHouseForm(true)}
                   >
@@ -108,7 +107,7 @@ const BuildPage = () => {
                    className="btn ud-btn btn-white search_home_btn black_btn">
                     Want to Retrofy?
                   </Link>
-                </div>
+                </div> */}
               </div>
 
               <div className="col-lg-5 text-center">
@@ -234,105 +233,73 @@ const BuildPage = () => {
                     : "/images/builder/default.png";
 
                   return (
-                    // <div key={builder.id} className="col-sm-6 col-md-4 col-xl-3">
-                    //   <div className="card border-0 shadow-sm builder_card position-relative h-100">
-                    //     <Link to={`/builder/${builder?.slug}`}>
-                    //     <img
-                    //       src={img}
-                    //       className="card-img-top"
-                    //       alt={name}
-                    //       style={{ height: "200px", objectFit: "cover" }}
-                    //     />
-                    //     </Link>
-                    //     <div className="card-body">
-                         
-                    //       <h6 className="fw-bold text-green text-truncate">{name}</h6>
-                    //       <p className="card-text text-truncate">
-                    //         <strong>Location:</strong> {location} <br />
-                    //         <strong>Specialisation: </strong>
-                    //         {specialization.join(", ")}
-                    //       </p>
-                    //     <Link to={`/builder/${builder?.slug}`}>
-                    //       <button
-                    //         className="btn ud-btn btn-white search_home_btn black_btn"
-                    //       >
-                    //         Know more
-                    //       </button>
-                    //       </Link>
-                    //     </div>
-                    //   </div>
-                    // </div>
+                    <div key={builder.id} className="col-md-6 col-lg-4">
+                      <div className="card border-0 shadow-sm builder_card p-3 h-100">
+                        {/* Agency Name & ID */}
+                        <div className="d-flex justify-content-between align-items-end">
+                          <Link to={`/builder/${builder?.slug}`} >
+                          <img src={img} style={{height:"70px", width:"70px"}} className="rounded-3 shadow-sm border"  alt={name} />
+                          </Link>
+                            <div>
+                              <p className="text-muted  mb-1"><b>Builder ID:</b> BLD{builder?.id || "0001"}</p>
+                                <div className="d-flex align-items-center ">
+                                <i className="fa fa-star text-warning me-1"></i>
+                                <span className="fw-semibold me-2">5.0</span>
+                                <span className="text-muted small">(123 reviews)</span>
+                              </div>
+                            </div>
+                        </div>
+                        <Link to={`/builder/${builder?.slug}`} >
+                        <h5 className="fw-bold text-theme py-2 text-truncate">{builder?.user?.name || "Builder Agency Name"}</h5>
+                        </Link>
 
+                        {/* Rating */}
+                        
 
-
-                <div key={builder.id} className="col-md-6 col-lg-4">
-                  <div className="card border-0 shadow-sm builder_card p-3 h-100">
-                    {/* Agency Name & ID */}
-                    <div className="d-flex justify-content-between align-items-end">
-                      <Link to={`/builder/${builder?.slug}`} >
-                      <img src={img} style={{height:"70px", width:"70px"}} className="rounded-3 shadow-sm border"  alt={name} />
-                      </Link>
-                        <div>
-                          <p className="text-muted  mb-1"><b>Builder ID:</b> BLD{builder?.id || "0001"}</p>
-                            <div className="d-flex align-items-center ">
-                            <i className="fa fa-star text-warning me-1"></i>
-                            <span className="fw-semibold me-2">5.0</span>
-                            <span className="text-muted small">(123 reviews)</span>
+                        {/* Performance Stats */}
+                        <div className="row mb-3">
+                          <div className="col-sm-6 mb-2 mb-sm-0">
+                            <h6 className="small fw-bold mb-1">Sales performance</h6>
+                            <p className="small mb-0"><i className="fa-regular fa-home"></i> 108 Properties sold</p>
+                          </div>
+                          <div className="col-sm-6">
+                            <h6 className="small fw-bold mb-1">Rent performance</h6>
+                            <p className="small mb-0"><i className="fa-regular fa-home"></i> 32 Properties leased</p>
                           </div>
                         </div>
-                    </div>
-                    <Link to={`/builder/${builder?.slug}`} >
-                    <h5 className="fw-bold text-theme py-2 text-truncate">{builder?.user?.name || "Builder Agency Name"}</h5>
-                    </Link>
 
-                    {/* Rating */}
-                    
+                        {/* Recently Sold/Completed Projects */}
+                        <div className="mb-3">
+                          <h6 className="text-dark mb-2 small fw-bold">Recently sold properties</h6>
+                          <div className="d-flex gap-2">
+                            {["/images/card1.jpg", "/images/card3.jpg", "/images/card2.jpg", "/images/card4.jpg"].map((src, index) => (
+                              <img
+                                key={index}
+                                src={src}
+                                alt={`build-${index}`}
+                                className="rounded"
+                                style={{ width: "50px", height: "50px", objectFit: "cover" }}
+                              />
+                            ))}
+                          </div>
+                        </div>
 
-                    {/* Performance Stats */}
-                    <div className="row mb-3">
-                      <div className="col-sm-6 mb-2 mb-sm-0">
-                        <h6 className="small fw-bold mb-1">Sales performance</h6>
-                        <p className="small mb-0"><i className="fa-regular fa-home"></i> 108 Properties sold</p>
-                      </div>
-                      <div className="col-sm-6">
-                        <h6 className="small fw-bold mb-1">Rent performance</h6>
-                        <p className="small mb-0"><i className="fa-regular fa-home"></i> 32 Properties leased</p>
-                      </div>
-                    </div>
+                        {/* Tags */}
+                        <div className="mb-3">
+                          {["Professional", "Trustworthy", "Reliable"].map((tag, i) => (
+                            <span key={i} className="badge bg-secondary-subtle text-dark me-2">
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
 
-                    {/* Recently Sold/Completed Projects */}
-                    <div className="mb-3">
-                      <h6 className="text-dark mb-2 small fw-bold">Recently sold properties</h6>
-                      <div className="d-flex gap-2">
-                        {["/images/card1.jpg", "/images/card3.jpg", "/images/card2.jpg", "/images/card4.jpg"].map((src, index) => (
-                          <img
-                            key={index}
-                            src={src}
-                            alt={`build-${index}`}
-                            className="rounded"
-                            style={{ width: "50px", height: "50px", objectFit: "cover" }}
-                          />
-                        ))}
+                        {/* CTA Buttons */}
+                        <div className="d-flex gap-3 mt-3">
+                          <button  data-bs-toggle="modal" data-bs-target="#contactModal" className="btn btn-sm btn-dark w-50">Contact</button>
+                          <Link to={`/builder/${builder?.slug}`} className="btn btn-sm btn-theme w-50">Know More </Link>
+                        </div>
                       </div>
                     </div>
-
-                    {/* Tags */}
-                    <div className="mb-3">
-                      {["Professional", "Trustworthy", "Reliable"].map((tag, i) => (
-                        <span key={i} className="badge bg-secondary-subtle text-dark me-2">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-
-                    {/* CTA Buttons */}
-                    <div className="d-flex gap-3 mt-3">
-                      <button  data-bs-toggle="modal" data-bs-target="#contactModal" className="btn btn-sm btn-dark w-50">Contact</button>
-                      <Link to={`/builder/${builder?.slug}`} className="btn btn-sm btn-theme w-50">Know more </Link>
-                    </div>
-                  </div>
-                </div>
-
                   );
                 })
               ) : (
@@ -344,56 +311,208 @@ const BuildPage = () => {
             </div>
 
              {/* Contact Modal */}
-            <div
-              className="modal fade"
-              id="contactModal"
-              tabIndex="-1"
-              aria-hidden="true"
-            >
-              <div className="modal-dialog">
-                <div className="modal-content">
-                  <div className="modal-header">
-                    <h5 className="fw-bold">
-                      Contact {selectedBuilder?.name || "Builder"}
-                    </h5>
-                    <button
-                      type="button"
-                      className="btn-close"
-                      data-bs-dismiss="modal"
-                      aria-label="Close"
-                    ></button>
-                  </div>
+           <div 
+            className="modal fade p-0"
+            id="contactModal"
+            tabIndex="-1"
+            aria-hidden="true"
+           >
+            <div className="modal-dialog modal-dialog-centered">
+              <div className="modal-content ">
+                <form>
+
+                <div className="modal-header">
+                  <h5 className="fw-bold m-0">Contact Builder</h5>
+                  <button
+                    type="button"
+                    className="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+
                   <div className="modal-body">
-                    <form>
-                      <div className="mb-3">
-                        <label className="form-label">Your Name</label>
-                        <input type="text" className="form-control" placeholder="Enter your name" />
-                      </div>
-                      <div className="mb-3">
-                        <label className="form-label">Your Email</label>
-                        <input type="email" className="form-control" placeholder="Enter email address" />
-                      </div>
-                      <div className="mb-3">
-                        <label className="form-label">Select Reason</label>
-                         <select className="form-select" required>
-                          <option value="">Select reason</option>
-                          <option value="Project Enquiry">Project Enquiry</option>
-                          <option value="visit-site">Visit Site</option>
-                          <option value="Other">Other</option>
+                      <div className="row">
+                        {/* Radio buttons */}
+                        <div className="col-12">
+                          <div className="d-flex flex-wrap  mb-4 p-0">
+                            <div className="form-check me-4">
+                              <input
+                                className="form-check-input"
+                                type="radio"
+                                name="radioDefault"
+                                id="radioBuild"
+                                value="build"
+                                checked={selectedType === "build"}
+                                onChange={() => setSelectedType("build")}
+                              />
+                              <label className="form-check-label" htmlFor="radioBuild">
+                                Build a Healthy Home
+                              </label>
+                            </div>
+
+                            <div className="form-check ">
+                              <input
+                                className="form-check-input"
+                                type="radio"
+                                name="radioDefault"
+                                id="radioRetrofit"
+                                value="retrofit"
+                                checked={selectedType === "retrofit"}
+                                onChange={() => setSelectedType("retrofit")}
+                              />
+                              <label className="form-check-label" htmlFor="radioRetrofit">
+                                Retrofit a Home
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Common fields */}
+                        <div className="col-12 mb-3 location_div">
+                          <label className="form-label">Location / Postcode</label>
+                          <LocationSearchInput />
+                        </div>
+
+                        <div className="col-sm-6 mb-3">
+                          <label className="form-label">Property Type</label>
+                          <select name="propertyType" className="form-select">
+                            <option value="">Select</option>
+                            <option value="house">House</option>
+                            <option value="duplex">Duplex</option>
+                            <option value="townhouse">Townhouse</option>
+                            <option value="apartment">Apartment</option>
+                            <option value="villa">Villa</option>
+                            <option value="acreage">Acreage</option>
+                            <option value="other">Other</option>
                           </select>
                         </div>
-                      <div className="mb-3">
-                        <label className="form-label">Message</label>
-                        <textarea className="form-control" rows="3" placeholder="Write message..."></textarea>
+
+                        <div className="col-sm-6 mb-3">
+                          <label className="form-label">Storey</label>
+                          <select name="storey" className="form-select">
+                            <option value="single">Single Storey</option>
+                            <option value="double">Double Storey</option>
+                          </select>
+                        </div>
+
+                        {/* Show only when Retrofit is selected */}
+                        {selectedType === "retrofit" && (
+                          <>
+                            <div className="col-sm-6 mb-3">
+                              <label className="form-label">Year Built</label>
+                              <input
+                                type="text"
+                                name="yearBuilt"
+                                className="form-control"
+                                placeholder="e.g: 1950"
+                                maxLength={4}
+                              />
+                            </div>
+
+                            <div className="col-sm-6 mb-3">
+                              <label className="form-label">Upgrade Type</label>
+                              <select name="upgradeType" className="form-select">
+                                <option value="">Select</option>
+                                <option value="roof">Roof Repairs</option>
+                                <option value="cracks">Cracks Fixing</option>
+                                <option value="insulation">Wall / Roof Insulation</option>
+                                <option value="solar">Solar Panels</option>
+                              </select>
+                            </div>
+                          </>
+                        )}
+
+                        {/* Show only when Build New is selected */}
+                        {selectedType === "build" && (
+                          <>
+                            <div className="col-sm-6 mb-3">
+                              <label className="form-label">Energy Rating</label>
+                              <select className="form-select" aria-label="Select energy rating">
+                                <option value="">Select</option>
+                                <option value="Passivhaus">Passivhaus</option>
+                                <option value="NatHERS">NatHERS</option>
+                                <option value="Green Star">Green Star</option>
+                                <option value="5 Star">5 Star</option>
+                                <option value="6 Star">6 Star</option>
+                                <option value="7 Star">7 Star</option>
+                                <option value="8 Star">8 Star</option>
+                                <option value="9 Star">9 Star</option>
+                                <option value="10 Star">10 Star</option>
+                              </select>
+                            </div>
+
+                            <div className="col-sm-6 mb-3">
+                              <label className="form-label">Budget (AUD)</label>
+                              <input
+                                type="text"
+                                name="budget"
+                                className="form-control"
+                                placeholder="e.g. $50,000 - $100,000"
+                              />
+                            </div>
+                          </>
+                        )}
+
+                        <div className="col-sm-6 mb-3">
+                          <label className="form-label">Preferred Start Date</label>
+                          <select name="startDate" className="form-select">
+                            <option value="immediately">Immediately</option>
+                            <option value="one-month">Within one month</option>
+                            <option value="three-months">Within next three months</option>
+                            <option value="six-months">Within next six months</option>
+                            <option value="twelve-months">Within next twelve months</option>
+                            <option value="notSure">Not sure</option>
+                          </select>
+                        </div>
+
+                        <div className="col-sm-6 mb-3">
+                          <label className="form-label">Your Name</label>
+                          <input type="text" className="form-control" placeholder="Enter your name" />
+                        </div>
+
+                        <div className="col-sm-6 mb-3">
+                          <label className="form-label">Your Email</label>
+                          <input type="email" className="form-control" placeholder="Enter email address" />
+                        </div>
+
+                        <div className="col-sm-6 mb-3">
+                          <label className="form-label">Phone Number</label>
+                          <PhoneInput
+                            country={"au"}
+                            inputClass="form-control"
+                            enableSearch={true}
+                            searchPlaceholder="Search country"
+                          />
+                        </div>
+
+                        <div className="col-12 mb-4">
+                          <label className="form-label">Additional Note</label>
+                          <textarea
+                            className="form-control"
+                            name="message"
+                            rows={3}
+                            placeholder="Message..."
+                          ></textarea>
+                        </div>
+
+                      
                       </div>
-                      <button type="submit" className="btn btn-sm btn-theme">
-                        Send Message
-                      </button>
-                    </form>
+                    
                   </div>
-                </div>
+
+                 <div className="modal-footer">
+                    <div className="col-12 text-center">
+                        <button type="submit" className="btn btn-sm btn-theme">
+                          Submit
+                        </button>
+                      </div>
+                 </div>
+                 </form>       
+
               </div>
             </div>
+          </div>
             
           </div>
         </section>

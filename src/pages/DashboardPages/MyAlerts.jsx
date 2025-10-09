@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import Footer from '../../components/Footer';
 import { toast } from 'react-toastify';
 import Tooltip from '../../components/Tooltip';
+import DashSidebar from './DashSidebar';
 
 const initialAlerts = [
   {
@@ -63,64 +64,73 @@ const MyAlerts = () => {
       <Navbar />
 
       <div className="container py-5">
-        <h1 className="sec-title mb-4">My Subscribed Alerts</h1>
+        <div className="row">
+          <div className="col-lg-4 col-xl-3 mb-4 mb-lg-0">
+            <DashSidebar />
+          </div>
+          <div className="col-lg-8 col-xl-9 mb-4 mb-lg-0">
+            <h1 className="sec-title mb-4">Subscribed Alerts</h1>
 
-        <div className="alert_card">
-          <p className="text-muted mb-3">
-            Manage your property alerts here. You can subscribe to receive notifications for price drops, inspections, and status changes.
-          </p>
+            <div className="alert_card">
+              <p className="text-muted mb-3">
+                Manage your property alerts here. You can subscribe to receive notifications for price drops, inspections, and status changes.
+              </p>
 
-          {alerts.length === 0 ? (
-            <div className="alert alert-info">You haven’t subscribed to any alerts yet.</div>
-          ) : (
-            <div className="table-responsive">
-              <table className="table table-bordered align-middle">
-                <thead className="table-light">
-                  <tr className="align-top">
-                    <th>Property</th>
-                    <th>Title</th>
-                    <th>Alert Type</th>
-                    <th>Subscribed On</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {alerts.map((alert) => (
-                    <tr key={alert.id}>
-                      <td>
-                        <img
-                          src={alert.propertyImage}
-                          alt="Property"
-                          className="rounded-2"
-                          style={{ width: '80px', height: '70px', objectFit: 'cover' }}
-                        />
-                      </td>
-                      <td className="listing_name">
-                        <Link to="/property" className="text_blue">{alert.propertyTitle}</Link>
-                      </td>
-                      <td>{alert.alertType}</td>
-                      <td>{new Date(alert.date).toLocaleDateString()}</td>
-                      <td>
-                        <span className="badge bg-theme text-uppercase">{alert.status}</span>
-                      </td>
-                      <td>
-                         <Tooltip text={"Turn Off"}>
-                          <button
-                            className="btn btn-sm btn-danger"
-                            onClick={() => openCancelModal(alert.id)} 
-                          >
-                            Off Alert
-                          </button>
-                         </Tooltip>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+              {alerts.length === 0 ? (
+                <div className="alert alert-info">You haven’t subscribed to any alerts yet.</div>
+              ) : (
+                <div className="table-responsive">
+                  <table className="table table-bordered align-middle">
+                    <thead className="table-light">
+                      <tr className="align-top">
+                        <th>Property</th>
+                        <th>Title</th>
+                        <th>Alert Type</th>
+                        <th>Subscribed On</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {alerts.map((alert) => (
+                        <tr key={alert.id}>
+                          <td>
+                            <img
+                              src={alert.propertyImage}
+                              alt="Property"
+                              className="rounded-2"
+                              style={{ width: '80px', height: '70px', objectFit: 'cover' }}
+                            />
+                          </td>
+                          <td className="listing_name">
+                            <Link to="/property" className="text_blue">{alert.propertyTitle}</Link>
+                          </td>
+                          <td>{alert.alertType}</td>
+                          <td>{new Date(alert.date).toLocaleDateString()}</td>
+                          <td>
+                            <span className="badge bg-theme text-uppercase">{alert.status}</span>
+                          </td>
+                          <td>
+                            <Tooltip text={"Turn Off"}>
+                              <button
+                                className="btn btn-sm btn-danger"
+                                onClick={() => openCancelModal(alert.id)} 
+                              >
+                                Off Alert
+                              </button>
+                            </Tooltip>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </div>
-          )}
+          </div>
+
         </div>
+
       </div>
 
       <Footer />

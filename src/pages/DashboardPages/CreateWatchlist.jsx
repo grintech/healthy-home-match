@@ -3,6 +3,7 @@ import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import DashSidebar from './DashSidebar';
 
 const dummyListings = [
   {
@@ -95,7 +96,11 @@ const CreateWatchlist = () => {
       <div className='saved_listings min_height py-5'>
         <div className='container'>
           <div className='row'>
-            <div className='col-lg-12'>
+            <div className="col-lg-4 col-xl-3 mb-4 mb-lg-0">
+              <DashSidebar/>
+            </div>
+            <div className="col-lg-8 col-xl-9 mb-4 mb-lg-0">
+            <div className=''>
               <div className='d-flex justify-content-between align-items-center mb-4'>
                 <h1 className='mb-0 sec-title'>My Watchlists</h1>
                 <button className='btn-sm btn btn-theme' data-bs-toggle='modal' data-bs-target='#createWatchlistModal'>
@@ -127,6 +132,8 @@ const CreateWatchlist = () => {
                   ))
                 )}
               </div>
+            </div>
+
             </div>
           </div>
         </div>

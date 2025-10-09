@@ -249,11 +249,13 @@
 
 .mobile-filter-btn .fa-sliders {font-size: 14px;}
 .mobile-filter-btn {
-    background-color: #fff;
+    background-color: var(--secondary);
+    color: #fff;
     box-shadow: 0 1px 26px rgb(24 26 32 / 13%);
     border-radius: 60px;
     display: block;
     height: 40px;
+    transition: all .3s;
 }
 
 

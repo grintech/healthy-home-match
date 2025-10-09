@@ -38,7 +38,7 @@ const Footer = () => {
                                         <li><Link to="/blogs"> Our Blogs</Link></li>
                                         <li><Link to="/privacy-policy"> Privacy Policy</Link></li>
                                         <li><Link to="/terms-and-conditions"> Terms & Conditions</Link></li>
-                                        <li><Link to="/pricing"> Pricing Plans</Link></li>
+                                        {/* <li><Link to="/pricing"> Pricing Plans</Link></li> */}
                                     </ul>
                                 </div>
                                 <div className="col-xl-2 col-sm-6 mb-4 mb-xl-0">

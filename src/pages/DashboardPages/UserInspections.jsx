@@ -4,6 +4,7 @@ import Footer from '../../components/Footer';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import Tooltip from '../../components/Tooltip';
+import DashSidebar from './DashSidebar';
 
 const inspectionsData = {
   upcoming: [
@@ -67,106 +68,116 @@ const UserInspections = () => {
       <Navbar />
 
       <div className="container py-5">
-        <h2 className="mb-4 sec-title">My Property Inspections</h2>
+        <div className="row">
+          <div className="col-lg-4 col-xl-3 mb-4 mb-lg-0">
+            <DashSidebar />
+          </div>
+          <div className="col-lg-8 col-xl-9 mb-4 mb-lg-0">
+            <h2 className="mb-4 sec-title">Property Inspections</h2>
 
-        {/* Tabs */}
-         <ul className="nav nav-tabs mb-4">
-          <li className="nav-item">
-            <button
-              className={`nav-link ${activeTab === 'upcoming' ? 'active' : ''}`}
-              onClick={() => setActiveTab('upcoming')}
-            >
-              Upcoming
-            </button>
-          </li>
-          <li className="nav-item">
-            <button
-              className={`nav-link ${activeTab === 'past' ? 'active' : ''}`}
-              onClick={() => setActiveTab('past')}
-            >
-              Past
-            </button>
-          </li>
-         </ul>
+            {/* Tabs */}
+            <ul className="nav nav-tabs mb-4">
+              <li className="nav-item">
+                <button
+                  className={`nav-link ${activeTab === 'upcoming' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('upcoming')}
+                >
+                  Upcoming
+                </button>
+              </li>
+              <li className="nav-item">
+                <button
+                  className={`nav-link ${activeTab === 'past' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('past')}
+                >
+                  Past
+                </button>
+              </li>
+            </ul>
 
-        {/* Inspection Cards */}
-        <div className="row contact_agents_page my_inspections">
+            {/* Inspection Cards */}
+            <div className="row contact_agents_page my_inspections">
 
-          {inspections[activeTab].map((inspection) => (
-            <div className="col-md-6 mb-4" key={inspection.id}>
-              <div className="card h-100 ">
-                <div className="row g-0">
-                  <div className="col-lg-5 overflow-hidden">
-                    <img
-                      src={inspection.propertyImage}
-                      alt={inspection.title}
-                      className="w-100 h-100 object-fit-cover"
-                    />
-                  </div>
-                  <div className="col-lg-7">
-                    <div className="card-body position-relative">
-                      {/* Cancel Icon */}
+              {inspections[activeTab].map((inspection) => (
+                <div className="col-md-6 col-xl-4 mb-4" key={inspection.id}>
+                  <div className="card h-100 ">
+                    <div className="row g-0">
+                      <div className="col-12 overflow-hidden">
+                        <img
+                          src={inspection.propertyImage}
+                          alt={inspection.title}
+                          className="w-100 h-100 object-fit-cover rounded-top"
+                        />
+                      </div>
+                      <div className="col-12">
+                        <div className="card-body position-relative">
+                          {/* Cancel Icon */}
 
-                     {activeTab === 'upcoming' && (
-                  <div className="tooltip-wrapper position-absolute top-0 end-0 m-2">
-                    <div className="custom-tooltip1">Cancel Inspection</div>
-                    <button
-                      className="btn btn-sm btn-outline-danger trash_btn"
-                      onClick={() => openCancelModal(inspection.id)}
-                    >
-                      <i className="fas fa-trash"></i>
-                    </button>
-                  </div>
-                )}
+                          <h5 className="card-title fw-bold text-truncate">
+                            <Link to="/property" className="text_blue">
+                              {inspection.title}
+                            </Link>
+                          </h5>
+                          <p className="card-text text-muted text-truncate mb-2">{inspection.address}</p>
+                          <p className="card-text mb-2">
+                            <strong>Date & Time : </strong>
+                            {new Date(inspection.datetime).toLocaleString()}
+                          </p>
+                          <p className="card-text mb-2">
+                            <strong>Agent : </strong>
+                            <Link to="/agent" className="text-theme fw-semibold">
+                              {inspection.agent}
+                            </Link>
+                          </p>
+                          <p className="card-text mb-3">
+                            <strong>Status : </strong>
+                            <span
+                              className={`badge bg-${inspection.status === 'Upcoming' ? 'theme' : 'success'}`}
+                            >
+                              {inspection.status}
+                            </span>
+                          </p>
 
+                          {activeTab === 'upcoming' && (
+                            <>
+                              <button
+                                className="btn btn-outline-dark btn-sm calendar_btn mb-4 me-3"
+                                onClick={() => toast.info('Add to calendar feature coming soon!')}
+                              >
+                                <i className="fa-solid fa-calendar"></i> Add to Calendar
+                              </button>
 
-                      <h5 className="card-title mt-4 fw-bold text-truncate">
-                        <Link to="/property" className="text_blue">
-                          {inspection.title}
-                        </Link>
-                      </h5>
-                      <p className="card-text text-muted text-truncate mb-2">{inspection.address}</p>
-                      <p className="card-text mb-2">
-                        <strong>Date & Time : </strong>
-                        {new Date(inspection.datetime).toLocaleString()}
-                      </p>
-                      <p className="card-text mb-2">
-                        <strong>Agent : </strong>
-                        <Link to="/agent" className="text-theme fw-semibold">
-                          {inspection.agent}
-                        </Link>
-                      </p>
-                      <p className="card-text mb-3">
-                        <strong>Status : </strong>
-                        <span
-                          className={`badge bg-${inspection.status === 'Upcoming' ? 'theme' : 'success'}`}
-                        >
-                          {inspection.status}
-                        </span>
-                      </p>
+                            <div className="tooltip-wrapper">
+                              <div className="custom-tooltip1">Cancel Inspection</div>
+                              <button
+                                className="btn btn-sm btn-outline-danger trash_btn mb-4"
+                                onClick={() => openCancelModal(inspection.id)}
+                              >
+                                <i className="fas fa-trash"></i>
+                              </button>
+                            </div>
+                            </>
+                          )}
 
-                      {activeTab === 'upcoming' && (
-                        <button
-                          className="btn btn-outline-dark calendar_btn  mb-4"
-                          onClick={() => toast.info('Add to calendar feature coming soon!')}
-                        >
-                          <i className="fa-solid fa-calendar"></i> Add to Calendar
-                        </button>
-                      )}
+                        
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          ))}
+              ))}
 
-          {inspections[activeTab].length === 0 && (
-            <div className="col-12">
-              <p className="text-muted">No {activeTab} inspections found.</p>
-            </div>
-          )}
+              {inspections[activeTab].length === 0 && (
+                <div className="col-12">
+                  <p className="text-muted">No {activeTab} inspections found.</p>
+                </div>
+              )}
 
+            </div>
+          </div>
         </div>
+        
+
       </div>
 
       <Footer />

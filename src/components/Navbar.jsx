@@ -147,7 +147,7 @@ const Navbar = () => {
                                                             </Link>
                                                         </li>
 
-                                                        <li>
+                                                        {/* <li>
                                                             <Link className="dropdown-item" to="/saved-listings">
                                                                 <i className="fa fa-heart me-2"></i> Saved Listings
                                                             </Link>
@@ -187,7 +187,7 @@ const Navbar = () => {
                                                             </Link>
                                                         </li>
 
-                                                        <li><hr className="dropdown-divider" /></li>
+                                                        <li><hr className="dropdown-divider" /></li> */}
 
                                                         <li>
                                                             <button className="dropdown-item" onClick={() => setShowModal(true)}>
@@ -204,7 +204,7 @@ const Navbar = () => {
                                                                 href={`http://3.97.143.20:8000/create-session/${token}`}
 
                                                             >
-                                                                <i className="fa fa-gauge me-2"></i> Dashboard
+                                                                <i className="fa fa-gauge me-2"></i> My Account
                                                             </a>
                                                         </li>
                                                         <li>
@@ -279,7 +279,7 @@ const Navbar = () => {
                                                     </Link>
                                                 </li>
 
-                                                <li>
+                                                {/* <li>
                                                     <Link className="dropdown-item" to="/saved-listings">
                                                         <i className="fa fa-heart me-2"></i> Saved Listings
                                                     </Link>
@@ -319,7 +319,7 @@ const Navbar = () => {
                                                     </Link>
                                                 </li>
 
-                                                <li><hr className="dropdown-divider" /></li>
+                                                <li><hr className="dropdown-divider" /></li> */}
 
                                                 <li>
                                                     <button className="dropdown-item" onClick={() => setShowModal(true)}>
@@ -336,7 +336,7 @@ const Navbar = () => {
                                                         href={`http://3.97.143.20:8000/create-session/${token}`}
 
                                                     >
-                                                        <i className="fa fa-gauge me-2"></i> Dashboard
+                                                        <i className="fa fa-gauge me-2"></i> My Account
                                                     </a>
                                                 </li>
                                                 <li>

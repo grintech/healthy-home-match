@@ -4,6 +4,7 @@ import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import { toast } from 'react-toastify';
 import Tooltip from '../../components/Tooltip';
+import DashSidebar from './DashSidebar';
 
 const SavedSearches = () => {
   const navigate = useNavigate();
@@ -66,74 +67,82 @@ const SavedSearches = () => {
       <Navbar />
 
       <div className="container saved_searches py-5">
-        <h3 className="sec-title mb-4">Saved Searches</h3>
+        <div className="row">
+           <div className="col-lg-4 col-xl-3 mb-4 mb-lg-0">
+            <DashSidebar />
+          </div>
+          <div className="col-lg-8 col-xl-9 mb-4 mb-lg-0">
+            <h3 className="sec-title mb-4">Saved Searches</h3>
 
-        <div className="card ">
-          <div className="table-responsive">
-            <table className="table  mb-0">
-              <thead className="table-light">
-                <tr>
-                  <th scope="col">S.No</th>
-                  <th scope="col">Listing Name</th>
-                  <th scope="col">Date Saved</th>
-                  <th scope="col">Alerts</th>
-                  <th scope="col">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {savedSearches.length > 0 ? (
-                  savedSearches.map((search, index) => (
-                    <tr key={search.id}>
-                      <td className='fw-bold'>{index + 1}</td>
-                      <td className='listing_name'>{search.name}</td>
-                      <td>{new Date(search.dateSaved).toLocaleDateString()}</td>
-                      <td>
-                        <div className="form-check form-switch">
-                          <input
-                            className="form-check-input"
-                            type="checkbox"
-                            checked={search.alerts}
-                            onChange={() => toggleAlerts(search.id)}
-                          />
-                        </div>
-                      </td>
-                      <td>
-                        <div className="d-flex">
-                          <Tooltip text={"Run Search"}>
-                            <button
-                            className="btn btn-sm btn-green me-2"
-                             onClick={() => redirectToSearch(search.params)}
-                            >
-                            <i className="fa-solid fa-arrow-up-right-from-square"></i>
-                            </button>
-                            </Tooltip>
-
-                            <Tooltip text={"Delete"}>
-                            <button
-                            className="btn btn-sm btn-green"
-                             onClick={() => deleteSearch(search.id)}
-                            >
-                            <i className="fa-solid fa-trash"></i>
-                            </button>
-
-                            </Tooltip>
-
-                        </div>
-                      </td>
+            <div className="card ">
+              <div className="table-responsive">
+                <table className="table  mb-0">
+                  <thead className="table-light">
+                    <tr>
+                      <th scope="col">S.No</th>
+                      <th scope="col">Listing Name</th>
+                      <th scope="col">Date Saved</th>
+                      <th scope="col">Alerts</th>
+                      <th scope="col">Actions</th>
                     </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan="5" className="text-center py-4">
-                      <i className="fa-regular fa-face-frown fa-lg me-2 "></i>
-                      No saved searches found.
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
+                  </thead>
+                  <tbody>
+                    {savedSearches.length > 0 ? (
+                      savedSearches.map((search, index) => (
+                        <tr key={search.id}>
+                          <td className='fw-bold'>{index + 1}</td>
+                          <td className='listing_name'>{search.name}</td>
+                          <td>{new Date(search.dateSaved).toLocaleDateString()}</td>
+                          <td>
+                            <div className="form-check form-switch">
+                              <input
+                                className="form-check-input"
+                                type="checkbox"
+                                checked={search.alerts}
+                                onChange={() => toggleAlerts(search.id)}
+                              />
+                            </div>
+                          </td>
+                          <td>
+                            <div className="d-flex">
+                              <Tooltip text={"Run Search"}>
+                                <button
+                                className="btn btn-sm btn-green me-2"
+                                onClick={() => redirectToSearch(search.params)}
+                                >
+                                <i className="fa-solid fa-arrow-up-right-from-square"></i>
+                                </button>
+                                </Tooltip>
+
+                                <Tooltip text={"Delete"}>
+                                <button
+                                className="btn btn-sm btn-green"
+                                onClick={() => deleteSearch(search.id)}
+                                >
+                                <i className="fa-solid fa-trash"></i>
+                                </button>
+
+                                </Tooltip>
+
+                            </div>
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan="5" className="text-center py-4">
+                          <i className="fa-regular fa-face-frown fa-lg me-2 "></i>
+                          No saved searches found.
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
         </div>
+
       </div>
 
       <Footer />

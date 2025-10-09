@@ -94,7 +94,7 @@ body {
     font-size: 14px;
     font-weight: 400;
     padding-right: 0 !important;
-    overflow-x: hidden;
+    /* overflow-x: hidden; */
 }
 
 .min_height{min-height: 85vh !important;}
@@ -349,6 +349,7 @@ li { list-style: none;}
 
 .navbar .user_dropdown .dropdown .dropdown-menu {
     min-width: 200px !important;
+    width: 200px;
 }
 
 .navbar .user_dropdown .btn-theme{

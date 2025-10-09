@@ -740,7 +740,7 @@ useEffect(() => {
             </div>
 
             <div className="row mt-4 search_right">
-                <h2 className="sec-title mb-4">Discover Our Featured Listings</h2>    
+                <h2 className="sec-title mb-4">Similar Properties</h2>    
 
                 <div className="col-lg-4 col-md-6 mb-0 mb-md-4">
                   <div className="listing-style1">

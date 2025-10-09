@@ -89,20 +89,22 @@ const AgentsSlider = () => {
                 ))}
               </div>
             ) : agents.length > 0 ? (
-              <Swiper
+             <Swiper
                 modules={[Autoplay]}
                 spaceBetween={25}
-                pagination={{ clickable: true }}
-                navigation
-                autoplay={{ delay: 3000 }}
-                loop= {true}
+                navigation={agents.length > 5} 
+                autoplay={agents.length > 5 ? { delay: 3000 } : false} 
+                loop={agents.length > 5} 
+                // navigation={true}
                 breakpoints={{
-                  375: { slidesPerView: 2 },
+                  320: { slidesPerView: 1.2 },
+                  576: { slidesPerView: 2 },
                   768: { slidesPerView: 3 },
                   992: { slidesPerView: 4 },
                   1200: { slidesPerView: 5 },
                 }}
               >
+
              { agents.map((agent, index) => (
                 <SwiperSlide key={index}>
                    <div className="item agent_card h-100">

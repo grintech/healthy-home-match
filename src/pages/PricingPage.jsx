@@ -14,7 +14,7 @@ const PricingPage = () => {
      <div className="pricing_page">
         <div className="container py-5">
             <h1 className="sec-title ">Subscription Plans</h1>
-            <div className="breadcumb-list">
+            <div className="breadcumb-list mb-3">
               <Link to="/">Home</Link>
               <span className='mx-1'>/</span>
               <Link to="/pricing">Plans</Link>

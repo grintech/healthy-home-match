@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Modal, ProgressBar } from "react-bootstrap";
 import LocationSearchInput from "../components/LocationSearchInput";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/bootstrap.css";
 
 const RetrofitHouseForm = ({ show, onClose }) => {
   const [step, setStep] = useState(1);
-   const totalSteps = 6; // for progress
+  const totalSteps = 6;
+
   const [formData, setFormData] = useState({
     location: "",
     latitude: "",
@@ -23,34 +26,18 @@ const RetrofitHouseForm = ({ show, onClose }) => {
 
   const [errors, setErrors] = useState({});
 
+  const calculateProgress = () => {
+    let completedSteps = 0;
+    if (formData.location && formData.propertyAge && formData.propertyType) completedSteps++;
+    if (step > 1) completedSteps++;
+    if (step > 2) completedSteps++;
+    if (step > 3) completedSteps++;
+    if (step > 4 && formData.budget && formData.startDate) completedSteps++;
+    if (step > 5 && formData.name && formData.email && formData.phone) completedSteps++;
+    return Math.round((completedSteps / totalSteps) * 100);
+  };
 
- const calculateProgress = () => {
-  let completedSteps = 0;
-
-  // Step 1
-  if (formData.location && formData.propertyAge && formData.propertyType) completedSteps++;
-
-  // Step 2
-  if (step > 1) completedSteps++; // Consider step visited as complete
-
-  // Step 3
-  if (step > 2) completedSteps++;
-
-  // Step 4
-  if (step > 3) completedSteps++;
-
-  // Step 5
-  if (step > 4 && formData.budget && formData.startDate) completedSteps++;
-
-  // Step 6
-  if (step > 5 && formData.name && formData.email && formData.phone) completedSteps++;
-
-  return Math.round((completedSteps / totalSteps) * 100);
-};
-
-const progress = calculateProgress();
-
-
+  const progress = calculateProgress();
 
   const stepTitles = {
     1: "Property Details",
@@ -74,7 +61,7 @@ const progress = calculateProgress();
         energyUpgrades: [],
         comfortUpgrades: [],
         budget: "",
-        startDate: "",
+        startDate: "immediately",
         name: "",
         email: "",
         phone: "",
@@ -83,19 +70,17 @@ const progress = calculateProgress();
     }
   }, [show]);
 
-
   const handleLocationSelect = (loc) => {
-  if (loc && loc.lat != null && loc.lng != null) {
-    setFormData((prev) => ({
-      ...prev,
-      location: loc.description || "", 
-      latitude: String(loc.lat),
-      longitude: String(loc.lng),
-    }));
-    setErrors((prev) => ({ ...prev, location: "" }));
-  }
-};
-
+    if (loc && loc.lat != null && loc.lng != null) {
+      setFormData((prev) => ({
+        ...prev,
+        location: loc.description || "",
+        latitude: String(loc.lat),
+        longitude: String(loc.lng),
+      }));
+      setErrors((prev) => ({ ...prev, location: "" }));
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -107,9 +92,24 @@ const progress = calculateProgress();
         return { ...prev, [name]: updated };
       });
     } else {
-      setFormData((prev) => ({ ...prev, [name]: value }));
+      let newValue = value;
+      if (name === "budget") {
+        // Allow only numbers, spaces, and hyphen for range like "50000 - 70000"
+        newValue = value.replace(/[^0-9\s\-]/g, "");
+      }
+
+      setFormData((prev) => ({ ...prev, [name]: newValue }));
       setErrors((prev) => ({ ...prev, [name]: "" }));
     }
+  };
+
+  //  handle phone change
+  const handlePhoneChange = (value) => {
+    setFormData((prev) => ({
+      ...prev,
+      phone: `+${value}`,
+    }));
+    setErrors((prev) => ({ ...prev, phone: "" }));
   };
 
   const validateStep = () => {
@@ -117,7 +117,7 @@ const progress = calculateProgress();
     if (step === 1) {
       if (!formData.location) newErrors.location = "Location is required";
       if (!formData.propertyAge) {
-            newErrors.propertyAge = "Property age is required";
+        newErrors.propertyAge = "Property age is required";
       } else if (!/^\d{4}$/.test(formData.propertyAge)) {
         newErrors.propertyAge = "Enter a valid 4-digit year";
       } else if (formData.propertyAge === "0000") {
@@ -134,11 +134,7 @@ const progress = calculateProgress();
     if (step === 6) {
       if (!formData.name) newErrors.name = "Name is required";
       if (!formData.email) newErrors.email = "Email is required";
-      if (!formData.phone) {
-        newErrors.phone = "Phone number is required.";
-      } else if (!/^(\+61|0)[0-9]{9}$/.test(formData.phone)) {
-        newErrors.phone = "Enter a valid Australian phone number.";
-      }
+      if (!formData.phone) newErrors.phone = "Phone number is required.";
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -158,18 +154,18 @@ const progress = calculateProgress();
   };
 
   return (
-    <Modal id="retrofyHouseModal" show={show} onHide={onClose} size="md" centered >
+    <Modal id="retrofyHouseModal" show={show} onHide={onClose} size="md" centered>
       <Modal.Header closeButton>
         <Modal.Title className="fw-bold">{stepTitles[step]}</Modal.Title>
       </Modal.Header>
 
-        {/* Progress Bar */}
-        {/* <div className="px-3 my-3">
-            <ProgressBar now={progress} label={`${progress}%`} />
-        </div> */}
+      {/* Optional Progress Bar */}
+      {/* <div className="px-3 my-3">
+        <ProgressBar now={progress} label={`${progress}%`} />
+      </div> */}
 
       <Modal.Body>
-        {/* STEP 1 – Property */}
+        {/* STEP 1 */}
         {step === 1 && (
           <>
             <div className="col-12 mb-3 location_div">
@@ -200,7 +196,7 @@ const progress = calculateProgress();
                 onChange={handleChange}
               >
                 <option value="">Select</option>
-                <option value="detached">House</option>
+                <option value="house">House</option>
                 <option value="duplex">Duplex</option>
                 <option value="townhouse">Townhouse</option>
                 <option value="apartment">Apartment</option>
@@ -210,24 +206,25 @@ const progress = calculateProgress();
               </select>
               {errors.propertyType && <small className="text-danger">{errors.propertyType}</small>}
             </div>
+            
           </>
         )}
 
-        {/* STEP 2 – Structural */}
+        {/* STEP 2 */}
         {step === 2 && (
           <div className="col-12 mb-3">
             <div className="form-check">
               <input
                 type="checkbox"
-                id="foundation"
-                value="foundation"
+                id="cracks"
+                value="cracks"
                 name="structuralUpgrades"
                 className="form-check-input"
-                checked={formData.structuralUpgrades.includes("foundation")}
+                checked={formData.structuralUpgrades.includes("cracks")}
                 onChange={handleChange}
               />
-              <label htmlFor="foundation" className="form-check-label">
-                Foundation / Crack Repairs
+              <label htmlFor="cracks" className="form-check-label">
+                Crack Repairs
               </label>
             </div>
             <div className="form-check">
@@ -241,13 +238,27 @@ const progress = calculateProgress();
                 onChange={handleChange}
               />
               <label htmlFor="roof" className="form-check-label">
-                Roof Repairs / Strengthening
+                Roof Repairs
+              </label>
+            </div>
+            <div className="form-check">
+              <input
+                type="checkbox"
+                id="strengthening"
+                value="strengthening"
+                name="structuralUpgrades"
+                className="form-check-input"
+                checked={formData.structuralUpgrades.includes("strengthening")}
+                onChange={handleChange}
+              />
+              <label htmlFor="strengthening" className="form-check-label">
+                 Strengthening
               </label>
             </div>
           </div>
         )}
 
-        {/* STEP 3 – Energy */}
+        {/* STEP 3 */}
         {step === 3 && (
           <div className="col-12 mb-3">
             <div className="form-check">
@@ -281,7 +292,7 @@ const progress = calculateProgress();
           </div>
         )}
 
-        {/* STEP 4 – Comfort */}
+        {/* STEP 4 */}
         {step === 4 && (
           <div className="col-12 mb-3">
             <div className="form-check">
@@ -315,7 +326,7 @@ const progress = calculateProgress();
           </div>
         )}
 
-        {/* STEP 5 – Budget */}
+        {/* STEP 5 */}
         {step === 5 && (
           <>
             <div className="col-12 mb-3">
@@ -339,23 +350,19 @@ const progress = calculateProgress();
                 value={formData.startDate}
                 onChange={handleChange}
               >
-                <option value="immediately" >Immediately</option>
+                <option value="immediately">Immediately</option>
                 <option value="one-month">Within one month</option>
                 <option value="three-months">Within next three months</option>
                 <option value="six-months">Within next six months</option>
-                <option value="twelve-months">
-                  Within next twelve months
-                </option>
+                <option value="twelve-months">Within next twelve months</option>
                 <option value="notSure">Not sure</option>
               </select>
-              {errors.startDate && (
-                <div className="text-danger">{errors.startDate}</div>
-              )}
+              {errors.startDate && <div className="text-danger">{errors.startDate}</div>}
             </div>
           </>
         )}
 
-        {/* STEP 6 – Contact */}
+        {/* STEP 6 */}
         {step === 6 && (
           <>
             <div className="col-12 mb-3">
@@ -384,15 +391,14 @@ const progress = calculateProgress();
 
             <div className="col-12 mb-3">
               <label>Your Phone</label>
-              <input
-                type="text"
-                name="phone"
-                className="form-control"
+              <PhoneInput
+                country={"au"}
                 value={formData.phone}
-                 onChange={(e) => {
-                  const val = e.target.value.replace(/[^\d+]/g, "").slice(0, 12);
-                  setFormData((prev) => ({ ...prev, phone: val }));
-                }}
+                onChange={handlePhoneChange}
+                inputClass="form-control"
+                enableSearch={true}
+                searchPlaceholder="Search country"
+                placeholder="Enter phone number"
               />
               {errors.phone && <small className="text-danger">{errors.phone}</small>}
             </div>
@@ -401,21 +407,23 @@ const progress = calculateProgress();
       </Modal.Body>
 
       <Modal.Footer>
-        {step > 1 && (
-          <button className="btn btn-dark" onClick={() => setStep(step - 1)}>
+        <div className="d-flex justify-content-center w-100">
+          {step > 1 && (
+          <button className="btn btn-dark mx-2" onClick={() => setStep(step - 1)}>
             Back
           </button>
         )}
         {step < 6 && (
-          <button className="btn btn-theme" onClick={handleNext}>
+          <button className="btn btn-theme mx-2" onClick={handleNext}>
             Next
           </button>
         )}
         {step === 6 && (
-          <button className="btn btn-theme" onClick={handleSubmit}>
+          <button className="btn btn-theme mx-2" onClick={handleSubmit}>
             Submit
           </button>
         )}
+        </div>
       </Modal.Footer>
     </Modal>
   );
