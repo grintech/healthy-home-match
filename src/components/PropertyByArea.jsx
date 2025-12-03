@@ -5,6 +5,7 @@ import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Link } from "react-router-dom";
 
 const PropertyByArea = () => {
   const [activeTab, setActiveTab] = useState("all");
@@ -98,7 +99,7 @@ const PropertyByArea = () => {
         >
           {filteredAreas.map((a, index) => (
             <SwiperSlide key={index} className="">
-              <div className="card  border-0 h-100">
+              <Link to={`/for-sale/${a.id}`} className="card  border-0 h-100">
                 <img
                   src={a.img}
                   alt={a.title}
@@ -109,7 +110,7 @@ const PropertyByArea = () => {
                   <h6 className="fw-bold text-truncate">{a.title}</h6>
                   <p className="text-muted small mb-0">{a.desc}</p>
                 </div>
-              </div>
+              </Link>
             </SwiperSlide>
           ))}
         </Swiper>

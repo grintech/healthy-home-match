@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
-const Navbar = () => {
+const Navbar = ({ disableSticky = false }) => {
     const [isSticky, setIsSticky] = useState(false);
     const location = useLocation();
 
@@ -15,13 +15,15 @@ const Navbar = () => {
 
 
     useEffect(() => {
+        if (disableSticky) return; // If true skip sticky
+
         const handleScroll = () => {
             setIsSticky(window.scrollY > 100);
         };
 
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
+    }, [disableSticky]);
 
 
     // Session creation function 
@@ -201,7 +203,7 @@ const Navbar = () => {
                                                         <li>
                                                             <a
                                                                 className="dropdown-item"
-                                                                href={`http://3.97.143.20:8000/create-session/${token}`}
+                                                                href={`http://3.98.2.156/backend/public/create-session/${token}`}
 
                                                             >
                                                                 <i className="fa fa-gauge me-2"></i> My Account
@@ -249,7 +251,6 @@ const Navbar = () => {
                                 </Link>
                             </div>
                         ) : (
-                            <div className="user_dropdown ">
                                 <div className="dropdown">
                                     <button
                                         className="btn-theme rounded-pill dropdown-toggle"
@@ -279,48 +280,6 @@ const Navbar = () => {
                                                     </Link>
                                                 </li>
 
-                                                {/* <li>
-                                                    <Link className="dropdown-item" to="/saved-listings">
-                                                        <i className="fa fa-heart me-2"></i> Saved Listings
-                                                    </Link>
-                                                </li>
-
-                                                <li>
-                                                    <Link className="dropdown-item" to="/watchlist">
-                                                        <i className="fa fa-bookmark me-2"></i> Watchlists
-                                                    </Link>
-                                                </li>
-
-                                                <li>
-                                                    <Link className="dropdown-item" to="/saved-searches">
-                                                        <i className="fa fa-search me-2"></i> Saved Searches
-                                                    </Link>
-                                                </li>
-                                                <li>
-                                                    <Link className="dropdown-item" to="/contact-agents">
-                                                        <i className="fa fa-phone me-2"></i> Contacted Agents
-                                                    </Link>
-                                                </li>
-                                                <li>
-                                                    <Link className="dropdown-item" to="/inspections">
-                                                        <i className="fa fa-house-circle-check me-2"></i> My Inspections
-                                                    </Link>
-                                                </li>
-                                                <li>
-                                                    <Link className="dropdown-item" to="/my-alerts">
-                                                        <i className="fa fa-bell me-2"></i> My Alerts
-                                                    </Link>
-                                                </li>
-
-
-                                                <li>
-                                                    <Link className="dropdown-item" to="/profile">
-                                                        <i className="fa fa-user me-2"></i> My Profile
-                                                    </Link>
-                                                </li>
-
-                                                <li><hr className="dropdown-divider" /></li> */}
-
                                                 <li>
                                                     <button className="dropdown-item" onClick={() => setShowModal(true)}>
                                                         <i className="fa fa-power-off me-2"></i> Logout
@@ -333,7 +292,7 @@ const Navbar = () => {
                                                 <li>
                                                     <a
                                                         className="dropdown-item"
-                                                        href={`http://3.97.143.20:8000/create-session/${token}`}
+                                                        href={`http://3.98.2.156/backend/public/create-session/${token}`}
 
                                                     >
                                                         <i className="fa fa-gauge me-2"></i> My Account
@@ -348,8 +307,11 @@ const Navbar = () => {
                                         )}
                                     </ul>
                                 </div>
-                            </div>
+                            // <div className="user_dropdown ">
+                                
+                            // </div>
                         )}
+                        
 
                     </div>
                 </nav>

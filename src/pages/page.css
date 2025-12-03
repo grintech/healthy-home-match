@@ -188,7 +188,7 @@
 }
 .agency-style1:hover{border-color: var(--secondary); transition: all .4s ease;}
 
-.agency-style1 .agency-img img{object-fit: contain; width: 100%;}
+.agency-style1 .agency-img img{object-fit: contain; width: 100%; height: 250px;}
 
 .agency-style1 .tag {
     background-color: var(--primary);
@@ -657,6 +657,15 @@ padding: 30px !important;
 }
 
 
+.property_area_filters .dropdown-toggle::after {font-size: 14px !important}
+.property_area_filters .form-select, .property_area_filters .form-control{font-size: 14px; height: 40px;}
+.property_area_filters button{font-size: 14px; height: 45px;}
+.property_area_filters input::placeholder{font-size: 14px; }
+
+.property_area_single .property_card img{height: 400px; object-fit: cover;} 
+
+#filterSidebar{z-index: 9999;}
+
 
 
 /*---------------- Media Queries ----------------------*/
@@ -690,6 +699,15 @@ padding: 30px !important;
     .agency_single_right_wrapper{margin-top: 0; position: relative !important; top: unset !important;}
 }
 
+@media screen and (max-width:991px) {
+    #filterSidebar .property_area_filters{
+        background-color: white !important;
+        box-shadow: unset !important;
+        padding: 0 10px !important;
+    }
+  
+}
+
 @media screen and (max-width:768px) {
     .page_not_found h1{font-size: 6rem;}
     .page_not_found h4{font-size: 20px !important;}
@@ -699,11 +717,13 @@ padding: 30px !important;
     .contact_banner { padding: 100px 0;}
     .agent-single .single-img img {width: 150px; height: 150px;}
     .faq_page .nav-tabs .faq_ques{display: none;} 
+    .property_area_single .property_card img{height: 350px; object-fit: cover;} 
 }
 
 @media screen and (max-width: 767px) {
   .sell-page .education-section .wrap { flex-direction: column; align-items: start !important; justify-content: start !important; flex-wrap: wrap;}
   .sell-page .education-section .icon-wrapper {margin-bottom: 10px; }
+  .property_area_single .property_card img{height: 300px; object-fit: cover;} 
 }
 
 @media screen and (max-width:575px) {
@@ -716,6 +736,7 @@ padding: 30px !important;
     .agent-single .single-img img {width: 120px; height: 120px;}
     .single-contant{margin-left: 10px !important;}
     .single-contant h1 { font-size: 25px;}
+     .property_area_single .property_card img{height: 250px; object-fit: cover;} 
 }
 
 @media screen and (max-width:475px) {

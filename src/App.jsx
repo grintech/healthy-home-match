@@ -49,6 +49,7 @@ import GetFinancePage from './pages/GetFinancePage.jsx';
 import CheckoutPage from './components/CheckoutPage.jsx';
 import BuilderDetail from './pages/BuilderDetail.jsx';
 import BuilderPropertySingle from './pages/BuilderPropertySingle.jsx';
+import PropertyAreaSingle from './pages/PropertyByArea/PropertyAreaSingle.jsx';
 
 
 const App = () => {
@@ -134,6 +135,7 @@ const App = () => {
         <Route path="/build" element={<BuildPage />} />
         <Route path="/builder/:slug" element={<BuilderDetail />} />
         <Route path="/property-single" element={<BuilderPropertySingle />} />
+        <Route path="/for-sale/:stateId" element={<PropertyAreaSingle />} />
         <Route path="/get-finance" element={<GetFinancePage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/sell" element={<SellPropertyPage />} />
