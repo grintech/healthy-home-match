@@ -14,7 +14,7 @@ const Footer = () => {
                             </div>
                             <p>Health Home Match helps you find reliable home healthcare professionals with ease.</p>
                             <ul className="footer_links p-0 m-0">
-                                <li><i className="fa-solid fa-phone"></i> <p className='m-0'><Link to="#">+00 123 465 789</Link></p></li>
+                                <li><i className="fa-solid fa-phone"></i> <p className='m-0'><Link to="#">+123 456 7890</Link></p></li>
                                 <li><i className="fa-solid fa-envelope"></i> <p className='m-0'><Link to="#">info@example.com</Link></p></li>
                                 <li><i className="fa-solid fa-location-dot"></i> <p className='m-0'>#123 Street Road XYZ City</p></li>
                             </ul>

@@ -207,13 +207,13 @@
 
 /*------- Saved Searches --------*/
 .saved_searches .card, .alert_card{
-  padding: 30px;
+  padding: 25px;
   box-shadow: 0 1px 4px rgba(24, 26, 32, .07);
   border: 1px solid rgba(37, 39, 40, 0.1) !important;
   border-radius: 12px;
 }
 .saved_searches table th, .alert_card th{padding: 20px 10px; font-size: 16px; vertical-align: baseline;}
-.saved_searches table td{padding: 20px 10px}
+.saved_searches table td{padding: 16px 10px}
 .saved_searches table .listing_name{font-size: 15px; font-weight: 500;}
 .saved_searches table i{font-size: 13px;}
 

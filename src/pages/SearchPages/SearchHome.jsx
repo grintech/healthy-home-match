@@ -10,6 +10,8 @@ import api from "../../utils/axios";
 import { useAuth } from "../../context/AuthContext";
 import { toast } from "react-toastify";
 import Tooltip from "../../components/Tooltip";
+import { Offcanvas } from "bootstrap";
+
 
 const ALL_PROPERTY_OPTIONS = [
   { value: "all-types", label: "All Types" },
@@ -50,6 +52,19 @@ const SearchHome = () => {
   const routerLocation = useLocation();
   const [savingPropertyIds, setSavingPropertyIds] = useState([]);
 
+    const openMobileFilter = () => {
+    const el = document.getElementById("mobileFilter");
+    const instance = Offcanvas.getOrCreateInstance(el);
+    instance.show();
+  };
+
+  const closeMobileFilter = () => {
+    const el = document.getElementById("mobileFilter");
+    const instance = Offcanvas.getInstance(el);
+    instance?.hide();
+  };
+
+  
 
   const [isListView, setIsListView] = useState(false);
   const [priceRange, setPriceRange] = useState([0, 10000000]);
@@ -79,6 +94,10 @@ const SearchHome = () => {
     last_page: 1,
     has_more: false,
   });
+
+  const [savingSearch, setSavingSearch] = useState(false);
+
+
 
   // --- Detect param (?buy | ?rent | ?build) robustly ---
   const pageParam = useMemo(() => {
@@ -189,7 +208,7 @@ const SearchHome = () => {
           area: item.area_m2 || "NA",
           currency: item.currency || "NA",
           propertyType: item.property_type || "NA",
-           is_saved: item.is_saved || false, // <-- for likedHomes
+          is_saved: item.is_saved || false, // <-- for likedHomes
         }));
 
         setFilteredHomes(mappedData);
@@ -559,10 +578,26 @@ const SearchHome = () => {
       </div>
 
       <div className="reset_filters d-flex justify-content-between mb-3">
-        <Link className="d-flex align-items-baseline small">
+        <Link
+        to="#"
+        onClick={(e) => {
+          e.preventDefault();
+          handleSaveSearch();
+        }}
+        className={`d-flex align-items-baseline small ${
+          savingSearch ? "disabled" : ""
+        }`}
+      >
+        {savingSearch ? (
+          <i className="fa fa-spinner fa-spin me-1"></i>
+        ) : (
           <i className="fa-regular fa-star me-1 text-dark"></i>
-          <p className="m-0 text-dark">Save Search</p>
-        </Link>
+        )}
+        <p className="m-0 text-dark">
+          {savingSearch ? "Saving..." : "Save Search"}
+        </p>
+      </Link>
+
 
         <Link
           to="#"
@@ -578,7 +613,12 @@ const SearchHome = () => {
       </div>
 
       <div className="widget-wrapper">
-        <button className="btn ud-btn btn-white search_home_btn w-100" data-bs-dismiss="offcanvas" onClick={() => fetchProperties(1)}>
+        <button className="btn ud-btn btn-white search_home_btn w-100" 
+         onClick={() => {
+            closeMobileFilter();   
+            fetchProperties(1);
+          }}
+         >
           <i className="fa-solid fa-magnifying-glass me-2 mb-1"></i> Search
         </button>
       </div>
@@ -596,6 +636,67 @@ const SearchHome = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+
+
+  /* ----- Saved Searches Api -------*/
+
+  const handleSaveSearch = async () => {
+  if (!user || !user.id) {
+    toast.error("Please login to save search");
+    setTimeout(() => {
+      navigate("/login", { state: { from: routerLocation } });
+      
+    }, 2000);
+    return;
+  }
+
+  if (savingSearch) return;
+
+  const authToken = localStorage.getItem("authToken");
+
+  if (!authToken) {
+    toast.error("Session expired. Please login .");
+    navigate("/login");
+    return;
+  }
+
+  setSavingSearch(true);
+
+  try {
+    const payload = {
+      user_id: user.id,
+      property_type: propertyType || null,
+      listing_type: listingType || null,
+      bedrooms: bedroom !== "any" ? bedroom : null,
+      bathrooms: bathroom !== "any" ? bathroom : null,
+      performance_rating: performanceRating || null,
+      amenities: amenities.length ? amenities : [],
+      min_area: minArea !== "any" ? minArea.replace("m", "") : null,
+      max_area: maxArea !== "any" ? maxArea.replace("m", "") : null,
+      min_price: priceRange[0],
+      max_price: priceRange[1],
+    };
+
+    const res = await api.post("/saved-filter-searches", payload );
+
+    if (res.status === 201 || res.data?.id) {
+      toast.success("Search saved successfully");
+    } else {
+      toast.error("Failed to save search");
+    }
+  } catch (error) {
+    console.error("Save search error:", error);
+    toast.error(
+      error?.response?.data?.message || "Something went wrong"
+    );
+  } finally {
+    setSavingSearch(false);
+  }
+};
+
+
+
+
   return (
     <>
       <Navbar />
@@ -607,9 +708,7 @@ const SearchHome = () => {
               <button
                 className="btn mobile-filter-btn"
                 type="button"
-                data-bs-toggle="offcanvas"
-                data-bs-target="#mobileFilter"
-                aria-controls="mobileFilter"
+                onClick={openMobileFilter}
               >
                 <i className="fa fa-sliders me-1"></i> Filters
               </button>
@@ -628,7 +727,7 @@ const SearchHome = () => {
                 <h5 className="offcanvas-title fw-semibold" id="mobileFilterLabel">
                   Apply Filters
                 </h5>
-                <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                <button type="button" className="btn-close" onClick={closeMobileFilter} ></button>
               </div>
               <div className="offcanvas-body">{renderSidebar()}</div>
             </div>

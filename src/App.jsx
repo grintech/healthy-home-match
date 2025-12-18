@@ -1,6 +1,6 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
-import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import '../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js';
+// import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+// import '../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js';
 import Aos from 'aos';
 import 'aos/dist/aos.css';
 import { useEffect } from 'react';

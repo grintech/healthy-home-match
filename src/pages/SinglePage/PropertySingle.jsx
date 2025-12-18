@@ -16,6 +16,9 @@ import Avatar from "react-avatar";
 import api from "../../utils/axios";
 import { useAuth } from "../../context/AuthContext";
 
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+
 
 const PropertySingle = () => {
   const { user } = useAuth();
@@ -24,6 +27,8 @@ const PropertySingle = () => {
   const { slug } = useParams();
   const [property, setProperty] = useState(null);
   const [images, setImages] = useState([]);
+
+  const [galleryLoading, setGalleryLoading] = useState(true)
 
   const [enquiry, setEnquiry] = useState({
     name: "",
@@ -50,54 +55,76 @@ const PropertySingle = () => {
   const [animate, setAnimate] = useState(false); // trigger heart animation
 
 
+  const shareRef = useRef(null);
   const [showShare, setShowShare] = useState(false);
-
   const toggleShare = () => setShowShare(!showShare);
 
+    useEffect(() => {
+      const handleClickOutside = (event) => {
+        if (
+          shareRef.current &&
+          !shareRef.current.contains(event.target)
+        ) {
+          setShowShare(false);
+        }
+      };
 
-  const inspections = [
-    { day: "Wednesday", date: "Sep 10, 2025", time: "1:00 pm – 1:30 pm" },
-    { day: "Friday", date: "Sep 12, 2025", time: "11:00 am – 11:30 am" },
-    { day: "Sunday", date: "Sep 14, 2025", time: "3:00 pm – 3:30 pm" },
-  ];
+      if (showShare) {
+        document.addEventListener("mousedown", handleClickOutside);
+      }
+
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, [showShare]);
+
+
+  // const inspections = [
+  //   { day: "Wednesday", date: "Sep 10, 2025", time: "1:00 pm – 1:30 pm" },
+  //   { day: "Friday", date: "Sep 12, 2025", time: "11:00 am – 11:30 am" },
+  //   { day: "Sunday", date: "Sep 14, 2025", time: "3:00 pm – 3:30 pm" },
+  // ];
 
 
 
  /********* Fetch Property Api ****************/
 
-  useEffect(() => {
-    if (slug) {
-      const url = user
-        ? `/property/${slug}?user_id=${user.id}` // pass user_id if logged in
-        : `/property/${slug}`; // no user_id if not logged in
+ useEffect(() => {
+  if (slug) {
+    setGalleryLoading(true);
 
-      api.get(url)
-        .then((res) => {
-          if (res.data.status) {
-            const data = res.data.data;
-            setProperty(data);
-            console.log(data);
+    const url = user
+      ? `/property/${slug}?user_id=${user.id}`
+      : `/property/${slug}`;
 
-            setLiked(data.is_saved || false); // <-- setting initial liked state
+    api.get(url)
+      .then((res) => {
+        if (res.data.status) {
+          const data = res.data.data;
+          setProperty(data);
+          setLiked(data.is_saved || false);
 
-            // Prepare gallery images
-            let gallery = [];
-            if (data.gallery_images) {
-              try {
-                const galleryArr = JSON.parse(data.gallery_images);
-                gallery = gallery.concat(
-                  galleryArr.map((img) => `https://${img}`)
-                );
-              } catch {
-                console.error("Invalid gallery images format");
-              }
+          let gallery = [];
+          if (data.gallery_images) {
+            try {
+              const galleryArr = JSON.parse(data.gallery_images);
+              gallery = galleryArr.map((img) => `https://${img}`);
+            } catch {
+              console.error("Invalid gallery images format");
             }
-            setImages(gallery);
           }
-        })
-        .catch((err) => console.error("API Error:", err));
-    }
-  }, [slug, user]); 
+
+          setImages(gallery);
+        }
+      })
+      .catch((err) => console.error("API Error:", err))
+      .finally(() => {
+        setGalleryLoading(false);
+      });
+  }
+}, [slug, user]);
+
+  
 
  /* ------- Toggle Save unsave Api ---------- */
 
@@ -189,7 +216,7 @@ const PropertySingle = () => {
     }
   };
 
-/******* Enquiry Form Api Ends***********/
+/******* Enquiry Form Api Ends  ***********/
 
 
 const shareUrl = `${window.location.origin}/property/${slug}`;
@@ -296,6 +323,101 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
   };
 
 
+ /*--- Inspections Meta data -------*/
+const formatTimeToAMPM = (time) => {
+  if (!time) return "";
+
+  const [hours, minutes] = time.split(":");
+  const h = parseInt(hours, 10);
+
+  const ampm = h >= 12 ? "PM" : "AM";
+  const formattedHour = h % 12 || 12;
+
+  return `${formattedHour}:${minutes} ${ampm}`;
+};
+
+// Filter inspections to only include future or today dates
+const inspections = property?.meta
+  ?.filter(m => m.property_meta_key === "inspection")
+  .map(m => {
+    const data = JSON.parse(m.property_meta_value);
+
+    // combine date + start_time to compare with current datetime
+    const inspectionDateTime = new Date(`${data.available_date}T${data.start_time}`);
+    const now = new Date();
+
+    if (inspectionDateTime < now) return null; // skip past inspections
+
+    const dateObj = new Date(data.available_date);
+
+    return {
+      inspection_meta_id: m.id,
+      property_id: m.property_id,
+      available_date: data.available_date,
+      start_time: data.start_time,
+      end_time: data.end_time,
+      day: dateObj.toLocaleDateString("en-US", { weekday: "long" }),
+      date: dateObj.toLocaleDateString("en-US", {
+        day: "numeric",
+        month: "short",
+        year: "numeric"
+      }),
+      time: `${formatTimeToAMPM(data.start_time)} – ${formatTimeToAMPM(data.end_time)}`
+    };
+  })
+  .filter(Boolean); // remove nulls for past inspections
+
+
+
+const savedInspectionMetaIds =
+  property?.inspection?.filter(i => i.user_id === user?.id)
+  .map(i => i.property_meta_id) || [];
+
+/*--- Track adding state ---*/
+const [addingInspectionId, setAddingInspectionId] = useState(null);
+
+/*------- Save Inspection --------*/
+const saveInspection = async (inspection) => {
+  if (!user) {
+    toast.error("Please login to save inspection");
+    navigate("/login", { state: { from: location } });
+    return;
+  }
+
+  try {
+    setAddingInspectionId(inspection.inspection_meta_id); // set adding state
+
+    const formData = new FormData();
+    formData.append("user_id", user.id);
+    formData.append("property_id", inspection.property_id);
+    formData.append("property_meta_id", inspection.inspection_meta_id);
+    formData.append("available_date", inspection.available_date);
+    formData.append("start_time", inspection.start_time);
+    formData.append("end_time", inspection.end_time);
+
+    const res = await api.post("/save-inspection", formData);
+
+    if (res.data.status) {
+      toast.success(res.data.message || "Inspection saved successfully");
+
+      setAddedPlans(prev => ({
+        ...prev,
+        [inspection.inspection_meta_id]: true
+      }));
+    } else {
+      toast.error(res.data.message || "Failed to save inspection");
+    }
+  } catch (error) {
+    console.error("Save inspection error:", error);
+    toast.error("Something went wrong. Please try again.");
+  } finally {
+    setAddingInspectionId(null); // reset adding state
+  }
+};
+
+
+
+
   return (
     <>
       <Navbar />
@@ -342,7 +464,7 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
             </div>
             <div className="col-md-5">
               <div className="property-action text-md-end">
-                <div className="d-flex gap-3 mb20 mb10-md align-items-center justify-content-md-end mb-3 position-relative">
+                <div ref={shareRef} className="d-flex gap-3 mb20 mb10-md align-items-center justify-content-md-end mb-3 position-relative">
                   
                    <Tooltip text={liked ? "Remove from Favorites" : "Add to Favorites"}>
                   <Link to="#" onClick={toggleHeart} className="icon">
@@ -455,174 +577,207 @@ const getYouTubeEmbedUrl = (url, loop = false) => {
     </div>
 
 
-      {/* Modal */}
-      <div
-        className="modal fade"
-        id="inspectionModal"
-        tabIndex="-1"
-        aria-labelledby="inspectionModalLabel"
-        aria-hidden="true"
-      >
-        <div className="modal-dialog modal-dialog-centered modal-md">
-          <div className="modal-content rounded-3 shadow-lg">
-            <div className="modal-header border-0">
-              <h5 className="modal-title fw-bold" id="inspectionModalLabel">
-                Available Inspections
-              </h5>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div className="modal-body pb-0">
-              {inspections.map((item, index) => (
+   {/* Modal */}
+   <div
+    className="modal fade"
+    id="inspectionModal"
+    tabIndex="-1"
+    aria-labelledby="inspectionModalLabel"
+    aria-hidden="true"
+  >
+    <div className="modal-dialog modal-dialog-centered modal-md">
+      <div className="modal-content rounded-3 shadow-lg">
+        <div className="modal-header border-0">
+          <h5 className="modal-title fw-bold" id="inspectionModalLabel">
+            Available Inspections
+          </h5>
+          <button
+            type="button"
+            className="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+
+        <div className="modal-body pb-0">
+          {inspections.length > 0 ? (
+            inspections.map((item) => {
+              const isAlreadyAdded =
+                savedInspectionMetaIds.includes(item.inspection_meta_id) ||
+                addedPlans[item.inspection_meta_id];
+
+              return (
                 <div
-                  key={index}
-                  className="card mb-3  shadow-sm rounded-3"
+                  key={item.inspection_meta_id}
+                  className="card mb-3 shadow-sm rounded-3"
                 >
-                  <div className="card-body d-flex  justify-content-between align-items-center">
-                    <div className="me-2">
+                  <div className="card-body d-flex justify-content-between align-items-center">
+                    <div>
                       <h6 className="mb-1 fw-bold">{item.day}</h6>
                       <p className="mb-0 text-muted small">
                         {item.date} | {item.time}
                       </p>
                     </div>
+
                     <button
                       className="btn btn-sm btn-theme"
-                      onClick={() => togglePlan(index)}
+                      disabled={
+                        savedInspectionMetaIds.includes(item.inspection_meta_id) ||
+                        addedPlans[item.inspection_meta_id] ||
+                        addingInspectionId === item.inspection_meta_id
+                      }
+                      onClick={() => saveInspection(item)}
                     >
-                      {addedPlans[index] ? "Added" : "Add to plan"}
+                      {addingInspectionId === item.inspection_meta_id
+                        ? "Adding..."
+                        : savedInspectionMetaIds.includes(item.inspection_meta_id) || addedPlans[item.inspection_meta_id]
+                        ? "Added"
+                        : "Add to plan"}
                     </button>
+
                   </div>
                 </div>
-              ))}
-            </div>
-            {/* <div className="modal-footer border-0">
-              <button
-                type="button"
-                className="btn btn-dark btn-sm"
-                onClick={handleRequestAnotherTime}
-              >
-                Request Another Time
-              </button>
-            </div> */}
-          </div>
+              );
+            })
+          ) : (
+            <p className="text-muted text-center">
+              No inspections available
+            </p>
+          )}
         </div>
       </div>
+    </div>
+  </div>
 
-        {images.length > 0 ? (
-          <div className="gallery_images row g-3 mb-5">
-            {/* Single Image */}
-            {images.length === 1 && (
-              <div className="col-12">
-                <div className="img_wrapper h-100">
-                  <img
-                    src={images[0]}
-                    className="w-100 h-100"
-                    alt="property-0"
-                    onClick={() => openLightbox(0)}
-                    style={{ cursor: "pointer", objectFit: "cover" }}
-                  />
-                </div>
-              </div>
-            )}
 
-            {/* Two Images */}
-            {images.length === 2 &&
-              images.map((src, i) => (
-                <div className="col-sm-6" key={i}>
-                  <div className="img_wrapper h-100">
-                    <img
-                      src={src}
-                      className="w-100 h-100"
-                      alt={`property-${i}`}
-                      onClick={() => openLightbox(i)}
-                      style={{ cursor: "pointer", objectFit: "cover" }}
-                    />
-                  </div>
-                </div>
-              ))}
 
-            {/* Three or More Images */}
-            {images.length >= 3 && (
-              <>
-                <div className="col-sm-8">
-                  <div className="img_wrapper h-100 position-relative">
-                    <img
-                      src={images[0]}
-                      className="w-100 h-100"
-                      alt="property-0"
-                      onClick={() => openLightbox(0)}
-                      style={{ cursor: "pointer", objectFit: "cover" }}
-                    />
-                  </div>
-                </div>
 
-                <div className="col-sm-4 d-flex flex-column gap-3">
-                  {images.slice(1, 3).map((src, i) => (
-                    <div key={i} className="img_wrapper flex-fill position-relative">
-                      <img
-                        src={src}
-                        className="w-100 h-100"
-                        alt={`property-${i + 1}`}
-                        onClick={() => openLightbox(i + 1)}
-                        style={{ cursor: "pointer", objectFit: "cover" }}
-                      />
-                      {/* Overlay for extra images */}
-                      {i === 1 && images.length > 3 && (
-                        <div
-                          className="overlay_more_images position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center text-white fw-bold fs-3"
-                          style={{
-                            background: "rgba(0,0,0,0.5)",
-                            borderRadius: "8px",
-                            cursor: "pointer",
-                          }}
-                          onClick={() => openLightbox(2)}
-                        >
-                         <span className="gallery_more"> +{images.length - 3} more</span>
-                        </div>
-                      )}
+      {galleryLoading ? (
+        <div className="gallery_images row g-3 mb-5 mt-2">
+          <div className="col-sm-8">
+            <Skeleton height={500} borderRadius={8} />
+          </div>
+
+          <div className="col-sm-4 d-flex flex-column gap-3">
+            <Skeleton height={240} borderRadius={8} />
+            <Skeleton height={240} borderRadius={8} />
+          </div>
+        </div>
+      ) : ( images.length > 0 ? (
+                <div className="gallery_images row g-3 mb-5">
+                  {/* Single Image */}
+                  {images.length === 1 && (
+                    <div className="col-12">
+                      <div className="img_wrapper h-100">
+                        <img
+                          src={images[0]}
+                          className="w-100 h-100"
+                          alt="property-0"
+                          onClick={() => openLightbox(0)}
+                          style={{ cursor: "pointer", objectFit: "cover" }}
+                        />
+                      </div>
                     </div>
-                  ))}
+                  )}
+
+                  {/* Two Images */}
+                  {images.length === 2 &&
+                    images.map((src, i) => (
+                      <div className="col-sm-6" key={i}>
+                        <div className="img_wrapper h-100">
+                          <img
+                            src={src}
+                            className="w-100 h-100"
+                            alt={`property-${i}`}
+                            onClick={() => openLightbox(i)}
+                            style={{ cursor: "pointer", objectFit: "cover" }}
+                          />
+                        </div>
+                      </div>
+                    ))}
+
+                  {/* Three or More Images */}
+                  {images.length >= 3 && (
+                    <>
+                      <div className="col-sm-8">
+                        <div className="img_wrapper h-100 position-relative">
+                          <img
+                            src={images[0]}
+                            className="w-100 h-100"
+                            alt="property-0"
+                            onClick={() => openLightbox(0)}
+                            style={{ cursor: "pointer", objectFit: "cover" }}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="col-sm-4 d-flex flex-column gap-3">
+                        {images.slice(1, 3).map((src, i) => (
+                          <div key={i} className="img_wrapper flex-fill position-relative">
+                            <img
+                              src={src}
+                              className="w-100 h-100"
+                              alt={`property-${i + 1}`}
+                              onClick={() => openLightbox(i + 1)}
+                              style={{ cursor: "pointer", objectFit: "cover" }}
+                            />
+                            {/* Overlay for extra images */}
+                            {i === 1 && images.length > 3 && (
+                              <div
+                                className="overlay_more_images position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center text-white fw-bold fs-3"
+                                style={{
+                                  background: "rgba(0,0,0,0.5)",
+                                  borderRadius: "8px",
+                                  cursor: "pointer",
+                                }}
+                                onClick={() => openLightbox(2)}
+                              >
+                              <span className="gallery_more"> +{images.length - 3} more</span>
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </>
+                  )}
                 </div>
-              </>
-            )}
-          </div>
-        ) : property.featured_image ? (
-          // Case 2: Show featured image if gallery not present
-          <div className="gallery_images mb-5 overflow-hidden">
-            <div className="col-12 overflow-hidden">
-              <div className="img_wrapper overflow-hidden">
-                <img
-                  src={`https://${property.featured_image}`}
-                  className="w-100"
-                  alt="Featured Property"
-                  style={{
-                    height: "500px",
-                    borderRadius: "8px",
-                    objectFit: "cover",
-                  }}
-                />
-              </div>
-            </div>
-          </div>
-        ) : (
-          // Case 3: Default image if none available
-          <div className="row mb-5">
-            <img
-              src="/images/default-property.png"
-              className="w-100"
-              alt="Default Property"
-              style={{
-                height: "350px",
-                objectFit: "contain",
-                backgroundColor: "#f5f5f5",
-              }}
-            />
-          </div>
-        )}
+              ) : property.featured_image ? (
+                // Case 2: Show featured image if gallery not present
+                <div className="gallery_images mb-5 overflow-hidden">
+                  <div className="col-12 overflow-hidden">
+                    <div className="img_wrapper overflow-hidden">
+                      <img
+                        src={`https://${property.featured_image}`}
+                        className="w-100"
+                        alt="Featured Property"
+                        style={{
+                          height: "500px",
+                          borderRadius: "8px",
+                          objectFit: "cover",
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                // Case 3: Default image if none available
+                <div className="row mb-5 mt-2">
+                  <div className="col-12">
+                    <img
+                      src="/images/default-property.png"
+                      className="w-100 rounded-3"
+                      alt="Default Property"
+                      style={{
+                        height: "350px",
+                        objectFit: "contain",
+                        backgroundColor: "#f5f5f5",
+                      }}
+                    />
+                  </div>
+                </div>
+              )
+      )}
+
 
 
           {/* Lightbox */}

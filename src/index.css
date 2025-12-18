@@ -333,6 +333,13 @@ li { list-style: none;}
     margin-left: 5px;
     border: none !important;
 }
+/* .navbar .user_dropdown .dropdown:hover .dropdown-menu{
+  display: block;
+  top: 140%;
+  right: -10px !important;
+  left: unset !important;
+} */
+
 .navbar .dropdown-item {font-size: 14px; font-weight: 500; text-wrap: auto !important; font-family: 'Century Gothic';}
 
 .navbar .dropdown-item:hover{
