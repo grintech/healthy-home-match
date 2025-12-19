@@ -10,104 +10,132 @@ import DashSidebar from './DashSidebar';
 
 const SavedListings = () => {
   const { user } = useAuth();
+
   const [properties, setProperties] = useState([]);
   const [unsavingIds, setUnsavingIds] = useState([]);
-   const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   const [watchlists, setWatchlists] = useState([]);
   const [selectedListing, setSelectedListing] = useState(null);
   const [selectedWatchlistId, setSelectedWatchlistId] = useState('');
+  const [addingToWatchlist, setAddingToWatchlist] = useState(false);
 
-// Fetch Saved Properties
+  /* ============================
+     FETCH SAVED PROPERTIES
+  ============================ */
   useEffect(() => {
     if (!user?.id) return;
 
-    api.get(`/saved-properties/${user.id}`)
+    api
+      .get(`/saved-properties/${user.id}`)
       .then((res) => {
         if (res.data.success) {
-          setProperties(res.data.data.map(p => ({ ...p, liked: true }))); // add liked state per property
+          setProperties(res.data.data.map(p => ({ ...p, liked: true })));
         }
       })
-      .catch((err) => console.error(err))
-      .finally(() => setLoading(false)); 
+      .catch(() => toast.error('Failed to load saved properties'))
+      .finally(() => setLoading(false));
   }, [user]);
 
+  /* ============================
+     FETCH WATCHLISTS (ON MODAL OPEN)
+  ============================ */
+  const fetchWatchlists = async () => {
+    try {
+      const res = await api.get('/list-saved-watchlist');
+      if (res.data.status) {
+        setWatchlists(res.data.data || []);
+      } else {
+        setWatchlists([]);
+      }
+    } catch (error) {
+      setWatchlists([]);
+    }
+  };
 
-  // Unsave property API
+  /* ============================
+     UNSAVE PROPERTY
+  ============================ */
   const handleUnsaveProperty = async (propertyId) => {
-    // Add property to unsaving state
     setUnsavingIds((prev) => [...prev, propertyId]);
 
     try {
-      const res = await api.post(`/properties/unsave`, { propertyId, user_id: user.id });
+      const res = await api.post(`/properties/unsave`, {
+        propertyId,
+        user_id: user.id,
+      });
+
       if (res.data.success) {
         setProperties((prev) => prev.filter((p) => p.id !== propertyId));
-        toast.success(res.data.message || 'Property removed from saved listings!');
+        toast.success(res.data.message || 'Property removed');
       } else {
-        toast.error(res.data.message || 'Failed to remove property.');
+        toast.error(res.data.message || 'Failed to remove');
       }
-    } catch (err) {
-      console.error(err);
-      toast.error('Something went wrong while unsaving the property.');
+    } catch {
+      toast.error('Something went wrong');
     } finally {
-      // Remove property from unsaving state
       setUnsavingIds((prev) => prev.filter((id) => id !== propertyId));
     }
   };
 
+  /* ====== ADD PROPERTY TO WATCHLIST ========== */
+  const handleAddToWatchlist = async () => {
+  if (!selectedListing || !selectedWatchlistId) return;
 
-  useEffect(() => {
-    const stored = localStorage.getItem('watchlists');
-    if (stored) setWatchlists(JSON.parse(stored));
-  }, []);
+  try {
+    setAddingToWatchlist(true);
 
-
-  const handleAddToWatchlist = () => {
-    if (!selectedListing || !selectedWatchlistId) return;
-
-    const updated = watchlists.map(w => {
-      if (w.id === parseInt(selectedWatchlistId)) {
-        const alreadyAdded = w.listings.find(l => l.id === selectedListing.id);
-        if (!alreadyAdded) return { ...w, listings: [...w.listings, selectedListing] };
-      }
-      return w;
+    const res = await api.post('/watchlist-items', {
+      watchlist_id: selectedWatchlistId,
+      property_id: selectedListing.id,
     });
 
-    setWatchlists(updated);
-    localStorage.setItem('watchlists', JSON.stringify(updated));
-    setSelectedListing(null);
-    setSelectedWatchlistId('');
-    document.getElementById('addWatchlistModalClose')?.click();
-  };
+    if (res.data.status) {
+      toast.success(res.data.message || 'Added to watchlist');
 
+      setSelectedListing(null);
+      setSelectedWatchlistId('');
+      document.getElementById('addWatchlistModalClose')?.click();
+    } else {
+      toast.info(res.data.message || 'Property already exists in watchlist');
+    }
+  } catch (error) {
+    console.error(error);
+    toast.error(
+      error?.response?.data?.message ||
+      'Something went wrong while adding to watchlist'
+    );
+  } finally {
+    setAddingToWatchlist(false);
+  }
+};
 
 
   return (
     <div className="user_dashboard">
       <Navbar />
+
       <div className="saved_listings py-5">
         <div className="container">
           <div className="row">
-            <div className="col-lg-4 col-xl-3 mb-4 mb-lg-0">
+            <div className="col-lg-4 col-xl-3 mb-4">
               <DashSidebar />
             </div>
-            <div className="col-lg-8 col-xl-9 mb-4 mb-lg-0 ">
 
+            <div className="col-lg-8 col-xl-9">
               {loading ? (
-                <div className="d-flex flex-column justify-content-center align-items-center" style={{ height: "80vh" }}>
+                <div className="d-flex flex-column justify-content-center align-items-center" style={{ height: '80vh' }}>
                   <i className="fa-solid fa-home text-theme fs-1 loader-icon"></i>
                   <span>Loading...</span>
                 </div>
               ) : properties.length === 0 ? (
-                <div className="d-flex flex-column justify-content-center align-items-center" style={{ height: "80vh" }}>
+                <div className="d-flex flex-column justify-content-center align-items-center" style={{ height: '80vh' }}>
                   <i className="fa-regular fa-heart text-theme fs-1"></i>
                   <h5 className="mt-2 fw-bold">You have no saved properties yet!</h5>
                 </div>
               ) : (
-                <div className="col-lg-12">
-                  {properties.length > 0 && (
-                    <h1 className="mb-3 sec-title">Saved Listings ({properties.length})</h1>
-                  )}
+                <>
+                  <h1 className="mb-3 sec-title">Saved Listings ({properties.length})</h1>
 
                   <div className="row search_right">
                     {properties.map((listing) => (
@@ -116,85 +144,125 @@ const SavedListings = () => {
                           <div className="list-thumb">
                             <img
                               alt={listing.title}
-                              src={listing.featured_image ? `https://${listing.featured_image}` : "/images/default-property.png"}
+                              src={
+                                listing.featured_image
+                                  ? `https://${listing.featured_image}`
+                                  : "/images/default-property.png"
+                              }
                               className="w-100"
                               loading="lazy"
                             />
                             <div className="sale-sticker-wrap">
-                              <div className="list-tag fz12">
-                                <i className="fa-solid fa-bolt me-1"></i>{listing.performance_rating}
-                              </div>
-                              <div className="list-tag fz12 bg-dark">
-                                <i className="fa-solid fa-flag me-1"></i>{listing.listing_type}
-                              </div>
+                              {listing.performance_rating && (
+                                <div className="list-tag fz12">
+                                  <i className="fa-solid fa-bolt me-1"></i>
+                                  {listing.performance_rating}
+                                </div>
+                              )}
+                              {listing.listing_type && (
+                                <div className="list-tag fz12 bg-dark">
+                                  <i className="fa-solid fa-flag me-1"></i>
+                                  {listing.listing_type}
+                                </div>
+                              )}
                             </div>
-                            <div className="list-price">{listing.currency}-{listing.price}</div>
+                            {listing.price && (
+                              <div className="list-price">
+                                {listing.currency}-{listing.price}
+                              </div>
+                            )}
                           </div>
-
                           <div className="list-content">
-                            <h6 className="list-title text-truncate">
-                              <Link to={`/property/${listing.slug}`}>{listing.title}</Link>
+                            <h6 className="list-title text-truncate text-capitalize">
+                              <Link to={`/property/${listing.slug}`}>
+                                {listing.title}
+                              </Link>
                             </h6>
-                            <p className="list-text">{listing.location}</p>
-                            <div className="list-meta d-flex align-items-baseline gap-3">
-                              <Link className='text-capitalize d-flex flex-wrap align-items-center'><i className="fas fa-bed"></i> {listing.bedrooms}</Link>
-                              <Link className='text-capitalize d-flex flex-wrap align-items-center'><i className="fas fa-bath"></i> {listing.bathrooms}</Link>
-                              {listing.area_m2 && listing.area_unit &&
-                                <Link className='d-flex flex-wrap align-items-center'><i className="fa-solid fa-chart-area "></i> {listing.area_m2} {listing.area_unit}</Link>
-                              }
-                              <Link className='text-capitalize d-flex flex-wrap align-items-center'><i className="fa-solid fa-home"></i> {listing.property_type}</Link>
-                            </div>
-                            <hr />
-                            <div className="list-meta2 d-flex justify-content-between align-items-center mt-3">
-                              <Link to={`/property/${listing.slug}`} className="view_details">View details</Link>
 
-                              <div className=" d-flex align-items-center gap-3 position-relative">
-                          
-                                <Tooltip text={"Add to watchlist"}>
+                            <p className="list-text mb-2 text-truncate">{listing.address}</p>
+                            <div className="list-meta d-flex align-items-baseline gap-2 flex-wrap">
+                              {listing.bedrooms && (
+                                <span className="d-flex align-items-center">
+                                  <i className="fas fa-bed me-1"></i> {listing.bedrooms}
+                                </span>
+                              )}
+
+                              {listing.bathrooms && (
+                                <span className="d-flex align-items-center">
+                                  <i className="fas fa-bath me-1"></i> {listing.bathrooms}
+                                </span>
+                              )}
+
+                              {listing.area_m2 && listing.area_unit && (
+                                <span className="d-flex align-items-center">
+                                  <i className="fa-solid fa-chart-area me-1"></i>
+                                  {listing.area_m2} {listing.area_unit}
+                                </span>
+                              )}
+
+                              {listing.property_type && (
+                                <span className="d-flex align-items-center text-capitalize">
+                                  <i className="fa-solid fa-home me-1"></i>
+                                  {listing.property_type}
+                                </span>
+                              )}
+                            </div>
+
+                            <hr />
+
+                            <div className="list-meta2 d-flex justify-content-between align-items-center mt-3">
+                              <Link
+                                to={`/property/${listing.slug}`}
+                                className="view_details"
+                              >
+                                View details
+                              </Link>
+
+                              <div className="d-flex align-items-center gap-3">
+                                <Tooltip text="Add to watchlist">
                                   <Link
+                                    className="btn btn-light btn-sm"
                                     data-bs-toggle="modal"
                                     data-bs-target="#addWatchlistModal"
-                                    onClick={() => setSelectedListing(listing)}
-                                    className="btn btn-light btn-sm"
+                                    onClick={() => {
+                                      setSelectedListing(listing);
+                                      fetchWatchlists();
+                                    }}
                                   >
                                     <i className="fa-solid fa-plus"></i>
                                   </Link>
-                                </Tooltip>                        
-
-                                <Tooltip text={listing.liked ? "Unsave" : "Save"}>
-                                  <Link
-                                    to="#"
-                                  type="button"
-                                    onClick={() => listing.liked ? handleUnsaveProperty(listing.id) : null}
-                                    className="btn btn-light btn-sm "
-                                    disabled={unsavingIds.includes(listing.id)}
-                                  >
-                                  {unsavingIds.includes(listing.id) ? (
-                                        <i className="fa fa-spinner fa-spin"></i>
-                                      ) : (
-                                        <i className={`fa-heart ${listing.liked ? "fa-solid text-danger" : "fa-regular"}`}></i>
-                                      )}
-                                  </Link>
                                 </Tooltip>
 
-                              
-
+                                <Tooltip text="Unsave">
+                                  <button
+                                    className="btn btn-light btn-sm"
+                                    onClick={() => handleUnsaveProperty(listing.id)}
+                                    disabled={unsavingIds.includes(listing.id)}
+                                  >
+                                    {unsavingIds.includes(listing.id) ? (
+                                      <i className="fa fa-spinner fa-spin"></i>
+                                    ) : (
+                                      <i className="fa-solid fa-heart text-danger"></i>
+                                    )}
+                                  </button>
+                                </Tooltip>
                               </div>
+
                             </div>
                           </div>
                         </div>
                       </div>
                     ))}
                   </div>
-                </div>
+
+                </>
               )}
             </div>
-
           </div>
         </div>
       </div>
 
-      {/* Add to Watchlist Modal */}
+      {/* ADD TO WATCHLIST MODAL */}
       <div className="modal fade" id="addWatchlistModal" tabIndex="-1">
         <div className="modal-dialog">
           <div className="modal-content">
@@ -202,64 +270,86 @@ const SavedListings = () => {
               <h5 className="modal-title fw-bold">Add this listing to a watchlist</h5>
               <button type="button" className="btn-close" data-bs-dismiss="modal" id="addWatchlistModalClose"></button>
             </div>
+
             <div className="modal-body">
               {watchlists.length === 0 ? (
-                <h6 className='text-center m-0 py-4'>
-                  No watchlists found. Please
-                  <Link to="/watchlist" className="ms-1 me-1"
-                    onClick={() => {
-                      const modal = bootstrap.Modal.getInstance(document.getElementById('addWatchlistModal'));
-                      if (modal) modal.hide();
-                    }}
-                  >
-                    create a watchlist
-                  </Link>
-                  first.
+               <div className='text-center'>
+                 <h6 className="text-center  mb-3 fw-bold"> <i className="fa-solid fa-home text-theme fs-4"></i> <br /> <br />
+                  No watchlists found.
+                  <br />
                 </h6>
+                  <Link to="/watchlist"
+                    onClick={(e) => {
+                      e.preventDefault(); // prevent default navigation for a moment
+
+                      const modalEl = document.getElementById('addWatchlistModal');
+                      const modal = window.bootstrap?.Modal.getInstance(modalEl);
+
+                      modal?.hide();
+                      const backdrop = document.querySelector('.modal-backdrop');
+                      if (backdrop) backdrop.remove();
+
+                      setTimeout(() => {
+                        window.location.href = '/watchlist';
+                      }, 100);
+                    }}
+                    className='btn btn-green'
+                  >
+                    Create a watchlist
+                  </Link>
+
+                </div>
               ) : (
                 <>
-                  <label className="form-label">Choose Watchlist:</label>
+                  <label className="form-label">Choose Watchlist</label>
                   <select
                     className="form-select"
                     value={selectedWatchlistId}
                     onChange={(e) => setSelectedWatchlistId(e.target.value)}
                   >
                     <option value="">Select Watchlist</option>
-                    {watchlists.map(w => (
-                      <option className='text-capitalize' key={w.id} value={w.id}>
-                        {w.name}
+                    {watchlists.map((w) => (
+                      <option key={w.id} value={w.id} className="text-capitalize">
+                        {w.title}
                       </option>
                     ))}
                   </select>
-                  <div className="mt-2 d-flex justify-content-end">
-                    <Link
-                      to='/watchlist'
-                      className='ms-1 text_blue text-capitalize text-underline'
-                      onClick={() => {
-                        const modal = bootstrap.Modal.getInstance(document.getElementById('addWatchlistModal'));
-                        if (modal) modal.hide();
-                      }}
-                    >
-                      create a new watchlist
-                    </Link>
+                  <div className="text-end mt-2">
+                     <Link to="/watchlist"
+                    onClick={(e) => {
+                      e.preventDefault(); 
+                      const modalEl = document.getElementById('addWatchlistModal');
+                      const modal = window.bootstrap?.Modal.getInstance(modalEl);
+
+                      modal?.hide();
+                      const backdrop = document.querySelector('.modal-backdrop');
+                      if (backdrop) backdrop.remove();
+
+                      setTimeout(() => {
+                        window.location.href = '/watchlist';
+                      }, 100);
+                    }}
+                    className='text-theme text-underline'
+                  >
+                    Create a watchlist
+                  </Link>
                   </div>
                 </>
               )}
             </div>
 
             {watchlists.length > 0 && (
-              <div className="modal-footer border-0 pt-0">
-                <div className="d-flex w-100 justify-content-center align-items-center">
-                  <button type="button" className="btn btn-dark mx-2" data-bs-dismiss="modal">Cancel</button>
-                  <button
-                    type="button"
-                    className="btn btn-theme mx-2"
-                    onClick={handleAddToWatchlist}
-                    disabled={!selectedWatchlistId}
-                  >
-                    Add
-                  </button>
-                </div>
+              <div className="modal-footer border-0">
+                <button className="btn btn-dark" data-bs-dismiss="modal">
+                  Cancel
+                </button>
+                <button
+                  className="btn btn-theme"
+                  onClick={handleAddToWatchlist}
+                  disabled={!selectedWatchlistId || addingToWatchlist}
+                >
+                  {addingToWatchlist ? 'Adding...' : 'Add'}
+                </button>
               </div>
             )}
           </div>

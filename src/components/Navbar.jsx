@@ -251,6 +251,7 @@ const Navbar = ({ disableSticky = false }) => {
                                 </Link>
                             </div>
                         ) : (
+                            <div className="user_dropdown">
                                 <div className="dropdown">
                                     <button
                                         className="btn-theme rounded-pill dropdown-toggle"
@@ -307,6 +308,7 @@ const Navbar = ({ disableSticky = false }) => {
                                         )}
                                     </ul>
                                 </div>
+                            </div>
                             // <div className="user_dropdown ">
                                 
                             // </div>

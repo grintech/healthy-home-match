@@ -433,13 +433,14 @@ li { list-style: none;}
 
 
 .offcanvas-header .btn-close{
-    background-color: #dbdbdb ;
+    background-color: var(--primary) ;
     border-radius: 50%;
     cursor: pointer;
     color: var(--headings-color);
     font-size: 12px;
     height: 20px;
     width: 20px; transition: all .3s;
+    opacity:1;
 }
 
 .offcanvas-header .btn-close:focus{box-shadow: unset !important; border-color: 0 !important;}
