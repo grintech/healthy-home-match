@@ -27,7 +27,7 @@
 .img_wrapper {
     overflow: hidden;
 }
-
+.img_wrapper .single_image{max-height: 600px;}
 .gallery_images img {
     border-radius: 8px;
     transition: transform 0.4s ease;
@@ -393,8 +393,17 @@ iframe {
   animation: pop 0.5s ease-in-out;
 }
 
+.submit_review_btn{width: fit-content !important; border-radius: 10px; height: 50px; border-color: var(--secondary) !important; color: var(--secondary) !important; background-color: transparent !important;}
+.submit_review_btn.ud-btn:before { background-color: var(--secondary); color: #fff !important;}
+.submit_review_btn:hover {color: #fff !important;}
+
+.property_review_form label{font-size: 14px;font-weight: 600; }
+.property_review_form textarea::placeholder{font-size: 14px;}
+.property_review_form textarea{font-size: 15px;}
+.property_review_form textarea:focus{box-shadow: none; border-color: var(--secondary);}
 
 
+/*----- Media Queries -------*/
 
 @media screen and (min-width:1400px) {
 .social_icons_container{left: 250px }
