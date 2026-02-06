@@ -203,7 +203,7 @@ const Navbar = ({ disableSticky = false }) => {
                                                         <li>
                                                             <a
                                                                 className="dropdown-item"
-                                                                href={`http://3.98.2.156/backend/public/create-session/${token}`}
+                                                                href={`http://35.154.224.205/backend/public/create-session/${token}`}
 
                                                             >
                                                                 <i className="fa fa-gauge me-2"></i> My Account
@@ -293,7 +293,7 @@ const Navbar = ({ disableSticky = false }) => {
                                                 <li>
                                                     <a
                                                         className="dropdown-item"
-                                                        href={`http://3.98.2.156/backend/public/create-session/${token}`}
+                                                        href={`http://35.154.224.205/backend/public/create-session/${token}`}
 
                                                     >
                                                         <i className="fa fa-gauge me-2"></i> My Account
